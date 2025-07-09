@@ -1,0 +1,1732 @@
+<html><head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <script crossorigin="anonymous" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <title>Video Playground</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"><style>
+  #wrapper {
+    z-index: -1;
+    cursor:none;
+    /*       vertical-align: top */
+    height: 4000px;
+    width: 4000px;
+    background-color: rgba(142, 21, 255, .2);
+    position: absolute;
+    padding: 0px;
+    margin: 0px;
+    left:0px;
+    top:0px;
+    background-size:100px 100px, 100px 100px, 20px 20px, 20px 20px;
+    background-position:-1px -1px, -1px -1px, -1px -1px, -1px -1px;
+    background-image:
+      linear-gradient(rgba(0,0,0,.3) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,.3) 1px, transparent 1px),
+      linear-gradient(rgba(0,0,0,.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,.1) 1px, transparent 1px);
+  }
+
+
+
+  #testvideo {
+    height: 100%;
+    width: 100%;
+    background-image: linear-gradient(45deg, #99999, #4321);
+  }
+
+  /*     .participant {
+
+  }
+  */
+  .participantView {
+    /*         height: 100%;
+    width: 100%; */
+    box-sizing: border-box;
+    z-index: 9999;
+    position: absolute;
+    border-style: solid;
+    box-shadow: 0px 0px 2px;
+    pointer-events:none
+  }
+
+  .participantCursor {
+    /*     height: 64px;
+    width: 64px; */
+    z-index: 9999;
+    /*         color: #ffffff; */
+    position: absolute;
+    /*     transform: translate(-50%, -50%); */
+    /*         border-radius: 50%; */
+    /*             box-shadow: 0px 0px 20px; */
+    pointer-events:none;
+    display:none;
+    /*     background-image:url(underconstruction1.gif); */
+    /*     background-image:url(arrow-cursor.svg); */
+    /* visibility: hidden; */
+  }
+
+  .participantVideo {
+    position:absolute;
+    width:400px;
+    height:400px;
+    background-color:red;
+  }
+
+  .controls {
+    background-color: #ffffff;
+    box-sizing: border-box;
+    position: absolute;
+    width: 100%;
+    height: 32px;
+    cursor: text !important;
+  }
+
+  .controlView {
+    z-index: 999999;
+  }
+  .ui {
+    z-index: 999999;
+  }
+  .mainInterface {
+    z-index: 999999;
+  }
+  .settings {
+    z-index: 999999;
+  }
+  </style><style>
+  /*     #chessWrapper {
+  pointer-events: none
+  } */
+
+  .chessground {
+    width: 500px;
+    height: 500px;
+  }
+
+  cg-board {
+    background-color: #bfcfdd;
+  }
+  </style><style>
+  .box {
+    overflow: clip;
+    overscroll-behavior: contain;
+    box-sizing: border-box;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    /*     top: 4%;
+    left: 5%; */
+    background: transparent;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+  }
+
+  .draggable {
+    display: flex;
+    flex-direction: vertical;
+    box-sizing: border-box;
+    position: absolute;
+    width: 800px;
+    height: 800px;
+    background: transparent;
+  }
+  .draggable:hover {
+    border: 16px solid #aaa;
+  }
+  .draggable:hover .resize-handle{
+    visibility: visible;
+  }
+  .draggable:hover .delete-btn{
+    visibility: visible;
+  }
+  .draggable:hover .box {
+    overflow: auto;
+    padding: 0px;
+  } 
+
+  /*   .resize-handle {
+  visibility:hidden;
+  box-sizing: border-box;
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  margin-left: -32px;
+  margin-top: -32px;
+  border-style: solid;
+  border-width: 0 0 32px 32px;
+  border-color: transparent transparent #aaa transparent;
+  /*     border-color:inherit; */
+  cursor: nw-resize !important;
+  } */
+
+  .delete-btn {
+    visibility:hidden;
+    box-sizing: border-box;
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    background-color: red;
+    /*     margin-top: -48px;
+    margin-left: -48px; */
+  }
+
+  #trig {
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 125px;
+  }
+
+  #container {
+    height: 600px; 
+    width: 800px;
+    overflow:visible; 
+    padding:0; 
+    position:relative;
+
+    background-size:100px 100px, 100px 100px, 20px 20px, 20px 20px;
+    background-position:-1px -1px, -1px -1px, -1px -1px, -1px -1px;
+    background-image:
+      linear-gradient(rgba(0,0,0,.3) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,.3) 1px, transparent 1px),
+      linear-gradient(rgba(0,0,0,.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,.1) 1px, transparent 1px);
+  }
+
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
+  </style><style>
+  .ball {
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    will-change: transform;
+    position: absolute;
+  }
+
+  .ballPit {
+    width: 400px;
+    height: 400px;
+    background-color: rgba(11, 21, 255, .2);
+  }
+  </style>
+
+
+
+  
+  <style id="window-style">
+    iframe {
+      border:none;
+    }
+
+    .window-container {
+/*       overflow: hidden; */
+      text-align: center;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      /*         overflow: clip; */
+      width: 60rem;
+      height: 60rem;
+      background-color: rgba(0,0,0,0);
+      position: absolute;
+      outline: none;
+      padding-top: 6rem;
+      /*         resize: both; */
+    }
+    .window-container:hover {
+      background-color: rgba(0,0,0,0);
+      outline-color: black;
+      outline: solid;
+    }
+    .window-container:hover .window-controls {
+      visibility:visible;
+    }
+    .window-container:hover .resize-handle {
+      visibility:visible;
+    }
+    .window-container.lock-drag {
+      outline-color: yellow;
+    }
+
+    .window-controls {
+      visibility: hidden;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      height: 6rem;
+      width: 100%;
+      position: absolute;
+      background-color: fff;
+/*       border-color: black;
+      border-style: solid;
+      border-radius: .5rem; */
+      margin-top: -6rem;
+    }
+
+    .window-dragbar {
+      box-sizing: border-box;
+      height: 2rem;
+      width: 100%;
+      font-size: larger;
+      font-weight: bold;
+      cursor: move;
+      position: absolute;
+      text-align: center;
+      background-color: #fff;
+    }
+
+    .window-toolbar {
+      box-sizing: border-box;
+      width: 100%;
+      height: 4rem;
+      background-color: #03A6A1;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      column-gap: 1rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      top: 2rem;
+      position: absolute;
+    }
+
+    .window-content {
+      overflow: auto;
+      box-sizing: border-box;
+      /*         background-color: #B5FCCD; */
+      /*         flex-grow: 1; */
+      background-color: rgba(0,0,0,0);
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      align-items: center;
+      position: absolute;
+      padding-bottom: 6rem;
+    }
+    .window-controls:hover {
+      visibility:visible;
+    }
+    .resize-handle:hover {
+      visibility:visible;
+    }
+
+    /*     .{
+    border-style: inset;
+    border-color: grey;
+    overflow: scroll;
+    height: 500px;
+    width: 90%
+    } */
+
+    .content-frame {
+      width: 100%;
+      height: 100%;
+    }
+
+    /*     .box {
+    overflow: clip;
+    overscroll-behavior: contain;
+    box-sizing: border-box;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    /*     top: 4%;
+    left: 5%; */
+    background: transparent;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    } */
+
+    #closeButton {
+      background-image: linear-gradient(45deg, #ff1c1c 0%, hsl(0, 100%, 53%)  51%);
+    } 
+
+    .toolbar-button {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background-image: linear-gradient(45deg, #B5FCCD 0%, #7AC6D2  51%);
+      border-style: dashed;
+    }
+
+    .search-box {
+      width: 32rem;
+      height: 2rem;
+      border-radius: 1rem;
+      text-align: center;
+      align-self: center;
+      background-color: white;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .toolbar-button:hover {
+      cursor: pointer;
+    }
+
+    .toolbar-button:active {
+      opacity: 0.8;
+    }
+
+    .lock-active {
+      background-image: linear-gradient(45deg, yellow 0%, gold 51%);
+      color: black;
+    }
+
+    .resize-handle {
+      visibility:hidden;
+      box-sizing: border-box;
+      position: absolute;
+      width: 0px;
+      height: 0px;
+      margin-left: -2rem;
+      margin-top: -8rem;
+      border-style: solid;
+      border-width: 0 0 2rem 2rem;
+      border-color: transparent transparent #aaa transparent;
+      /*     border-color:inherit; */
+      cursor: nw-resize !important;
+    }
+
+    .fullscreenView {
+      display:none;
+      width:100%;
+      height:100%;
+      /*         background-color: red; */
+    }
+  </style><style id="settings-style">
+  /* Main interface styles */
+  .main-interface {
+    padding: 20px;
+  }
+
+  .settings-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #4a6fa5;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 1000;
+  }
+
+  #addWindowButton {
+    position: fixed;
+    top: 20px;
+    right: 260px;
+  }
+
+  .add-select {
+    position: fixed;
+    top: 24px;
+    right: 140px;
+    font-size: 16px;
+  }
+
+  .settings-button:hover {
+    background: #3a5a80;
+  }
+
+  /* Task bar overlay styles */
+  .settings-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .settings-container {
+    display: flex;
+    width: 80%;
+    max-width: 1000px;
+    height: 80%;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+  }
+
+  /* Sidebar styles */
+  .sidebar {
+    width: 250px !important; /* Added !important to ensure this takes precedence */
+    min-width: 250px !important; /* Added to prevent shrinking */
+    max-width: 250px !important; /* Added to prevent expanding */
+    background-color: #2c3e50;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0; /* Prevent shrinking when content area is wide */
+  }
+
+  .sidebar-header {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .close-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+  }
+
+  .sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+  }
+
+  .menu-item {
+    padding: 15px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-left: 4px solid transparent;
+  }
+
+  .menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .menu-item.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-left: 4px solid #3498db;
+  }
+
+  .menu-item span {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* Content area styles */
+  .content-area {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    min-width: 0; /* Allow content area to shrink */
+  }
+
+  .content-section {
+    display: none;
+  }
+
+  .content-section.active {
+    display: block;
+  }
+
+  /* Participant List Styles */
+  .participant-item-container {
+    max-height: calc(100% - 180px);
+    overflow-y: auto;
+    margin-bottom: 0;
+  }
+
+  .participant-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+  }
+
+  .participant-item-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 15px;
+    background-color: #3498db;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+  }
+
+  .invite-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+    position: sticky;
+    bottom: 0;
+    margin-top: 20px;
+  }
+
+  .email-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: white;
+  }
+
+  .invite-button {
+    padding: 10px 15px;
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .copy-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+
+  .copy-link:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .copy-icon {
+    font-size: 16px;
+  }
+
+  /* Customize Tab Styles */
+  .customize-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+  }
+
+  .option-label {
+    flex: 1;
+    font-weight: bold;
+    min-width: 120px;
+  }
+
+  .toggle-button {
+    width: 50px;
+    height: 24px;
+    background-color: #95a5a6;
+    border-radius: 12px;
+    position: relative;
+    cursor: pointer;
+    margin-right: 15px;
+  }
+
+  .toggle-button:after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s;
+  }
+
+  .toggle-button.on {
+    background-color: #27ae60;
+  }
+
+  .toggle-button.on:after {
+    transform: translateX(26px);
+  }
+
+  .preset-select {
+    padding: 5px;
+    border-radius: 5px;
+    background-color: white;
+    border: 1px solid #ddd;
+    min-width: 120px;
+  }
+
+  .color-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+  }
+
+  .color-picker-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .color-picker {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+
+  .rgb-input {
+    padding: 5px;
+    width: 80px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    background-color: white;
+  }
+
+  /* Storage Space Tab Styles */
+  .image-grid-container {
+    height: calc(100% - 160px);
+    overflow-y: auto;
+    margin-bottom: 0;
+  }
+
+  .image-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .image-item {
+    aspect-ratio: 1;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .image-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .upload-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+    position: sticky;
+    bottom: 0;
+    margin-top: 20px;
+  }
+  .url-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: white;
+  }
+
+  .add-button {
+    padding: 10px 15px;
+    background-color: #4a6fa5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .upload-icon {
+    font-size: 20px;
+    color: #4a6fa5;
+  }
+
+  .controlView {
+    height:100%;
+    width:100%;
+  }
+</style>
+  </head>
+  <body style="background-color: rgb(199, 199, 199);">
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Draggable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/DrawSVGPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/EaselPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Flip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/GSDevTools.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/InertiaPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Observer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Physics2DPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrambleTextPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+    <!-- ScrollSmoother requires ScrollTrigger -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollSmoother.min.js"></script>
+
+
+
+
+
+    <script id="script-client">
+  const wrapper = document.getElementById("wrapper");
+  const templates = document.getElementById("templates");
+
+  //   document.designMode = “on”;
+  //   var participants = document.getElementById("participants");
+  webstrate.on("loaded", function(webstrateID, clientId, user) {
+    //     let myView = document.createElement("transient");
+    //     myView.id = "view-"+clientId;
+    //     myView.className = "clientView";
+    //     myView.innerText = "Client:"+clientId;
+    //     document.getElementById("wrapper").prepend(myView);
+
+    //     addParticipant(clientId);
+    //     updateClientList();
+    updateParticipants();
+    createTaskbar(clientId);
+    const participantElement = participants.querySelector("#participant-"+clientId);
+    const videoElement = participants.querySelector("#participantVideo-"+clientId);
+
+    //     participantElement.webstrate.signalStream(function signalStream(clientId, accept) {
+    //       console.log("clude test");
+    //       // Get audio and video feed.
+    //       //             navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then(function(stream) {
+    //       //                 // And send it to the requesting client.
+    //       //                 var meta = { title: "My Video Stream" };
+    //       //                 var conn = accept(stream, meta, ...);
+    //       //                                   });
+    //     });
+
+
+    //     participantElement.webstrate.on("signalStream", function onSignalStream(clientId, meta, accept) {
+    //       var conn = accept(function(stream) {
+    //         // Add stream to video element and play it.
+    //         videoElement.srcObject = stream;
+    //         videoElement.play();
+    //       });
+    //     });
+  });
+  webstrate.on("clientJoin", function(clientId) {
+    //     addParticipant(clientId);
+    //     updateClientList();
+    //     updateParticipants();
+  });
+  webstrate.on("clientPart", function(clientId) {
+    updateParticipants();
+    //     removeParticipant(clientId);
+    //     updateClientList();
+    // RoomLogic.removeActivityView(clientId);
+  });
+
+  function updateParticipants() {
+    //     console.log(webstrate.clients);
+    var participants = document.getElementById("participants");
+
+    // attempt to prevent simultaneous async edits
+    //     if (participants.className.includes("updating")) {
+    //       if (!participants.className.includes(webstrate.clientId)) return;
+    //     } else {
+    //       participants.className = "updating-"+webstrate.clientId;
+    //     }
+
+    //     var newParticipants = [];
+    for (var id of webstrate.clients) {
+      var existingParticipant = document.getElementById("participant-"+id);
+      if (!existingParticipant) {
+        addParticipant(id);
+      }
+    }
+
+    //     participants.replaceChildren(...newParticipants);
+    // check all current participant divs
+
+    for (var p of participants.children) {
+      var clientID = p.id.slice(12);  //substring of div ID where client ID starts
+
+      // if a matching 
+      if (webstrate.clients.includes(clientID)) {
+        continue;
+      } else {
+        removeParticipant(clientID);
+      }
+    }
+    updateClientList();
+    participants.className = "";
+
+    // check if update makes sense
+    if (participants.childElementCount != webstrate.clients.length) {
+      updateParticipants();
+    }
+  }
+
+  function updateClientList() {
+    //     console.log(webstrate.clients);
+    var clientList = document.getElementById("clientList");
+    clientList.replaceChildren(webstrate.clients);
+  }
+
+  function addParticipant(id) {
+    //     console.log("ADD_PARTICIPANT: " + id);
+    var participants = document.getElementById("participants");
+
+    let color = hashStringToColor(id); 
+    color = color.substring(1);
+    console.log(color);
+
+    var newParticipant = document.createElement("div", { approved: true });
+    newParticipant.className = "participant " + id;
+    newParticipant.id = "participant-" + id;
+
+    var participantView = document.createElement("div", { approved: true });
+    participantView.className = "participantView " + id;
+    participantView.id = "participantView-" + id;
+    participantView.style.borderColor = "#"+color;
+
+    let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+    let vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+    //     console.log(vw + ", " + vh);
+    participantView.style.width = `${vw}px`;
+    participantView.style.height = `${vh}px`;
+
+    //     gsap.set(".participantView", {xPercent: -50, yPercent: -50});
+
+    var participantCursor = document.createElement("i", { approved: true });
+    participantCursor.className = "fa fa-3x fa-mouse-pointer participantCursor " + id;
+    participantCursor.id = "participantCursor-" + id;
+    participantCursor.ariaHidden = true;
+    participantCursor.style.color = "#"+color;
+    //     participantCursor.backgroundColor = "#"+color;
+    gsap.set(".participantCursor", {xPercent: -50, yPercent: -50});
+
+    //     var participantVideo = document.createElement("video", { approved: true });
+    //     participantVideo.className = "participantVideo " + id;
+    //     participantVideo.id = "participantVideo-" + id;
+
+    //     participantView.append(participantVideo);
+    participantView.append(participantCursor);
+    newParticipant.append(participantView);
+    participants.append(newParticipant);
+
+    let xSetter = gsap.quickSetter("#participantView-"+webstrate.clientId, "x", "px") //apply it to the #id element's x property and append a "px" unit
+    let ySetter = gsap.quickSetter("#participantView-"+webstrate.clientId, "y", "px") //apply it to the #id element's x property and append a "px" unit
+    xSetter(window.scrollX);
+    ySetter(window.scrollY);
+  }
+
+  function removeParticipant(id) {
+    //     console.log("REMOVE_PARTICIPANT: " + id);
+    // participants.splice(participants.indexOf(id), 1);
+    const participant = document.getElementById("participant-"+id);
+    if (participant) {
+      participant.remove();
+    }
+  };
+
+  // listeners
+  // view presence
+  window.addEventListener("resize", function(e) {
+    const participantView = document.getElementById("participantView-"+webstrate.clientId);
+    if (!participantView){
+      return;
+    }
+
+    let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+    let vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+    //         console.log("RESIZE" + vw + ", " + vh);
+    participantView.style.width = `${vw}px`;
+    participantView.style.height = `${vh}px`;
+  });
+
+  window.addEventListener("scroll", function(e) {
+    const participantView = document.getElementById("participantView-"+webstrate.clientId);
+    if (!participantView){
+      return;
+    }
+
+    let xSetter = gsap.quickSetter("#participantView-"+webstrate.clientId, "x", "px") //apply it to the #id element's x property and append a "px" unit
+    let ySetter = gsap.quickSetter("#participantView-"+webstrate.clientId, "y", "px") //apply it to the #id element's x property and append a "px" unit
+    xSetter(window.scrollX);
+    ySetter(window.scrollY);
+
+    //     participantView.style.left =`${window.scrollX}px`;;
+    //     participantView.style.top = `${window.scrollY}px`;;
+  });
+
+  // cursor presence (child of view)
+  document.addEventListener("mousemove", function(e) {
+    const participantCursor = document.getElementById("participantCursor-"+webstrate.clientId);
+    const participantView = document.getElementById("participantView-"+webstrate.clientId);
+    if (!participantCursor || !participantView){
+      return;
+    }
+
+    let xSetter = gsap.quickSetter("#participantCursor-"+webstrate.clientId, "x", "px") //apply it to the #id element's x property and append a "px" unit
+    let ySetter = gsap.quickSetter("#participantCursor-"+webstrate.clientId, "y", "px") //apply it to the #id element's x property and append a "px" unit
+    xSetter(e.x);
+    ySetter(e.y);
+
+
+    participantCursor.style.display = "block";
+  });
+
+  document.addEventListener("mouseout", function(e) {
+    const participantCursor = document.getElementById("participantCursor-"+webstrate.clientId);
+    const participantView = document.getElementById("participantView-"+webstrate.clientId);
+    if (!participantCursor || !participantView){
+      return;
+    }
+
+    participantCursor.style.display = "none";
+  });
+
+  function createTaskbar(clientId) {
+    const controlView = document.createElement("transient");
+    controlView.id = "controlView-"+clientId;
+    controlView.className = "controlView "+clientId;
+
+    const taskbarTemplate = document.getElementById("participant-menus");
+    const taskbar = taskbarTemplate.cloneNode(true);
+    taskbar.id = "taskbar-"+clientId;
+
+    const addWindowButton = taskbar.querySelector("#addWindowButton");
+    addWindowButton.addEventListener("click", addWindow);
+
+    controlView.append(taskbar);
+    document.body.append(controlView);
+  }
+
+  function addWindow() {
+    const template = templates.querySelector(".window-container");
+    let preset = document.getElementById("taskbar-"+webstrate.clientId).querySelector(".add-select").value;
+    const newWindow = template.cloneNode(true);
+    newWindow.id = "";
+
+    let addressBar = newWindow.querySelector(".search-box");
+    let windowContent = newWindow.querySelector(".window-content");
+    addressBar.value = preset;
+    windowContent.src = preset;
+//     windowContent.webstrate.on("attributeChanged", function(attributeName, oldValue, newValue) {
+//       // An attribute was changed by another client.
+//       console.log(newValue);
+//       if (attributeName === "src") {
+//         addressBar.value = newValue;
+//         windowContent.src = newValue;
+//       } 
+//     });
+
+    wrapper.append(newWindow);
+    //     wrapper.webstrate.signal("addImg", this.webstrate.clients);
+  }
+
+  // from tank trouble codestrate
+  function djb2(str){
+    var hash = 5381;
+    for (var i = 0; i < str.length; i++) {
+      hash = ((hash << 5) + hash) + str.charCodeAt(i); /* hash * 33 + c */
+    }
+    return hash;
+  }
+
+  function hashStringToColor(str) {
+    var hash = djb2(str);
+    var r = (hash & 0xFF0000) >> 16;
+    var g = (hash & 0x00FF00) >> 8;
+    var b = hash & 0x0000FF;
+    return "#" + ("0" + r.toString(16)).substr(-2) + ("0" + g.toString(16)).substr(-2) + ("0" + b.toString(16)).substr(-2);
+  }
+</script><script id="script-playground">
+  const playground = document.getElementById("wrapper");
+  const playgroundObserver = new MutationObserver(function(mutations) {
+    // check every detected mutation inside of playground wrapper and handle accordingly
+    mutations.forEach(function(mutation) {
+      switch (mutation.type) {
+        case "childList":
+          //setup new nodes
+          handleMutationNodeAddRemove(mutation);
+          break;
+        case "attributes":
+          switch (mutation.attributeName) {
+            case "class":
+              handleMutationLockDrag(mutation);
+              break;
+            case "data-scroll-left":
+              var attributeValue = mutation.target.dataset.scrollLeft;
+              mutation.target.scrollLeft = attributeValue;
+              break;
+            case "data-scroll-top":
+              var attributeValue = mutation.target.dataset.scrollTop;
+              mutation.target.scrollTop = attributeValue;
+              break;
+          }
+          break;
+      }
+    });
+  });
+
+  function handleMutationNodeAddRemove(mutation){
+    mutation.addedNodes.forEach(function(newElement) {
+      setupElement(newElement);
+      setupMediaPlaybackSync(newElement);
+    });
+  }
+
+  function handleMutationLockDrag(mutation) {
+    // check draggable locks
+    if (mutation.target.className.includes("lock-drag")){
+      //         console.log("lock");
+      var drag = Draggable.get(mutation.target);
+      if (drag) drag.disable();
+    } else if (mutation.target.className.includes("draggable") || mutation.target.className.includes("window-container")){
+      //         Draggable.get(mutation.target.id).enable();
+      var drag = Draggable.get(mutation.target);
+      if (drag) drag.enable();
+    }
+  }
+
+  playgroundObserver.observe(playground, {
+    childList: true, // observe direct children
+    subtree: true,
+    //     characterDataOldValue: true // pass old data to callback
+    attributes: true,
+    //     attributeOldValue: true,
+    attributeFilter: ['class', 'style', 'data-scroll-left', 'data-scroll-top']
+  });
+
+  const mediaObserver = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      // ignore local mutations
+      if (mutation.target.className.includes(webstrate.clientId)) return;
+
+      // sync playback state/time
+      if (mutation.attributeName === 'data-current-time') {
+        var attributeValue = mutation.target.dataset.currentTime;
+
+        if (Math.abs(mutation.target.currentTime-attributeValue) >= 0.8) mutation.target.currentTime = attributeValue;
+        if (mutation.target.className.includes("playing")) mutation.target.play();
+      }
+      else if (mutation.attributeName === 'class') {
+        var attributeValue = $(mutation.target).prop(mutation.attributeName);
+        if (attributeValue.includes("playing")) {
+          mutation.target.play();
+        } else if (attributeValue.includes("paused") || attributeValue.includes("seeking")) {
+          mutation.target.pause();
+        } 
+      }
+
+      //       console.log(attributeValue);
+    });
+  });
+
+  const container = document.getElementById("wrapper");
+  webstrate.on("loaded", function(webstrateID, clientId, user) {
+    playground.childNodes.forEach(function(element){
+      setupElement(element);
+    });
+
+    var allMedia = playground.querySelectorAll("object, video, audio, .media");
+    allMedia.forEach(function(element){
+      //       console.log(element);
+      setupMediaPlaybackSync(element);
+    });
+  });
+
+  function setupElement(element) {
+    if (!element.className) return;
+    if (element.className.includes("draggable") || element.className.includes("window-container")) {
+      setupResizeableElement(element);
+    }
+    //     if (element.type) {
+    //       if (element.type.includes("video") || element.type.includes("audio")) setupMediaPlaybackSync(element);
+    //     }
+  }
+
+  function setupResizeableElement(element) {
+    const handle = setupDraggableSubElement(element, "resize-handle");
+    const deleteBtn = element.querySelector("#closeButton");
+    if (deleteBtn) deleteBtn.addEventListener("click", function (e) {
+      element.remove();
+    });
+
+    var rect1 = element.getBoundingClientRect();
+
+    TweenLite.set(handle, { x: rect1.width, y: rect1.height });
+
+    var rect2 = handle.getBoundingClientRect();
+
+    var offset = {
+      x1: rect2.left - rect1.right,
+      y1: rect2.top - rect1.bottom,
+      x2: rect2.right - rect1.right,
+      y2: rect2.bottom - rect1.bottom
+    };
+
+    var elementDrag = Draggable.create(element, {
+      type: "left,top",
+      bounds: container,
+      autoScroll: 1,
+      inertia: true,
+      dragClickables: false,
+    });
+    elementDrag = elementDrag[0];
+    if (element.className.includes("lock-drag")) {
+      elementDrag.disable();
+    }
+
+    var handleDrag = Draggable.create(handle, {
+      bounds: container,
+      autoScroll: 1,
+      onPress: function(e) {
+        e.stopPropagation();
+      },
+      onDrag: function() {      
+        TweenLite.set(element, { width: this.x + 0, height: this.y + 0 });      
+      },
+      liveSnap: {
+        x: function(x) {
+          return clamp(x, -offset.x1, x + offset.x2);
+        },
+        y: function(y) {
+          return clamp(y, -offset.y1, y + offset.y2);
+        }
+      }
+    });
+    handleDrag = handleDrag[0];
+    if (handle.className.includes("lock-drag")) {
+      handleDrag.disable();
+    }
+
+    if (element.className.includes("window-container")) {
+      const addressBar = element.querySelector('.search-box');
+      const windowContent = element.querySelector('.window-content');
+      if (windowContent){
+        windowContent.name = generateID(12);
+        windowContent.addEventListener("scroll", function(e) {
+          this.dataset.scrollLeft = this.scrollLeft;
+          this.dataset.scrollTop = this.scrollTop;
+        });
+      } 
+      //       this.dataset.currentTime = this.currentTime;
+      //       this.dataset.currentTime = this.currentTime;
+
+      addressBar.addEventListener("keyup", (e) => {
+        if (e.key !== "Enter") return;
+        //         if (addressBar.value.includes("http")) {
+        //           windowContent.type = "text/html";
+        //         } else {
+        //           windowContent.type = "text/html";
+        //         }
+        //         open(addressBar.value, windowContent.name);
+        windowContent.data = (addressBar.value);
+        windowContent.src = (addressBar.value);
+        //         setupMediaPlaybackSync(windowContent);
+      });
+
+      //temp duplicate
+      const duplicateButton = element.querySelector('#duplicateButton');
+      duplicateButton.addEventListener('click', () => {
+        playground.append(element.cloneNode(true));
+      });
+
+      // Change the color of the lock button.
+      const lockButton = element.querySelector('#lockButton');
+      const lockIcon = lockButton.querySelector('i');
+
+      lockButton.addEventListener('click', () => {
+        element.classList.toggle('lock-drag');
+        handle.classList.toggle('lock-drag');
+        lockButton.classList.toggle('lock-active');
+
+        if (lockIcon.classList.contains('fa-lock')) {
+          lockIcon.classList.remove('fa-lock');
+          lockIcon.classList.add('fa-unlock');
+        } else {
+          lockIcon.classList.remove('fa-unlock');
+          lockIcon.classList.add('fa-lock');
+        }
+      });
+
+      const fullscreenButton = element.querySelector('#fullscreenButton');
+      fullscreenButton.addEventListener('click', () => {
+        if (windowContent.requestFullscreen) {
+          windowContent.requestFullscreen();
+        } else if (windowContent.mozRequestFullScreen) { // Firefox
+          windowContent.mozRequestFullScreen();
+        } else if (windowContent.webkitRequestFullscreen) { // Chrome, Safari and Opera
+          windowContent.webkitRequestFullscreen();
+        } else if (windowContent.msRequestFullscreen) { // IE/Edge
+          windowContent.msRequestFullscreen();
+        }
+
+        //         var newFullscreenView = templates.querySelector("#fullscreenView").cloneNode(true);
+        //         newFullscreenView(windowContent);
+        //         playground.append(newFullscreenView);
+        //         if ("documentPictureInPicture" in window) {
+        //           togglePictureInPicture(windowContent);
+        //         } else {
+        //           console.log("pip not supported by browser");
+        //         }
+        //         windowContent.requestPictureInPicture()
+      }, false);
+    }
+  }
+
+  async function togglePictureInPicture(element) {
+    // Early return if there's already a Picture-in-Picture window open
+    if (window.documentPictureInPicture.window) {
+      return;
+    }
+
+    // Open a Picture-in-Picture window.
+    const pipWindow = await window.documentPictureInPicture.requestWindow({
+      width: 400,
+      height: 400,
+    });
+
+    // …
+
+    // Move the player to the Picture-in-Picture window.
+    pipWindow.document.body.append(element);
+
+    // Display a message to say it has been moved
+    //     inPipMessage.style.display = "block";
+  }
+
+
+
+  function setupDraggableSubElement(element, className) {
+    var subElements = element.querySelectorAll("."+className);
+    var subElement;
+
+    if (subElements && subElements.length > 0) {
+      for (var i = 1; i < subElements.length; i++) {
+        subElements[i].remove();
+      }
+      subElement = subElements[0];
+    } else {
+      subElement = document.createElement("div");
+      subElement.className = className;
+      element.appendChild(subElement);
+    }
+
+    return subElement;
+  }
+
+  function clamp(value, min, max) {
+    return value < min ? min : (value > max ? max : value);
+  }
+
+  // should be called when new media is added to DOM
+  function setupMediaPlaybackSync(media) {
+    mediaObserver.observe(media, {
+      attributes: true,
+      //       attributeOldValue: true,
+      attributeFilter: ['class', 'data-current-time', 'data-seeking']
+    });
+
+    media.addEventListener("play", function(e) {
+      this.className = "playing "+webstrate.clientId;
+    });
+
+    media.addEventListener("pause", function(e) {
+      if (!this.className.includes("seeking")) this.className = "paused "+webstrate.clientId;
+    });
+
+    media.addEventListener("timeupdate", function(e) {
+      if (this.className.includes(webstrate.clientId)) this.dataset.currentTime = this.currentTime;
+    });
+
+    media.addEventListener("seeking", function(e) {
+      this.className = "seeking "+webstrate.clientId;
+    });
+
+    media.addEventListener("seeked", function(e) {
+      this.className = "playing "+webstrate.clientId;
+    });
+  }
+
+  function testPrint(message){
+    console.log(message);
+  }
+
+  function generateID(length) {
+    let text = ""
+    const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+
+    for(let i = 0; i < length; i++)  {
+      text += possible.charAt(Math.floor(Math.random() * possible.length))
+    }
+
+    return text
+  }
+</script><script id="script-menus">
+    webstrate.on("loaded", function(webstrateID, clientId, user) {
+      // Get DOM elements
+      const taskbar = document.getElementById('taskbar-'+clientId);
+      const settingsButton = taskbar.querySelector('#settings-button');
+      const settings = taskbar.querySelector('#settings');
+      const closeButton = taskbar.querySelector('#close-settings');
+      const menuItems = taskbar.querySelectorAll('.menu-item');
+      const contentSections = taskbar.querySelectorAll('.content-section');
+
+      // Open task bar when settings button is clicked
+      settingsButton.addEventListener('click', function() {
+        settings.style.display = 'flex';
+      });
+
+      // Close task bar when close button is clicked
+      closeButton.addEventListener('click', function() {
+        settings.style.display = 'none';
+      });
+
+      // Close task bar when clicking outside content area
+      settings.addEventListener('click', function(e) {
+        if (e.target === settings) {
+          settings.style.display = 'none';
+        }
+      });
+
+      // Handle menu item clicks
+      menuItems.forEach(item => {
+        item.addEventListener('click', function() {
+          // Remove active class from all menu items
+          menuItems.forEach(i => i.classList.remove('active'));
+
+          // Add active class to clicked item
+          this.classList.add('active');
+
+          // Get the content section to show
+          const contentId = this.getAttribute('data-content');
+
+          // Hide all content sections
+          contentSections.forEach(section => {
+            section.classList.remove('active');
+          });
+
+          // Show the selected content section
+          taskbar.querySelector("#"+contentId).classList.add('active');
+        });
+      });
+
+      // Optional: Close with Escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && settings.style.display === 'flex') {
+          settings.style.display = 'none';
+        }
+      });
+
+      // Invite Button
+      const inviteButton = taskbar.querySelector('.invite-button');
+      const emailInput = taskbar.querySelector('.email-input');
+
+      inviteButton.addEventListener('click', function() {
+        const email = emailInput.value.trim();
+        if (email) {
+          alert(`Invitation sent to ${email}`);
+          emailInput.value = '';
+        } else {
+          alert('Please enter a valid email address');
+        }
+      });
+
+      // Copy Link
+      const copyLink = taskbar.querySelector('.copy-link');
+      const copyText = taskbar.querySelector('.copy-text');
+      const copyIcon = taskbar.querySelector('.copy-icon');
+
+      copyLink.addEventListener('click', function() {
+        // In a real app, you would copy the actual invite link
+        navigator.clipboard.writeText('https://example.com/join/meeting123');
+
+        copyText.textContent = 'Copied!';
+        copyIcon.className = 'fas fa-check';
+
+        setTimeout(() => {
+          copyText.textContent = 'Copy Link';
+          copyIcon.className = 'fas fa-copy copy-icon';
+        }, 2000);
+      });
+
+      // Toggle Buttons
+      const toggleButtons = taskbar.querySelectorAll('.toggle-button');
+
+      toggleButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          this.classList.toggle('on');
+          const option = this.getAttribute('data-option');
+          console.log(`${option} is now ${this.classList.contains('on') ? 'on' : 'off'}`);
+        });
+      });
+
+      // Color Pickers
+      const colorPickers = taskbar.querySelectorAll('.color-picker');
+      const rgbInputs = taskbar.querySelectorAll('.rgb-input');
+
+      colorPickers.forEach((picker, index) => {
+        picker.addEventListener('input', function() {
+          const color = this.value;
+          rgbInputs[index].value = color;
+
+          // Apply color to actual elements
+          const target = this.getAttribute('data-target');
+          if (target === 'background') {
+            document.body.style.backgroundColor = color;
+          } else if (target === 'settings') {
+            taskbar.querySelector('.sidebar').style.backgroundColor = color;
+          }
+        });
+      });
+
+      rgbInputs.forEach(input => {
+        input.addEventListener('change', function() {
+          const color = this.value;
+          if (/^#[0-9A-F]{6}$/i.test(color)) {
+            const picker = document.querySelector(`.color-picker[data-target="${this.getAttribute('data-target')}"]`);
+            picker.value = color;
+
+            const target = this.getAttribute('data-target');
+            if (target === 'background') {
+              document.body.style.backgroundColor = color;
+            } else if (target === 'settings') {
+              taskbar.querySelector('.sidebar').style.backgroundColor = color;
+            }
+          } else {
+            alert('Please enter a valid hex color (e.g., #FFFFFF)');
+          }
+        });
+      });
+
+      // Sample Images for Storage Space
+      const imageGrid = document.querySelector('.image-grid');
+      const sampleImages = [
+        'https://images.unsplash.com/photo-1506744038136-46273834b3fb',
+        'https://images.unsplash.com/photo-1452570053594-1b985d6ea890',
+        'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05',
+        'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d',
+        'https://images.unsplash.com/photo-1433086966358-54859d0ed716',
+        'https://images.unsplash.com/photo-1472214103451-9374bd1c798e',
+        'https://images.unsplash.com/photo-1426604966848-d7adac402bff',
+        'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07',
+        'https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5'
+      ];
+
+      //     sampleImages.forEach(imgSrc => {
+      //       const imgElement = document.createElement('div');
+      //       imgElement.className = 'image-item';
+      //       imgElement.innerHTML = `<img src="${imgSrc}" alt="Uploaded image" onerror="this.parentElement.remove()">`;
+      //       imageGrid.appendChild(imgElement);
+      //     });
+
+      // Add Image from URL
+      const addButton = taskbar.querySelector('.add-button');
+      const urlInput = taskbar.querySelector('.url-input');
+
+      addButton.addEventListener('click', function() {
+        const url = urlInput.value.trim();
+        if (url) {
+          const imgElement = document.createElement('div');
+          imgElement.className = 'image-item';
+          imgElement.innerHTML = `<img src="${url}" alt="Uploaded image" onerror="this.parentElement.remove()">`;
+          imageGrid.appendChild(imgElement);
+          urlInput.value = '';
+        } else {
+          alert('Please enter a valid URL');
+        }
+      });
+    });
+    </script><div id="templates" style="display: none;">
+
+    <div class="window-container" id="" style="translate: none; rotate: none; scale: none; touch-action: none; cursor: grab; user-select: none;">
+
+
+
+      <div class="window-controls"><div class="window-dragbar">
+        ::::
+        </div><div class="window-toolbar">
+        <div class="nav-options" style="touch-action: none;">
+          <button class="toolbar-button" id="backButton" style="touch-action: none;"><i class="fa-solid fa-arrow-left" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" id="forthButton" style="touch-action: none;"><i class="fa-solid fa-arrow-right" style="touch-action: none;" aria-hidden="true"></i></button>
+        </div>
+        <div class="search-bar" style="touch-action: none;">
+          <i class="fa-solid fa-magnifying-glass fa-lg" style="margin-right: 0.5rem; touch-action: none;" aria-hidden="true"></i>
+          <input type="text" placeholder="Search" class="search-box" contenteditable="true" style="touch-action: none;">
+        </div>
+        <div class="window-options" style="touch-action: none;">
+          <button id="lockButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-unlock" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button id="closeButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-x" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="touch-action: none;" id="fullscreenButton"><i class="fa-solid fa-up-right-and-down-left-from-center" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="touch-action: none;" id="duplicateButton"><i class="fa-solid fa-minus" style="touch-action: none;" aria-hidden="true"></i></button>
+        </div>
+        </div></div><iframe class="window-content" src="" allowfullscreen=""></iframe>
+      <div class="resize-handle" style="translate: none; rotate: none; scale: none; transform: translate3d(960px, 960px, 0px); touch-action: none; cursor: grab; user-select: none;"></div></div><div id="participant-menus" class="ui"><div class="main-interface">
+    <button id="view-mode" class="settings-button">Individual</button><button id="addWindowButton" class="settings-button">
+    Add Window</button><button id="settings-button" class="settings-button">
+    <i class="fas fa-cog"></i> Settings
+    </button>
+    <!-- Your main content would go here -->
+    <select class="add-select">
+              <option value="https://be6e5700-67aa-44df-adc8-5cb4840e155f.mdnplay.dev/shared-assets/images/examples/surfer.jpg">Image</option><option value="https://1a31e613-d751-44e7-82aa-d2d0081c52f8.mdnplay.dev/shared-assets/videos/flower.webm">Video</option><option value="https://videoplayground.xyz/frontpage/">Webstrate</option><option value="https://wikipedia.com">Wikipedia</option><option value="https://playingcards.io/357gwm">Chess</option>
+              <option value="https://www.watchparty.me/watch/null-run-perceive">Watch Party</option>
+              <option value="https://jukebox.today/videoplayground">Jukebox</option><option value="https://demo.webstrates.net/curvy-owl-14/">Tank Trouble</option>
+              
+            </select></div><div id="settings" class="settings-overlay" style="display: none;">
+    <div class="settings-container">
+      <!-- Left sidebar navigation -->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <h3>Settings</h3>
+          <button id="close-settings" class="close-button">×</button>
+        </div>
+        <ul class="sidebar-menu">
+          <li class="menu-item active" data-content="participant-list">
+            <span><i class="fas fa-users"></i> Participant List</span>
+          </li>
+          <li class="menu-item" data-content="customize">
+            <span><i class="fas fa-paint-brush"></i> Customize</span>
+          </li>
+          <li class="menu-item" data-content="storage-space">
+            <span><i class="fas fa-images"></i> Storage Space</span>
+          </li>
+          <li class="menu-item" data-content="additional-feature">
+            <span><i class="fas fa-ellipsis-h"></i> Other</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Content area -->
+      <div class="content-area">
+        <div id="participant-list" class="content-section active">
+          <h2>Participant List</h2>
+          <div class="participant-item-container">
+            <!-- Participants will be added here dynamically -->
+            <div class="participant-item">
+              <div class="participant-item-avatar">JD</div>
+              <div>John Doe</div>
+            </div><div class="participant-item">
+            <div class="participant-item-avatar">JS</div>
+            <div>Jane Smith</div>
+            </div><div class="participant-item">
+            <div class="participant-item-avatar">MJ</div>
+            <div>Mike Johnson</div>
+            </div><div class="participant-item">
+            <div class="participant-item-avatar">SW</div>
+            <div>Sarah Williams</div>
+            </div><div class="participant-item">
+            <div class="participant-item-avatar">DB</div>
+            <div>David Brown</div>
+            </div></div>
+          <div class="invite-section">
+            <input type="email" placeholder="Enter invitee's email" class="email-input">
+            <button class="invite-button">Invite</button>
+            <div class="copy-link">
+              <i class="fas fa-copy copy-icon"></i>
+              <span class="copy-text">Copy Link</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="customize" class="content-section">
+          <h2>Customize</h2>
+          <div class="customize-option">
+            <div class="option-label">Preset</div>
+            <div class="toggle-button off" data-option="preset"></div>
+            <select class="preset-select">
+              <option value="default">Default</option>
+              <option value="dark">Dark Mode</option>
+              <option value="light">Light Mode</option>
+              <option value="professional">Professional</option>
+            </select>
+          </div>
+          <div class="customize-option">
+            <div class="option-label">Mini Map</div>
+            <div class="toggle-button off" data-option="minimap"></div>
+          </div>
+
+          <h3>Color Settings</h3>
+          <div class="color-option">
+            <div class="option-label">Background</div>
+            <div class="color-picker-container">
+              <input type="color" class="color-picker" value="#ffffff" data-target="background">
+              <input type="text" class="rgb-input" placeholder="RGB" data-target="background">
+            </div>
+          </div>
+          <div class="color-option">
+            <div class="option-label">Elements</div>
+            <div class="color-picker-container">
+              <input type="color" class="color-picker" value="#f0f0f0" data-target="elements">
+              <input type="text" class="rgb-input" placeholder="RGB" data-target="elements">
+            </div>
+          </div>
+          <div class="color-option">
+            <div class="option-label">Setting Window</div>
+            <div class="color-picker-container">
+              <input type="color" class="color-picker" value="#2c3e50" data-target="settings">
+              <input type="text" class="rgb-input" placeholder="RGB" data-target="settings">
+            </div>
+          </div>
+        </div>
+
+        <div id="storage-space" class="content-section">
+          <h2>Storage Space</h2>
+          <div class="image-grid-container">
+            <div class="image-grid">
+              <!-- Images will be added here dynamically -->
+              <div class="image-item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="Uploaded image" onerror="this.parentElement.remove()"></div><div class="image-item"><img src="https://images.unsplash.com/photo-1452570053594-1b985d6ea890" alt="Uploaded image" onerror="this.parentElement.remove()"></div></div>
+          </div>
+          <div class="upload-section">
+            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+            <input type="text" placeholder="insert URL here" class="url-input">
+            <button class="add-button">Add</button>
+          </div>
+        </div>
+
+        <div id="additional-feature" class="content-section">
+          <h2>Other Features</h2>
+          <p>Additional features will be added here.</p>
+        </div>
+      </div>
+    </div>
+    </div></div></div>
+	<div id="wrapper" style="background-color: rgb(255, 255, 255);">
+		<div id="participants" class=""></div>
+		<div id="miscContainer">
+			<div id="clients">
+			  <p class="" style="position: relative; z-index: 99;">Clients:</p>
+			  <ul id="clientList"></ul>
+			</div>
+			<form action="" enctype="multipart/form-data" method="post">
+				<input name="file" type="file" autocomplete="off" multiple="">
+				<input type="submit" value="Upload" autocomplete="off">
+			</form>
+		</div>
+    </div>
+	</body>
+</html>
