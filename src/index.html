@@ -10,13 +10,13 @@
     /*       vertical-align: top */
     height: 4000px;
     width: 4000px;
-    background-color: rgba(142, 21, 255, .2);
+/*     background-color: rgba(142, 21, 255, .2); */
     position: absolute;
     padding: 0px;
     margin: 0px;
     left:0px;
     top:0px;
-    background-size:100px 100px, 100px 100px, 20px 20px, 20px 20px;
+    background-size:320px 320px, 320px 320px, 64px 64px, 64px 64px;
     background-position:-1px -1px, -1px -1px, -1px -1px, -1px -1px;
     background-image:
       linear-gradient(rgba(0,0,0,.3) 1px, transparent 1px),
@@ -44,7 +44,7 @@
     z-index: 9999;
     position: absolute;
     border-style: solid;
-    box-shadow: 0px 0px 2px;
+/*     box-shadow: 0px 0px 2px; */
     pointer-events:none
   }
 
@@ -81,6 +81,10 @@
   }
 
   .controlView {
+    width:100%;
+    height:100%;
+    pointer-events: all;
+    display:border-box;
     z-index: 999999;
   }
   .ui {
@@ -91,6 +95,10 @@
   }
   .settings {
     z-index: 999999;
+  }
+  .taskbar {
+    width:100%;
+    height:100%;
   }
   </style><style>
   /*     #chessWrapper {
@@ -144,21 +152,6 @@
     padding: 0px;
   } 
 
-  /*   .resize-handle {
-  visibility:hidden;
-  box-sizing: border-box;
-  position: absolute;
-  width: 0px;
-  height: 0px;
-  margin-left: -32px;
-  margin-top: -32px;
-  border-style: solid;
-  border-width: 0 0 32px 32px;
-  border-color: transparent transparent #aaa transparent;
-  /*     border-color:inherit; */
-  cursor: nw-resize !important;
-  } */
-
   .delete-btn {
     visibility:hidden;
     box-sizing: border-box;
@@ -168,29 +161,6 @@
     background-color: red;
     /*     margin-top: -48px;
     margin-left: -48px; */
-  }
-
-  #trig {
-    top: 0;
-    left: 0;
-    width: 300px;
-    height: 125px;
-  }
-
-  #container {
-    height: 600px; 
-    width: 800px;
-    overflow:visible; 
-    padding:0; 
-    position:relative;
-
-    background-size:100px 100px, 100px 100px, 20px 20px, 20px 20px;
-    background-position:-1px -1px, -1px -1px, -1px -1px, -1px -1px;
-    background-image:
-      linear-gradient(rgba(0,0,0,.3) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,0,0,.3) 1px, transparent 1px),
-      linear-gradient(rgba(0,0,0,.1) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,0,0,.1) 1px, transparent 1px);
   }
 
   svg {
@@ -220,225 +190,372 @@
 
 
   
-  <style id="window-style">
-    iframe {
-      border:none;
-    }
+  <style id="layers-sidebar">
+  .layers-sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1001;
+    top: 0;
+    right: 0;
+    background-color: #4A6FA5;
+    overflow-x: hidden;
+    padding-top: 60px;
+    text-align: center;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+    color: black;
+}
+  .layers-sidebar.layers-on {
+    width:400px;
+  }
 
-    .window-container {
-/*       overflow: hidden; */
-      text-align: center;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      /*         overflow: clip; */
-      width: 60rem;
-      height: 60rem;
-      background-color: rgba(0,0,0,0);
-      position: absolute;
-      outline: none;
-      padding-top: 6rem;
-      /*         resize: both; */
-    }
-    .window-container:hover {
-      background-color: rgba(0,0,0,0);
-      outline-color: black;
-      outline: solid;
-    }
-    .window-container:hover .window-controls {
-      visibility:visible;
-    }
-    .window-container:hover .resize-handle {
-      visibility:visible;
-    }
-    .window-container.lock-drag {
-      outline-color: yellow;
-    }
-
-    .window-controls {
-      visibility: hidden;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      box-sizing: border-box;
-      height: 6rem;
-      width: 100%;
-      position: absolute;
-      background-color: fff;
-/*       border-color: black;
-      border-style: solid;
-      border-radius: .5rem; */
-      margin-top: -6rem;
-    }
-
-    .window-dragbar {
-      box-sizing: border-box;
-      height: 2rem;
-      width: 100%;
-      font-size: larger;
-      font-weight: bold;
-      cursor: move;
-      position: absolute;
-      text-align: center;
-      background-color: #fff;
-    }
-
-    .window-toolbar {
-      box-sizing: border-box;
-      width: 100%;
-      height: 4rem;
-      background-color: #03A6A1;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      column-gap: 1rem;
-      padding-left: 1rem;
-      padding-right: 1rem;
-      top: 2rem;
-      position: absolute;
-    }
-
-    .window-content {
-      overflow: auto;
-      box-sizing: border-box;
-      /*         background-color: #B5FCCD; */
-      /*         flex-grow: 1; */
-      background-color: rgba(0,0,0,0);
-      width: 100%;
-      height: 100%;
-      text-align: center;
-      align-items: center;
-      position: absolute;
-      padding-bottom: 6rem;
-    }
-    .window-controls:hover {
-      visibility:visible;
-    }
-    .resize-handle:hover {
-      visibility:visible;
-    }
-
-    /*     .{
-    border-style: inset;
-    border-color: grey;
-    overflow: scroll;
-    height: 500px;
-    width: 90%
-    } */
-
-    .content-frame {
-      width: 100%;
-      height: 100%;
-    }
-
-    /*     .box {
-    overflow: clip;
-    overscroll-behavior: contain;
-    box-sizing: border-box;
+.close-button {
+    top: 20px;
     position: absolute;
+    right: 30px;
+    font-size: 48px;
+    margin-left: 20px;
+    cursor: pointer;
+}
+  </style><style id="layers-button">
+  .open-layers-button {
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    background-color: #4A6FA5;
+    border-style: none;
+    text-align: center;
+    font-size: 16px;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+    z-index: 1000;
+}
+
+/* #openLayersButton {
+    position: fixed;
+    top: 20px;
+    right: 400px;
+} */
+
+.open-layers-button:hover {
+    filter: brightness(0.9);
+}
+
+.open-layers-button:active {
+    filter: brightness(0.8);
+}
+  </style><style id="layers-list">
+#layersList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+#layersList li {
+  padding: 8px 12px;
+  background: #f5f5f5;
+  margin-bottom: 4px;
+  border-radius: 4px;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+}
+
+#layersList li:hover {
+  background: #e9e9e9;
+}
+
+.layer-rename {
+  background: white;
+  border: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 2px 4px;
+  flex-grow: 1;
+  margin-right: 8px;
+}
+
+.layer-rename:focus {
+  outline: 1px solid #999;
+  background: white;
+}
+
+.layer-eye {
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.drag-handle {
+  cursor: move;
+  padding: 0 8px;
+  margin-right: 4px;
+  color: #666;
+  user-select: none;
+}
+
+.drag-handle:hover {
+  color: #333;
+}
+
+.layer-close-button {
+    cursor: pointer;
+    margin-left: 8px;
+}
+
+.layer-close {
+  cursor: pointer;
+  margin-left: 8px;
+  color: #999;
+  font-size: 1.2em;
+  padding: 0 4px;
+}
+
+.layer-close:hover {
+  color: #f00;
+  border-radius: 3px;
+}
+  </style><style id="window-style">
+  iframe {
+    border:none;
+  }
+
+  .window-container {
+    /*       overflow: hidden; */
+    text-align: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    /*         overflow: clip; */
+    width: 20rem;
+    height: 20rem;
+    background-color: rgba(0,0,0,0);
+    position: absolute;
+    outline: none;
+    /*       padding-top: 6rem; */
+    /*         resize: both; */
+  }
+  .window-container:hover {
+    background-color: rgba(0,0,0,0);
+    outline-color: black;
+    outline: solid;
+  }
+  #wrapper.edit .window-container .window-controls {
+    visibility:visible;
+  }
+  #wrapper.edit .window-container .resize-handle {
+    visibility:visible;
+  }
+  #wrapper.edit .window-container.lock-drag {
+    outline-color: yellow;
+  }
+
+  .window-controls {
+    visibility: hidden;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    height: 6rem;
+    width: 100%;
+    position: absolute;
+    background-color: fff;
+    /*       border-color: black;
+    border-style: solid;
+    border-radius: .5rem; */
+    margin-top: -6rem;
+    outline-style: solid;
+  }
+
+  .window-dragbar {
+    box-sizing: border-box;
+    height: 2rem;
+    width: 100%;
+    font-size: larger;
+    font-weight: bold;
+    cursor: move;
+    position: absolute;
+    text-align: center;
+    background-color: #fff;
+  }
+
+  .window-toolbar {
+    box-sizing: border-box;
+    width: 100%;
+    height: 4rem;
+    background-color: #03A6A1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    column-gap: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    top: 2rem;
+    position: absolute;
+  }
+
+  .window-content-container {
+    overflow: scroll;
+    box-sizing: border-box;
+    /*         background-color: #B5FCCD; */
+    /*         flex-grow: 1; */
+    background-color: rgba(0,0,0,0);
     width: 100%;
     height: 100%;
-    /*     top: 4%;
-    left: 5%; */
-    background: transparent;
-    justify-content: center;
+    /*       text-align: center;
+    align-items: center; */
+    position: absolute;
+    /*       padding-bottom: 6rem; */
+  }
+
+  .window-content {
+    /*       overflow: auto; */
+    box-sizing: border-box;
+    /*         background-color: #B5FCCD; */
+    /*         flex-grow: 1; */
+    background-color: rgba(0,0,0,0);
+    width: 100%;
+    height: 100%;
+    /*       text-align: center;
+    align-items: center; */
+    position: absolute;
+    aspect-ratio: 1;
+    padding:1rem;
+/*     object-fit: scale-down; */
+    /*       padding-bottom: 6rem; */
+  }
+/*   .image-item {
+    aspect-ratio: 1;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+    display: flex;
     align-items: center;
-    padding: 16px;
-    } */
+    justify-content: center;
+    overflow: hidden;
+  }
 
-    #closeButton {
-      background-image: linear-gradient(45deg, #ff1c1c 0%, hsl(0, 100%, 53%)  51%);
-    } 
+  .image-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  } */
 
-    .toolbar-button {
-      width: 2.5rem;
-      height: 2.5rem;
-      border-radius: 50%;
-      background-image: linear-gradient(45deg, #B5FCCD 0%, #7AC6D2  51%);
-      border-style: dashed;
-    }
+  .content-frame {
+    width: 100%;
+    height: 100%;
+  }
 
-    .search-box {
-      width: 32rem;
-      height: 2rem;
-      border-radius: 1rem;
-      text-align: center;
-      align-self: center;
-      background-color: white;
-      white-space: nowrap;
-      overflow: hidden;
-    }
+  /*     .box {
+  overflow: clip;
+  overscroll-behavior: contain;
+  box-sizing: border-box;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  /*     top: 4%;
+  left: 5%; */
+  background: transparent;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  } */
 
-    .toolbar-button:hover {
-      cursor: pointer;
-    }
+  #closeButton {
+    background-image: linear-gradient(45deg, #ff1c1c 0%, hsl(0, 100%, 53%)  51%);
+  } 
 
-    .toolbar-button:active {
-      opacity: 0.8;
-    }
+  .toolbar-button {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background-image: linear-gradient(45deg, #B5FCCD 0%, #7AC6D2  51%);
+    border-style: dashed;
+  }
 
-    .lock-active {
-      background-image: linear-gradient(45deg, yellow 0%, gold 51%);
-      color: black;
-    }
+  .search-box {
+    width: 10rem;
+    height: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+    align-self: center;
+    background-color: white;
+    white-space: nowrap;
+    overflow: hidden;
+  }
 
-    .resize-handle {
-      visibility:hidden;
-      box-sizing: border-box;
-      position: absolute;
-      width: 0px;
-      height: 0px;
-      margin-left: -2rem;
-      margin-top: -8rem;
-      border-style: solid;
-      border-width: 0 0 2rem 2rem;
-      border-color: transparent transparent #aaa transparent;
-      /*     border-color:inherit; */
-      cursor: nw-resize !important;
-    }
+  .toolbar-button:hover {
+    cursor: pointer;
+  }
 
-    .fullscreenView {
-      display:none;
-      width:100%;
-      height:100%;
-      /*         background-color: red; */
-    }
-  </style><style id="settings-style">
+  .toolbar-button:active {
+    opacity: 0.8;
+  }
+
+  .lock-active {
+    background-image: linear-gradient(45deg, yellow 0%, gold 51%);
+    color: black;
+  }
+
+  .resize-handle {
+    visibility:hidden;
+    box-sizing: border-box;
+    position: absolute;
+    width: 0px;
+    height: 0px;
+    margin-left: -2rem;
+    margin-top: -2rem;
+    border-style: solid;
+    border-width: 0 0 2rem 2rem;
+    border-color: transparent transparent #aaa transparent;
+    /*     border-color:inherit; */
+    cursor: nw-resize !important;
+    z-index: 9;
+  }
+  
+  .window-container.playground-active {
+    outline:solid;
+  }
+</style><style id="settings-style">
   /* Main interface styles */
   .main-interface {
+    position: absolute;
     padding: 20px;
+    display: flex;
+    justify-content: flex-end;
+/*     flex-direction: row; */
+  }
+  #settings-button {
+/*     display:none; */
   }
 
   .settings-button {
-    position: fixed;
-    top: 20px;
-    right: 20px;
+/*     position: flex; */
+/*     top: 20px;
+    right: 20px; */
     background: #4a6fa5;
     color: white;
     border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
+    padding: 1rem;
+    border-radius: .25rem;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 1rem;
     transition: background 0.3s;
     display: flex;
     align-items: center;
-    gap: 8px;
+    margin: .5rem;
     z-index: 1000;
   }
-
-  #addWindowButton {
-    position: fixed;
-    top: 20px;
-    right: 260px;
-  }
-
-  .add-select {
-    position: fixed;
-    top: 24px;
-    right: 140px;
-    font-size: 16px;
+  
+  #view-mode {
+    background-color:black;
   }
 
   .settings-button:hover {
@@ -725,9 +842,18 @@
     background-color: rgba(0, 0, 0, 0.05);
     border-radius: 5px;
     display: flex;
+    flex-direction:column;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+  }
+  .image-item:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: solid;
+  }
+  .image-item.selected {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: solid;
   }
 
   .image-item img {
@@ -775,7 +901,7 @@
   }
 </style>
   </head>
-  <body style="background-color: rgb(199, 199, 199);">
+  <body>
     
 
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
@@ -800,6 +926,13 @@
   const wrapper = document.getElementById("wrapper");
   const templates = document.getElementById("templates");
 
+  // Layers variables.
+  let layersList = null;
+  let isDraggingLayer = false;
+  let draggedItem = null;
+  let dragStartIndex = 0;
+  let windowCounter = 0;
+
   //   document.designMode = “on”;
   //   var participants = document.getElementById("participants");
   webstrate.on("loaded", function(webstrateID, clientId, user) {
@@ -811,10 +944,11 @@
 
     //     addParticipant(clientId);
     //     updateClientList();
+
     updateParticipants();
     createTaskbar(clientId);
-    const participantElement = participants.querySelector("#participant-"+clientId);
-    const videoElement = participants.querySelector("#participantVideo-"+clientId);
+    //     const participantElement = participants.querySelector("#participant-"+clientId);
+    //     const videoElement = participants.querySelector("#participantVideo-"+clientId);
 
     //     participantElement.webstrate.signalStream(function signalStream(clientId, accept) {
     //       console.log("clude test");
@@ -836,7 +970,7 @@
     //     });
   });
   webstrate.on("clientJoin", function(clientId) {
-    //     addParticipant(clientId);
+    //         addParticipant(clientId);
     //     updateClientList();
     //     updateParticipants();
   });
@@ -900,30 +1034,33 @@
 
     let color = hashStringToColor(id); 
     color = color.substring(1);
-    console.log(color);
+
+    var sheet = document.createElement('style')
+    sheet.innerHTML = '.p' + id + ' {border-color: #'+ color +'; outline: #'+ color +'; color: #'+ color +';}';
+    sheet.id = "style-"+id;
+    document.body.appendChild(sheet);
 
     var newParticipant = document.createElement("div", { approved: true });
-    newParticipant.className = "participant " + id;
+    newParticipant.className = "participant p" + id;
     newParticipant.id = "participant-" + id;
 
     var participantView = document.createElement("div", { approved: true });
-    participantView.className = "participantView " + id;
+    participantView.className = "participantView p" + id;
     participantView.id = "participantView-" + id;
-    participantView.style.borderColor = "#"+color;
+    //     participantView.style.borderColor = "#"+color;
 
-    let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-    let vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
-    //     console.log(vw + ", " + vh);
+    let vw = Math.max(document.documentElement.clientWidth, 0)
+    let vh = Math.max(document.documentElement.clientHeight, 0)
     participantView.style.width = `${vw}px`;
     participantView.style.height = `${vh}px`;
 
     //     gsap.set(".participantView", {xPercent: -50, yPercent: -50});
 
     var participantCursor = document.createElement("i", { approved: true });
-    participantCursor.className = "fa fa-3x fa-mouse-pointer participantCursor " + id;
+    participantCursor.className = "fa fa-3x fa-mouse-pointer participantCursor p" + id;
     participantCursor.id = "participantCursor-" + id;
     participantCursor.ariaHidden = true;
-    participantCursor.style.color = "#"+color;
+    //     participantCursor.style.color = "#"+color;
     //     participantCursor.backgroundColor = "#"+color;
     gsap.set(".participantCursor", {xPercent: -50, yPercent: -50});
 
@@ -940,6 +1077,20 @@
     let ySetter = gsap.quickSetter("#participantView-"+webstrate.clientId, "y", "px") //apply it to the #id element's x property and append a "px" unit
     xSetter(window.scrollX);
     ySetter(window.scrollY);
+
+    document.addEventListener('fullscreenchange', function (e) {
+      if (document.fullscreenElement) {
+        //         console.log(e.srcElement.id);
+        var element = document.getElementById("container-"+e.target.id);
+        element.classList.add("p"+webstrate.clientId);
+        //         e.target.parentNode.classList.add(webstrate.clientId);
+      }
+      else {
+        var element = document.getElementById("container-"+e.target.id);
+        element.classList.remove("p"+webstrate.clientId);
+        //         e.target.parentNode.classList.remove(webstrate.clientId);
+      }
+    }, false);
   }
 
   function removeParticipant(id) {
@@ -949,6 +1100,14 @@
     if (participant) {
       participant.remove();
     }
+
+    const participantStyle = document.getElementById("style-"+id);
+    if (participantStyle) {
+      participantStyle.remove();
+    }
+
+    var tagged = document.querySelectorAll(".p"+id);
+    tagged.forEach(t => t.classList.remove("p"+id));
   };
 
   // listeners
@@ -959,8 +1118,8 @@
       return;
     }
 
-    let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-    let vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+    let vw = Math.max(document.documentElement.clientWidth, 0)
+    let vh = Math.max(document.documentElement.clientHeight, 0)
     //         console.log("RESIZE" + vw + ", " + vh);
     participantView.style.width = `${vw}px`;
     participantView.style.height = `${vh}px`;
@@ -982,7 +1141,7 @@
   });
 
   // cursor presence (child of view)
-  document.addEventListener("mousemove", function(e) {
+  window.addEventListener("mousemove", function(e) {
     const participantCursor = document.getElementById("participantCursor-"+webstrate.clientId);
     const participantView = document.getElementById("participantView-"+webstrate.clientId);
     if (!participantCursor || !participantView){
@@ -998,7 +1157,7 @@
     participantCursor.style.display = "block";
   });
 
-  document.addEventListener("mouseout", function(e) {
+  window.addEventListener("mouseout", function(e) {
     const participantCursor = document.getElementById("participantCursor-"+webstrate.clientId);
     const participantView = document.getElementById("participantView-"+webstrate.clientId);
     if (!participantCursor || !participantView){
@@ -1011,7 +1170,7 @@
   function createTaskbar(clientId) {
     const controlView = document.createElement("transient");
     controlView.id = "controlView-"+clientId;
-    controlView.className = "controlView "+clientId;
+    controlView.className = "controlView p"+clientId;
 
     const taskbarTemplate = document.getElementById("participant-menus");
     const taskbar = taskbarTemplate.cloneNode(true);
@@ -1020,31 +1179,388 @@
     const addWindowButton = taskbar.querySelector("#addWindowButton");
     addWindowButton.addEventListener("click", addWindow);
 
+    const toggleEditButton = taskbar.querySelector("#toggleEditButton");
+    toggleEditButton.addEventListener("click", toggleEdit);
+
+    // Layers management setup
+    const openLayersButton = taskbar.querySelector("#openLayersButton");
+    const closeLayersButton = taskbar.querySelector("#closeLayersButton");
+    const layersMenu = taskbar.querySelector("#layersMenu");
+    layersList = taskbar.querySelector("#layersList");
+
+    if (openLayersButton && layersMenu) {
+      openLayersButton.addEventListener("click", function() {
+        layersMenu.classList.toggle("layers-on");
+//         layersMenu.style.width = "400px";
+        updateLayersList();
+      });
+    }
+
+    if (closeLayersButton && layersMenu) {
+      closeLayersButton.onclick = function() {
+        layersMenu.classList.remove("layers-on");
+//         layersMenu.style.width = "0px";
+      };
+    }
+
+    initLayersList();
     controlView.append(taskbar);
-    document.body.append(controlView);
+    const participantView = document.getElementById("participantView-"+webstrate.clientId);
+    participantView.append(controlView);
+  }
+
+  function initLayersList() {
+    if (!layersList) return;
+
+    // Handle dragging only via drag handle
+    layersList.addEventListener('mousedown', function(e) {
+      const dragHandle = e.target.closest('.drag-handle');
+      if (dragHandle) {
+        const li = dragHandle.closest('li');
+        if (li) {
+          isDraggingLayer = true;
+          draggedItem = li;
+          dragStartIndex = Array.from(layersList.children).indexOf(draggedItem);
+          draggedItem.style.opacity = '0.5';
+          e.preventDefault();
+        }
+      }
+    });
+
+    document.addEventListener('mousemove', function(e) {
+      if (!isDraggingLayer || !draggedItem) return;
+
+      e.preventDefault();
+      draggedItem.style.position = 'absolute';
+      draggedItem.style.left = (e.clientX - draggedItem.offsetWidth / 2) + 'px';
+      draggedItem.style.top = (e.clientY - draggedItem.offsetHeight / 2) + 'px';
+    });
+
+    document.addEventListener('mouseup', function(e) {
+      if (!isDraggingLayer || !draggedItem) return;
+
+      isDraggingLayer = false;
+      draggedItem.style.opacity = '1';
+      draggedItem.style.position = 'static';
+      draggedItem.style.left = 'auto';
+      draggedItem.style.top = 'auto';
+
+      const dropTarget = document.elementFromPoint(e.clientX, e.clientY);
+      if (dropTarget && dropTarget.closest('#layersList')) {
+        const targetLi = dropTarget.closest('li');
+        if (targetLi && targetLi !== draggedItem) {
+          const dropIndex = Array.from(layersList.children).indexOf(targetLi);
+          handleLayerReorder(dragStartIndex, dropIndex);
+        }
+      }
+
+      draggedItem = null;
+    });
+
+    // Store the currently focused input
+    let activeInput = null;
+
+    // Clicking anywhere outside should blur active inputs
+    document.addEventListener('mousedown', function(e) {
+      if (!e.target.closest('.layer-rename') && activeInput) {
+        activeInput.blur();
+        activeInput = null;
+      }
+    });
+
+    // Modified MutationObserver to preserve focused inputs
+    const observer = new MutationObserver(function(mutations) {
+      // Only update if the mutation affects window containers and no input is focused
+      if (!activeInput && mutations.some(mutation => 
+                                         Array.from(mutation.addedNodes).some(node => 
+                                                                              node.classList && node.classList.contains('window-container')) ||
+                                         Array.from(mutation.removedNodes).some(node => 
+                                                                                node.classList && node.classList.contains('window-container'))
+                                        )) {
+        updateLayersList();
+      }
+    });
+
+    observer.observe(wrapper, { childList: true, subtree: true });
+    updateLayersList();
+  }
+
+  function updateLayersList() {
+    if (!layersList) return;
+
+    // Remember which input was focused before update
+    const previouslyFocused = document.activeElement;
+    let focusIndex = -1;
+    if (previouslyFocused && previouslyFocused.classList.contains('layer-rename')) {
+      focusIndex = Array.from(layersList.querySelectorAll('.layer-rename')).indexOf(previouslyFocused);
+    }
+
+    const windows = Array.from(wrapper.querySelectorAll('.window-container'))
+    .sort((a, b) => {
+      const aZ = parseInt(window.getComputedStyle(a).zIndex) || 0;
+      const bZ = parseInt(window.getComputedStyle(b).zIndex) || 0;
+      return bZ - aZ;
+    });
+
+    const exampleItem = layersList.querySelector('li:not([data-window-id])');
+    layersList.innerHTML = '';
+    if (exampleItem) layersList.appendChild(exampleItem);
+
+    windows.forEach((window, index) => {
+      const li = document.createElement('li');
+      li.dataset.windowId = window.id || `window-${Date.now()}-${index}`;
+      if (!window.id) window.id = li.dataset.windowId;
+
+      // Drag handle
+      const dragHandle = document.createElement('span');
+      dragHandle.className = 'drag-handle';
+      dragHandle.innerHTML = '≡';
+      dragHandle.title = 'Drag to reorder';
+
+      // Editable name field
+      const nameInput = document.createElement('input');
+      nameInput.type = 'text';
+      nameInput.className = 'layer-rename';
+
+      let title = window.querySelector('.window-title');
+      if (!title) {
+        title = document.createElement('div');
+        title.className = 'window-title';
+        title.textContent = `Window ${window.dataset.windowNumber || ++windowCounter}`;
+        window.prepend(title);
+      }
+      nameInput.value = title.textContent;
+
+      // Track focused input
+      nameInput.addEventListener('focus', function() {
+        activeInput = this;
+      });
+
+      nameInput.addEventListener('blur', function() {
+        if (activeInput === this) {
+          activeInput = null;
+        }
+      });
+
+      // Improved input handling
+      nameInput.addEventListener('input', function() {
+        title.textContent = this.value;
+      });
+
+      // Maintain focus until clicking elsewhere
+      nameInput.addEventListener('mousedown', function(e) {
+        e.stopPropagation();
+        this.focus();
+      });
+
+      // Visibility toggle
+      const eyeIcon = document.createElement('span');
+      eyeIcon.className = 'layer-eye';
+      eyeIcon.innerHTML = window.style.display === 'none' ? 
+        '<i class="fa-regular fa-eye-slash"></i>' : '<i class="fa-regular fa-eye"></i>';
+      eyeIcon.title = 'Toggle visibility';
+      eyeIcon.addEventListener('click', function(e) {
+        e.stopPropagation();
+        window.style.display = window.style.display === 'none' ? '' : 'none';
+        this.innerHTML = window.style.display === 'none' ? 
+          '<i class="fa-regular fa-eye-slash"></i>' : '<i class="fa-regular fa-eye"></i>';
+      });
+
+      const closeButton = document.createElement('span');
+      closeButton.className = 'layer-close';
+      closeButton.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+      closeButton.title = 'Close window';
+      closeButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        window.remove();
+        updateLayersList();
+      });
+
+      li.appendChild(dragHandle);
+      li.appendChild(nameInput);
+      li.appendChild(eyeIcon);
+      li.appendChild(closeButton);
+      layersList.appendChild(li);
+
+      // Restore focus to the same position if it was focused before
+      if (index === focusIndex) {
+        nameInput.focus();
+      }
+
+      if (!window.dataset.windowNumber) {
+        window.dataset.windowNumber = windowCounter;
+      }
+    });
+  }
+
+  function handleLayerReorder(oldIndex, newIndex) {
+    const windows = Array.from(wrapper.querySelectorAll('.window-container'));
+
+    // Get windows sorted by current z-index (highest first)
+    const sortedWindows = windows.sort((a, b) => {
+      const aZ = parseInt(window.getComputedStyle(a).zIndex) || 0;
+      const bZ = parseInt(window.getComputedStyle(b).zIndex) || 0;
+      return bZ - aZ;
+    });
+
+    // Remove the window being moved
+    const [movedWindow] = sortedWindows.splice(oldIndex, 1);
+    // Insert it at the new position
+    sortedWindows.splice(newIndex, 0, movedWindow);
+
+    // Reassign z-index values based on new order
+    sortedWindows.forEach((window, index) => {
+      window.style.zIndex = sortedWindows.length - index;
+    });
+
+    // Update the list to reflect changes
+    updateLayersList();
   }
 
   function addWindow() {
     const template = templates.querySelector(".window-container");
-    let preset = document.getElementById("taskbar-"+webstrate.clientId).querySelector(".add-select").value;
+    //TODO put in electron
+    const preset = document.getElementById("taskbar-"+webstrate.clientId).querySelector(".add-select").value;
+    const newWindow = template.cloneNode(true);
+    newWindow.id = "";
+
+    // Set initial z-index higher than existing windows
+    const windows = wrapper.querySelectorAll('.window-container');
+    newWindow.style.zIndex = windows.length > 0 ? 
+      Math.max(...Array.from(windows).map(w => parseInt(window.getComputedStyle(w).zIndex) || 0)) + 1 : 1;
+
+    let addressBar = newWindow.querySelector(".search-box");
+    let windowContent = newWindow.querySelector(".window-content");
+
+    // Handle content creation if not found in template
+    if (!windowContent) {
+      //     if (preset === "Image") {
+      //       windowContent = document.createElement("img");
+      //     } else {
+      windowContent = document.createElement("object");
+      //     }
+      windowContent.classList.add("window-content");
+      newWindow.append(windowContent);
+    }
+
+    // Set window content
+    addressBar.value = preset;
+    //     windowContent.type = type;
+    windowContent.data = preset; // mostly redundant for dif htmls tags
+    windowContent.src = preset;
+
+    //     windowContent.webstrate.on("attributeChanged", function(attributeName, oldValue, newValue) {
+    //       // An attribute was changed by another client.
+    //       console.log(newValue);
+    //       if (attributeName === "src") {
+    //         addressBar.value = newValue;
+    //         windowContent.src = newValue;
+    //       } 
+    //     });
+
+    // Add title if it doesn't exist
+    if (!newWindow.querySelector('.window-title')) {
+      const title = document.createElement('div');
+      title.className = 'window-title';
+      title.textContent = `Window ${++windowCounter}`;
+      newWindow.prepend(title);
+    }
+    newWindow.dataset.windowNumber = windowCounter;
+    wrapper.append(newWindow);
+    //     wrapper.webstrate.signal("addImg", this.webstrate.clients);
+
+    updateLayersList();
+  }
+
+  if (layersList) layersList.addEventListener('click', function(e) {
+    if (e.target.tagName === 'LI') {
+      const windowId = e.target.dataset.windowId;
+      const window = wrapper.querySelector(`.window-container[id="${windowId}"]`);
+      if (window) {
+        // Add visual feedback for selected window
+        wrapper.querySelectorAll('.window-container').forEach(w => 
+                                                              w.classList.remove('selected'));
+        window.classList.add('selected');
+      }
+    }
+  });
+
+  function addWindowFromPresetId(presetId) {
+    const template = templates.querySelector(".window-container");
+    const newWindow = template.cloneNode(true);
+    newWindow.id = "";
+
+    //TODO put in electron
+    const preset = templates.querySelector("#"+presetId);
+    let addressBar = newWindow.querySelector(".search-box");
+    addressBar.value = presetId;
+
+    var windowContent;
+
+    //     if (preset === "Image") {
+    //       windowContent = document.createElement("img");
+    //     } else {
+    windowContent = preset.cloneNode(true);
+    windowContent.querySelectorAll("style").forEach(sheet => sheet.type = "");
+    windowContent.querySelectorAll("script").forEach(script => script.type = "");
+    //     windowContent.querySelectorAll("style").forEach(sheet => sheet.type = "");
+    windowContent.classList.remove("preset");
+    windowContent.id = "";
+    //     }
+
+    windowContent.classList.add("window-content");
+    newWindow.append(windowContent);
+    //     windowContent.type = type;
+    //     windowContent.data = preset; // mostly redundant for dif htmls tags
+    //     windowContent.src = preset;
+
+    wrapper.append(newWindow);
+    updateLayersList();
+    //     wrapper.webstrate.signal("addImg", this.webstrate.clients);
+  }
+
+  function addWindowFromURL(url, type="") {
+    const template = templates.querySelector(".window-container");
     const newWindow = template.cloneNode(true);
     newWindow.id = "";
 
     let addressBar = newWindow.querySelector(".search-box");
-    let windowContent = newWindow.querySelector(".window-content");
-    addressBar.value = preset;
-    windowContent.src = preset;
-//     windowContent.webstrate.on("attributeChanged", function(attributeName, oldValue, newValue) {
-//       // An attribute was changed by another client.
-//       console.log(newValue);
-//       if (attributeName === "src") {
-//         addressBar.value = newValue;
-//         windowContent.src = newValue;
-//       } 
-//     });
+    addressBar.value = url;
+
+    var windowContent;
+
+    if (type.includes("image")) {
+      windowContent = document.createElement("img");
+    } else {
+      windowContent = document.createElement("object");
+    }
+
+    windowContent.classList.add("window-content");
+    newWindow.append(windowContent);
+    windowContent.type = type;
+    windowContent.data = url; // mostly redundant for dif htmls tags
+    windowContent.src = url;
+
+    //     windowContent.webstrate.on("attributeChanged", function(attributeName, oldValue, newValue) {
+    //       // An attribute was changed by another client.
+    //       console.log(newValue);
+    //       if (attributeName === "src") {
+    //         addressBar.value = newValue;
+    //         windowContent.src = newValue;
+    //       } 
+    //     });
 
     wrapper.append(newWindow);
     //     wrapper.webstrate.signal("addImg", this.webstrate.clients);
+    updateLayersList();
+  }
+
+  function toggleEdit() {
+    //     const participantDiv = document.getElementById("participant-"+webstrate.clientId);
+    wrapper.classList.toggle("edit");
+//     if (layersMenu) layersMenu.classList.toggle("layers-on");
+    //     document.documentElement.style
+    //     .setProperty('--editMode', "1");
   }
 
   // from tank trouble codestrate
@@ -1077,6 +1593,7 @@
           switch (mutation.attributeName) {
             case "class":
               handleMutationLockDrag(mutation);
+              handleMutationInteractionAwareness(mutation);
               break;
             case "data-scroll-left":
               var attributeValue = mutation.target.dataset.scrollLeft;
@@ -1105,10 +1622,22 @@
       //         console.log("lock");
       var drag = Draggable.get(mutation.target);
       if (drag) drag.disable();
-    } else if (mutation.target.className.includes("draggable") || mutation.target.className.includes("window-container")){
+    } else if (mutation.target.className.includes("draggable") || mutation.target.className.includes("resize-handle") || mutation.target.className.includes("window-container")){
       //         Draggable.get(mutation.target.id).enable();
       var drag = Draggable.get(mutation.target);
       if (drag) drag.enable();
+    }
+  }
+
+  function handleMutationInteractionAwareness(mutation) {
+    // check draggable locks
+    var classes = [... mutation.target.classList];
+    var wasActive = mutation.target.classList.contains("playground-active");
+
+    if (classes.some(r => webstrate.clients.includes(r.slice(1)))){
+      if (!wasActive) mutation.target.classList.add("playground-active");
+    } else {
+      if (wasActive) mutation.target.classList.remove("playground-active");
     }
   }
 
@@ -1170,6 +1699,7 @@
   }
 
   function setupResizeableElement(element) {
+    const dragUnit = 64;
     const handle = setupDraggableSubElement(element, "resize-handle");
     const deleteBtn = element.querySelector("#closeButton");
     if (deleteBtn) deleteBtn.addEventListener("click", function (e) {
@@ -1195,6 +1725,25 @@
       autoScroll: 1,
       inertia: true,
       dragClickables: false,
+      onDragStart:function () {
+        element.classList.add("p"+webstrate.clientId);
+        const participantCursor = document.getElementById("participantCursor-"+webstrate.clientId);
+        participantCursor.style.visibility = "hidden";
+      },
+      onDragEnd: function () {
+        element.classList.remove("p"+webstrate.clientId);
+        const participantCursor = document.getElementById("participantCursor-"+webstrate.clientId);
+        participantCursor.style.visibility = "visible";
+      },
+      liveSnap: (playground.classList.contains("edit")),
+      snap:{
+        x: function(endValue) {
+          return Math.round(endValue / dragUnit) * dragUnit;
+        },
+        y: function(endValue) {
+          return Math.round(endValue / dragUnit) * dragUnit;
+        }
+      }
     });
     elementDrag = elementDrag[0];
     if (element.className.includes("lock-drag")) {
@@ -1212,12 +1761,20 @@
       },
       liveSnap: {
         x: function(x) {
-          return clamp(x, -offset.x1, x + offset.x2);
+          return Math.round(clamp(x, -offset.x1, x + offset.x2)/dragUnit)*dragUnit;
         },
         y: function(y) {
-          return clamp(y, -offset.y1, y + offset.y2);
+          return Math.round(clamp(y, -offset.y1, y + offset.y2)/dragUnit)*dragUnit;
         }
-      }
+      },
+      //       snap:{
+      //         x: function(endValue) {
+      //           return Math.round(endValue / 100) * 100;
+      //         },
+      //         y: function(endValue) {
+      //           return Math.round(endValue / 100) * 100;
+      //         }
+      //       }
     });
     handleDrag = handleDrag[0];
     if (handle.className.includes("lock-drag")) {
@@ -1225,19 +1782,20 @@
     }
 
     if (element.className.includes("window-container")) {
+      const newId = generateID(12);
+      if (!element.id) element.id = "container-"+newId;
       const addressBar = element.querySelector('.search-box');
       const windowContent = element.querySelector('.window-content');
       if (windowContent){
-        windowContent.name = generateID(12);
-        windowContent.addEventListener("scroll", function(e) {
-          this.dataset.scrollLeft = this.scrollLeft;
-          this.dataset.scrollTop = this.scrollTop;
+        if (!windowContent.id) windowContent.id = newId;
+        if (!windowContent.name) windowContent.name = newId;
+        if (windowContent.contentWindow && windowContent.src === this.origin) windowContent.contentWindow.addEventListener("scroll", function(e) {
+          windowContent.dataset.scrollLeft = windowContent.scrollLeft;
+          windowContent.dataset.scrollTop = windowContent.scrollTop;
         });
       } 
-      //       this.dataset.currentTime = this.currentTime;
-      //       this.dataset.currentTime = this.currentTime;
 
-      addressBar.addEventListener("keyup", (e) => {
+      if(addressBar) addressBar.addEventListener("keyup", (e) => {
         if (e.key !== "Enter") return;
         //         if (addressBar.value.includes("http")) {
         //           windowContent.type = "text/html";
@@ -1252,15 +1810,19 @@
 
       //temp duplicate
       const duplicateButton = element.querySelector('#duplicateButton');
-      duplicateButton.addEventListener('click', () => {
-        playground.append(element.cloneNode(true));
+      if(duplicateButton) duplicateButton.addEventListener('click', () => {
+        var newElement = element.cloneNode(true);
+        newElement.id = "";
+        newElement.querySelector(".window-content").id = "";
+        playground.append(newElement);
       });
 
       // Change the color of the lock button.
       const lockButton = element.querySelector('#lockButton');
-      const lockIcon = lockButton.querySelector('i');
 
-      lockButton.addEventListener('click', () => {
+
+      if(lockButton) lockButton.addEventListener('click', () => {
+        const lockIcon = lockButton.querySelector('i');
         element.classList.toggle('lock-drag');
         handle.classList.toggle('lock-drag');
         lockButton.classList.toggle('lock-active');
@@ -1275,7 +1837,7 @@
       });
 
       const fullscreenButton = element.querySelector('#fullscreenButton');
-      fullscreenButton.addEventListener('click', () => {
+      if(fullscreenButton) fullscreenButton.addEventListener('click', () => {
         if (windowContent.requestFullscreen) {
           windowContent.requestFullscreen();
         } else if (windowContent.mozRequestFullScreen) { // Firefox
@@ -1353,11 +1915,17 @@
     });
 
     media.addEventListener("play", function(e) {
-      this.className = "playing "+webstrate.clientId;
+      this.classList.remove("paused");
+      this.classList.add("playing", webstrate.clientId);
+      this.classList.remove(webstrate.clientId);
     });
 
     media.addEventListener("pause", function(e) {
-      if (!this.className.includes("seeking")) this.className = "paused "+webstrate.clientId;
+      if (!this.className.includes("seeking")) {
+        this.classList.remove("playing");
+        this.classList.add("paused", webstrate.clientId);
+        this.classList.remove(webstrate.clientId);
+      }
     });
 
     media.addEventListener("timeupdate", function(e) {
@@ -1365,11 +1933,18 @@
     });
 
     media.addEventListener("seeking", function(e) {
-      this.className = "seeking "+webstrate.clientId;
+      this.classList.remove("paused");
+      this.classList.remove("playing");
+      this.classList.add("seeking", webstrate.clientId);
     });
 
     media.addEventListener("seeked", function(e) {
-      this.className = "playing "+webstrate.clientId;
+      if (this.className.includes(webstrate.clientId)) {
+        this.classList.remove("paused");
+        this.classList.remove("seeking");
+        this.classList.add("playing");
+        this.classList.remove(webstrate.clientId);
+      }
     });
   }
 
@@ -1388,181 +1963,194 @@
     return text
   }
 </script><script id="script-menus">
-    webstrate.on("loaded", function(webstrateID, clientId, user) {
-      // Get DOM elements
-      const taskbar = document.getElementById('taskbar-'+clientId);
-      const settingsButton = taskbar.querySelector('#settings-button');
-      const settings = taskbar.querySelector('#settings');
-      const closeButton = taskbar.querySelector('#close-settings');
-      const menuItems = taskbar.querySelectorAll('.menu-item');
-      const contentSections = taskbar.querySelectorAll('.content-section');
+  webstrate.on("loaded", function(webstrateID, clientId, user) {
+    // Get DOM elements
+    const taskbar = document.getElementById('taskbar-'+clientId);
+    const settingsButton = taskbar.querySelector('#settings-button');
+    const settings = taskbar.querySelector('#settings');
+    const closeButton = taskbar.querySelector('#close-settings');
+    const menuItems = taskbar.querySelectorAll('.menu-item');
+    const contentSections = taskbar.querySelectorAll('.content-section');
 
-      // Open task bar when settings button is clicked
-      settingsButton.addEventListener('click', function() {
-        settings.style.display = 'flex';
-      });
+    // Open task bar when settings button is clicked
+    settingsButton.addEventListener('click', function() {
+      settings.style.display = 'flex';
+    });
 
-      // Close task bar when close button is clicked
-      closeButton.addEventListener('click', function() {
+    // Close task bar when close button is clicked
+    closeButton.addEventListener('click', function() {
+      settings.style.display = 'none';
+    });
+
+    // Close task bar when clicking outside content area
+    settings.addEventListener('click', function(e) {
+      if (e.target === settings) {
         settings.style.display = 'none';
-      });
+      }
+    });
 
-      // Close task bar when clicking outside content area
-      settings.addEventListener('click', function(e) {
-        if (e.target === settings) {
-          settings.style.display = 'none';
-        }
-      });
+    // Handle menu item clicks
+    menuItems.forEach(item => {
+      item.addEventListener('click', function() {
+        // Remove active class from all menu items
+        menuItems.forEach(i => i.classList.remove('active'));
 
-      // Handle menu item clicks
-      menuItems.forEach(item => {
-        item.addEventListener('click', function() {
-          // Remove active class from all menu items
-          menuItems.forEach(i => i.classList.remove('active'));
+        // Add active class to clicked item
+        this.classList.add('active');
 
-          // Add active class to clicked item
-          this.classList.add('active');
+        // Get the content section to show
+        const contentId = this.getAttribute('data-content');
 
-          // Get the content section to show
-          const contentId = this.getAttribute('data-content');
-
-          // Hide all content sections
-          contentSections.forEach(section => {
-            section.classList.remove('active');
-          });
-
-          // Show the selected content section
-          taskbar.querySelector("#"+contentId).classList.add('active');
+        // Hide all content sections
+        contentSections.forEach(section => {
+          section.classList.remove('active');
         });
-      });
 
-      // Optional: Close with Escape key
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && settings.style.display === 'flex') {
-          settings.style.display = 'none';
+        // Show the selected content section
+        taskbar.querySelector("#"+contentId).classList.add('active');
+      });
+    });
+
+    // Optional: Close with Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && settings.style.display === 'flex') {
+        settings.style.display = 'none';
+      }
+    });
+
+    // Invite Button
+    const inviteButton = taskbar.querySelector('.invite-button');
+    const emailInput = taskbar.querySelector('.email-input');
+
+    inviteButton.addEventListener('click', function() {
+      const email = emailInput.value.trim();
+      if (email) {
+        alert(`Invitation sent to ${email}`);
+        emailInput.value = '';
+      } else {
+        alert('Please enter a valid email address');
+      }
+    });
+
+    // Copy Link
+    const copyLink = taskbar.querySelector('.copy-link');
+    const copyText = taskbar.querySelector('.copy-text');
+    const copyIcon = taskbar.querySelector('.copy-icon');
+
+    copyLink.addEventListener('click', function() {
+      // In a real app, you would copy the actual invite link
+      navigator.clipboard.writeText('https://example.com/join/meeting123');
+
+      copyText.textContent = 'Copied!';
+      copyIcon.className = 'fas fa-check';
+
+      setTimeout(() => {
+        copyText.textContent = 'Copy Link';
+        copyIcon.className = 'fas fa-copy copy-icon';
+      }, 2000);
+    });
+
+    // Toggle Buttons
+    const toggleButtons = taskbar.querySelectorAll('.toggle-button');
+
+    toggleButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        this.classList.toggle('on');
+        const option = this.getAttribute('data-option');
+        console.log(`${option} is now ${this.classList.contains('on') ? 'on' : 'off'}`);
+      });
+    });
+
+    // Color Pickers
+    const colorPickers = taskbar.querySelectorAll('.color-picker');
+    const rgbInputs = taskbar.querySelectorAll('.rgb-input');
+
+    colorPickers.forEach((picker, index) => {
+      picker.addEventListener('input', function() {
+        const color = this.value;
+        rgbInputs[index].value = color;
+
+        // Apply color to actual elements
+        const target = this.getAttribute('data-target');
+        if (target === 'background') {
+          document.body.style.backgroundColor = color;
+        } else if (target === 'settings') {
+          taskbar.querySelector('.sidebar').style.backgroundColor = color;
         }
       });
+    });
 
-      // Invite Button
-      const inviteButton = taskbar.querySelector('.invite-button');
-      const emailInput = taskbar.querySelector('.email-input');
+    rgbInputs.forEach(input => {
+      input.addEventListener('change', function() {
+        const color = this.value;
+        if (/^#[0-9A-F]{6}$/i.test(color)) {
+          const picker = document.querySelector(`.color-picker[data-target="${this.getAttribute('data-target')}"]`);
+          picker.value = color;
 
-      inviteButton.addEventListener('click', function() {
-        const email = emailInput.value.trim();
-        if (email) {
-          alert(`Invitation sent to ${email}`);
-          emailInput.value = '';
-        } else {
-          alert('Please enter a valid email address');
-        }
-      });
-
-      // Copy Link
-      const copyLink = taskbar.querySelector('.copy-link');
-      const copyText = taskbar.querySelector('.copy-text');
-      const copyIcon = taskbar.querySelector('.copy-icon');
-
-      copyLink.addEventListener('click', function() {
-        // In a real app, you would copy the actual invite link
-        navigator.clipboard.writeText('https://example.com/join/meeting123');
-
-        copyText.textContent = 'Copied!';
-        copyIcon.className = 'fas fa-check';
-
-        setTimeout(() => {
-          copyText.textContent = 'Copy Link';
-          copyIcon.className = 'fas fa-copy copy-icon';
-        }, 2000);
-      });
-
-      // Toggle Buttons
-      const toggleButtons = taskbar.querySelectorAll('.toggle-button');
-
-      toggleButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          this.classList.toggle('on');
-          const option = this.getAttribute('data-option');
-          console.log(`${option} is now ${this.classList.contains('on') ? 'on' : 'off'}`);
-        });
-      });
-
-      // Color Pickers
-      const colorPickers = taskbar.querySelectorAll('.color-picker');
-      const rgbInputs = taskbar.querySelectorAll('.rgb-input');
-
-      colorPickers.forEach((picker, index) => {
-        picker.addEventListener('input', function() {
-          const color = this.value;
-          rgbInputs[index].value = color;
-
-          // Apply color to actual elements
           const target = this.getAttribute('data-target');
           if (target === 'background') {
             document.body.style.backgroundColor = color;
           } else if (target === 'settings') {
             taskbar.querySelector('.sidebar').style.backgroundColor = color;
           }
-        });
-      });
-
-      rgbInputs.forEach(input => {
-        input.addEventListener('change', function() {
-          const color = this.value;
-          if (/^#[0-9A-F]{6}$/i.test(color)) {
-            const picker = document.querySelector(`.color-picker[data-target="${this.getAttribute('data-target')}"]`);
-            picker.value = color;
-
-            const target = this.getAttribute('data-target');
-            if (target === 'background') {
-              document.body.style.backgroundColor = color;
-            } else if (target === 'settings') {
-              taskbar.querySelector('.sidebar').style.backgroundColor = color;
-            }
-          } else {
-            alert('Please enter a valid hex color (e.g., #FFFFFF)');
-          }
-        });
-      });
-
-      // Sample Images for Storage Space
-      const imageGrid = document.querySelector('.image-grid');
-      const sampleImages = [
-        'https://images.unsplash.com/photo-1506744038136-46273834b3fb',
-        'https://images.unsplash.com/photo-1452570053594-1b985d6ea890',
-        'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05',
-        'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d',
-        'https://images.unsplash.com/photo-1433086966358-54859d0ed716',
-        'https://images.unsplash.com/photo-1472214103451-9374bd1c798e',
-        'https://images.unsplash.com/photo-1426604966848-d7adac402bff',
-        'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07',
-        'https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5'
-      ];
-
-      //     sampleImages.forEach(imgSrc => {
-      //       const imgElement = document.createElement('div');
-      //       imgElement.className = 'image-item';
-      //       imgElement.innerHTML = `<img src="${imgSrc}" alt="Uploaded image" onerror="this.parentElement.remove()">`;
-      //       imageGrid.appendChild(imgElement);
-      //     });
-
-      // Add Image from URL
-      const addButton = taskbar.querySelector('.add-button');
-      const urlInput = taskbar.querySelector('.url-input');
-
-      addButton.addEventListener('click', function() {
-        const url = urlInput.value.trim();
-        if (url) {
-          const imgElement = document.createElement('div');
-          imgElement.className = 'image-item';
-          imgElement.innerHTML = `<img src="${url}" alt="Uploaded image" onerror="this.parentElement.remove()">`;
-          imageGrid.appendChild(imgElement);
-          urlInput.value = '';
         } else {
-          alert('Please enter a valid URL');
+          alert('Please enter a valid hex color (e.g., #FFFFFF)');
         }
       });
     });
-    </script><div id="templates" style="display: none;">
+
+    // Sample Images for Storage Space
+    const imageGrid = taskbar.querySelector('.image-grid');
+    const assets = webstrate.assets;
+    const presets = templates.querySelectorAll(".preset");
+
+    assets.forEach(assetObj => {
+      const imgElement = document.createElement('div');
+      imgElement.className = 'image-item';
+      imgElement.innerHTML = `<img src="${assetObj.fileName}" type="${assetObj.mimeType}" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>${assetObj.fileName}</h3>`;
+      imgElement.addEventListener('click', function() {
+        imgElement.classList.toggle('selected');
+      });
+      imageGrid.appendChild(imgElement);
+    });
+    
+    presets.forEach(presetNode => {
+      const imgElement = document.createElement('div');
+      imgElement.className = 'image-item';
+      imgElement.innerHTML = `<img src="https://videoplayground.xyz/favicon.ico" class="preset" data-preset-id="${presetNode.id}" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>${presetNode.id}</h3>`;
+      imgElement.addEventListener('click', function() {
+        imgElement.classList.toggle('selected');
+      });
+      imageGrid.appendChild(imgElement);
+    });
+
+    // Add Image from URL
+    const addButton = taskbar.querySelector('.add-button');
+//     const urlInput = taskbar.querySelector('.url-input');
+
+    addButton.addEventListener('click', function() {
+//       const url = urlInput.value.trim();
+//       if (url) {
+//         const imgElement = document.createElement('div');
+//         imgElement.className = 'image-item';
+//         imgElement.innerHTML = `<img src="${url}" alt="Uploaded image" onerror="this.parentElement.remove()">`;
+//         imageGrid.appendChild(imgElement);
+//         urlInput.value = '';
+//       } else {
+//         alert('Please enter a valid URL');
+//       }
+      let selectedElements = imageGrid.querySelectorAll(".selected");
+      selectedElements.forEach(element => (element.childNodes[0].classList.contains("preset")) ? addWindowFromPresetId(element.childNodes[0].dataset.presetId) : addWindowFromURL(element.childNodes[0].src, element.childNodes[0].getAttribute("type")));
+    });
+    
+  });
+  
+  function openSettings(){
+    const taskbar = document.getElementById("taskbar-"+webstrate.clientId);
+    const settings = taskbar.querySelector('#settings');
+    settings.style.display = 'flex';
+  }
+</script><div id="templates" style="display: none;">
 
     <div class="window-container" id="" style="translate: none; rotate: none; scale: none; touch-action: none; cursor: grab; user-select: none;">
 
@@ -1571,7 +2159,7 @@
       <div class="window-controls"><div class="window-dragbar">
         ::::
         </div><div class="window-toolbar">
-        <div class="nav-options" style="touch-action: none;">
+        <div class="nav-options" style="display: none; touch-action: none;">
           <button class="toolbar-button" id="backButton" style="touch-action: none;"><i class="fa-solid fa-arrow-left" style="touch-action: none;" aria-hidden="true"></i></button>
           <button class="toolbar-button" id="forthButton" style="touch-action: none;"><i class="fa-solid fa-arrow-right" style="touch-action: none;" aria-hidden="true"></i></button>
         </div>
@@ -1585,19 +2173,20 @@
           <button class="toolbar-button" style="touch-action: none;" id="fullscreenButton"><i class="fa-solid fa-up-right-and-down-left-from-center" style="touch-action: none;" aria-hidden="true"></i></button>
           <button class="toolbar-button" style="touch-action: none;" id="duplicateButton"><i class="fa-solid fa-minus" style="touch-action: none;" aria-hidden="true"></i></button>
         </div>
-        </div></div><iframe class="window-content" src="" allowfullscreen=""></iframe>
+        </div></div>
       <div class="resize-handle" style="translate: none; rotate: none; scale: none; transform: translate3d(960px, 960px, 0px); touch-action: none; cursor: grab; user-select: none;"></div></div><div id="participant-menus" class="ui"><div class="main-interface">
-    <button id="view-mode" class="settings-button">Individual</button><button id="addWindowButton" class="settings-button">
-    Add Window</button><button id="settings-button" class="settings-button">
+    
+    <button id="settings-button" class="settings-button">
     <i class="fas fa-cog"></i> Settings
-    </button>
-    <!-- Your main content would go here -->
-    <select class="add-select">
-              <option value="https://be6e5700-67aa-44df-adc8-5cb4840e155f.mdnplay.dev/shared-assets/images/examples/surfer.jpg">Image</option><option value="https://1a31e613-d751-44e7-82aa-d2d0081c52f8.mdnplay.dev/shared-assets/videos/flower.webm">Video</option><option value="https://videoplayground.xyz/frontpage/">Webstrate</option><option value="https://wikipedia.com">Wikipedia</option><option value="https://playingcards.io/357gwm">Chess</option>
+    </button><button id="view-mode" class="settings-button">Individual</button><button id="openLayersButton" class="open-layers-button">☰ Layers</button><button id="toggleEditButton" class="settings-button">Toggle Edit Mode</button><button id="addWindowButton" class="settings-button">
+    Add Window</button>
+    <!-- Your main content would go here --><select class="add-select">
+              <option value="https://be6e5700-67aa-44df-adc8-5cb4840e155f.mdnplay.dev/shared-assets/images/examples/surfer.jpg">Image</option><option value="https://1a31e613-d751-44e7-82aa-d2d0081c52f8.mdnplay.dev/shared-assets/videos/flower.webm">Video</option><option value="https://videoplayground.xyz/frontpage/">Webstrate (front page)</option><option value="https://videoplayground.xyz/quiet-catfish-65/">Webstrate (playground2)</option><option value="https://wikipedia.com">Wikipedia</option><option value="https://playingcards.io/357gwm">Chess</option>
               <option value="https://www.watchparty.me/watch/null-run-perceive">Watch Party</option>
               <option value="https://jukebox.today/videoplayground">Jukebox</option><option value="https://demo.webstrates.net/curvy-owl-14/">Tank Trouble</option>
               
-            </select></div><div id="settings" class="settings-overlay" style="display: none;">
+            </select>
+    </div><div id="settings" class="settings-overlay" style="display: none;">
     <div class="settings-container">
       <!-- Left sidebar navigation -->
       <div class="sidebar">
@@ -1699,7 +2288,7 @@
           <div class="image-grid-container">
             <div class="image-grid">
               <!-- Images will be added here dynamically -->
-              <div class="image-item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="Uploaded image" onerror="this.parentElement.remove()"></div><div class="image-item"><img src="https://images.unsplash.com/photo-1452570053594-1b985d6ea890" alt="Uploaded image" onerror="this.parentElement.remove()"></div></div>
+              </div>
           </div>
           <div class="upload-section">
             <i class="fas fa-cloud-upload-alt upload-icon"></i>
@@ -1714,8 +2303,157 @@
         </div>
       </div>
     </div>
-    </div></div></div>
-	<div id="wrapper" style="background-color: rgb(255, 255, 255);">
+    </div><div id="layersMenu" class="layers-sidebar">
+        <span class="close-button" onclick="closeLayersMenu()" id="closeLayersButton">×</span>
+        <h2>Layers</h2>
+        <ul id="layersList">
+            
+        </ul>
+    </div></div><div id="presets">
+<div id="preset0" class="preset">
+
+<style id="style-main" type="text">
+		.note {
+			width: 100%;
+			min-height: 100%;
+			box-shadow: 5px 5px 10px gray;
+			background-color: rgb(255, 255, 150);
+			font-size: 24pt;
+			word-wrap: break-word;
+		}
+		.note:focus {
+			outline: none;
+			box-shadow: 15px 15px 20px gray;
+		}
+	</style><div class="note" contenteditable="true"></div></div><div id="dice-pit"><style id="style-dice-pit" type="text">
+  .ball {
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    will-change: transform;
+    position: absolute;
+  }
+
+  .ballPit {
+    width: 400px;
+    height: 400px;
+    background-color: rgba(11, 21, 255, .2);
+  }
+  </style>
+<script id="script-dice" type="text">
+//original by Blake Bowen https://codepen.io/osublake/
+  const friction = -0.5;
+
+  const ball = document.querySelector(".ball");
+  const ballProps = gsap.getProperty(ball);
+  const radius = ball.getBoundingClientRect().width / 2;
+  const tracker = InertiaPlugin.track(ball, "left,top")[0];
+  const boundary = document.querySelector("#ballPit0");
+
+  const boundaryStyle = getComputedStyle(boundary);
+
+  let vw = boundary.offsetWidth;
+  let vh = boundary.offsetHeight;
+
+  //   webstrate.on("loaded", function(webstrateID, clientId, user) {
+  //     vw = boundary.width;
+  //     vh = boundary.height;
+  //     console.log(vw + ", " + vh);
+
+
+  //   });
+
+  gsap.defaults({
+    overwrite: true
+  });
+
+  gsap.set(ball, {
+    xPercent: -50,
+    yPercent: -50,
+    //       x: vw / 2,
+    //       y: vh / 2
+  });
+
+  const draggableBall = new Draggable(ball, {
+    bounds: boundary,
+    onPress() {
+      gsap.killTweensOf(ball);
+      this.update();
+    },
+    onDragEnd: animateBounce,
+    onDragEndParams: []
+  });
+
+  //   window.addEventListener("resize", () => {
+  //     vw = window.innerWidth;
+  //     vh = window.innerHeight;
+  //   });
+
+  function animateBounce(x = "+=0", y = "+=0", vx = "auto", vy = "auto") {
+
+    gsap.fromTo(ball, { x, y }, {
+      inertia: {
+        x: vx,
+        y: vy,
+      },
+      onUpdate: checkBounds
+    });  
+  }
+
+  function checkBounds() {
+
+    let r = radius;    
+    let x = ballProps("x");
+    let y = ballProps("y");
+    let vx = tracker.get("x");
+    let vy = tracker.get("y");
+    let xPos = x;
+    let yPos = y;
+//     let ballFace = ballProps("data-face");
+//     console.log(ballFace);
+
+    let hitting = false;
+
+    if (x + r > vw) {
+      xPos = vw - r;
+      vx *= friction;
+      hitting = true;
+    } else if (x - r < 0) {
+      xPos = r;
+      vx *= friction;
+      hitting = true;
+    }
+
+    if (y + r > vh) {
+      yPos = vh - r;
+      vy *= friction;
+      hitting = true;
+
+    } else if (y - r < 0) {
+      yPos = r;
+      vy *= friction;
+      hitting = true;
+    }
+    
+    const faces = ["one", "two", "three", "four", "five", "six"];
+    ball.dataset.face = Math.random()*6|0;
+    ball.src = "dice-six-faces-" + faces[ball.dataset.face] + ".png";
+
+    if (hitting) {
+//       gsap.set(ball, {
+//         count: thisCount+1,
+//       });
+      
+      animateBounce(xPos, yPos, vx, vy);
+    } 
+  }
+</script>
+<div class="ballPit" id="ballPit0" type="text"><img alt="" class="ball" src="dice-six-faces-one.png" style="translate: none; rotate: none; scale: none; z-index: 1001; cursor: grab; touch-action: none; user-select: none; transform: translate(-50%, -50%) translate3d(182px, 241px, 0px);" identifier="IMG0.4655046644195828" uxa="" data-face="0"></div>
+</div></div></div>
+	
+	
+<div id="wrapper" class="">
 		<div id="participants" class=""></div>
 		<div id="miscContainer">
 			<div id="clients">
@@ -1727,6 +2465,4 @@
 				<input type="submit" value="Upload" autocomplete="off">
 			</form>
 		</div>
-    </div>
-	</body>
-</html>
+    </div></body></html>
