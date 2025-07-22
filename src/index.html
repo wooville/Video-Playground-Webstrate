@@ -3,19 +3,22 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <script crossorigin="anonymous" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <title>Video Playground</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"><style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"><style id="style-main">
   #wrapper {
     z-index: -1;
     cursor:none;
     /*       vertical-align: top */
     height: 4000px;
     width: 4000px;
-/*     background-color: rgba(142, 21, 255, .2); */
+    /*     background-color: rgba(142, 21, 255, .2); */
     position: absolute;
     padding: 0px;
     margin: 0px;
     left:0px;
     top:0px;
+  }
+
+  .background0 {
     background-size:320px 320px, 320px 320px, 64px 64px, 64px 64px;
     background-position:-1px -1px, -1px -1px, -1px -1px, -1px -1px;
     background-image:
@@ -24,19 +27,15 @@
       linear-gradient(rgba(0,0,0,.1) 1px, transparent 1px),
       linear-gradient(90deg, rgba(0,0,0,.1) 1px, transparent 1px);
   }
-
-
-
-  #testvideo {
-    height: 100%;
-    width: 100%;
-    background-image: linear-gradient(45deg, #99999, #4321);
+  
+  .background1{
+    background: radial-gradient(80% 40%, white, black);
+  }
+  
+  .background2 {
+    background-image: url(https://cdn-dynmedia-1.microsoft.com/is/image/microsoftcorp/Blade011_Feature_VP5_Desktop_Video_Trigger_1864x1052_Desktop_tbmnl_en-us?scl=1);
   }
 
-  /*     .participant {
-
-  }
-  */
   .participantView {
     /*         height: 100%;
     width: 100%; */
@@ -44,7 +43,7 @@
     z-index: 9999;
     position: absolute;
     border-style: solid;
-/*     box-shadow: 0px 0px 2px; */
+    /*     box-shadow: 0px 0px 2px; */
     pointer-events:none
   }
 
@@ -100,7 +99,7 @@
     width:100%;
     height:100%;
   }
-  </style><style>
+</style><style>
   /*     #chessWrapper {
   pointer-events: none
   } */
@@ -372,6 +371,7 @@
     border-radius: .5rem; */
     margin-top: -6rem;
     outline-style: solid;
+    pointer-events: all;
   }
 
   .window-dragbar {
@@ -523,6 +523,18 @@
   .window-container.playground-active {
     outline:solid;
   }
+  
+  .window-title {
+    visibility: hidden;
+    pointer-events: none;
+    font-size: 2rem;
+    margin-top: -3rem;
+    z-index: 9;
+  }
+  
+  .window-container:hover .window-title {
+    visibility: visible;
+  }
 </style><style id="settings-style">
   /* Main interface styles */
   .main-interface {
@@ -559,7 +571,7 @@
   }
 
   .settings-button:hover {
-    background: #3a5a80;
+    filter: brightness(0.9);
   }
 
   /* Task bar overlay styles */
@@ -632,12 +644,12 @@
   }
 
   .menu-item:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    filter: brightness(0.9);
   }
 
   .menu-item.active {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-left: 4px solid #3498db;
+    filter: brightness(0.9);
+    border-left: 4px solid black;
   }
 
   .menu-item span {
@@ -923,6 +935,7 @@
 
 
     <script id="script-client">
+
   const wrapper = document.getElementById("wrapper");
   const templates = document.getElementById("templates");
 
@@ -944,9 +957,12 @@
 
     //     addParticipant(clientId);
     //     updateClientList();
-
+    
     updateParticipants();
     createTaskbar(clientId);
+    updateClientList();
+//     saveRoomPreset();
+//     setupRoomPreset(0);
     //     const participantElement = participants.querySelector("#participant-"+clientId);
     //     const videoElement = participants.querySelector("#participantVideo-"+clientId);
 
@@ -971,20 +987,25 @@
   });
   webstrate.on("clientJoin", function(clientId) {
     //         addParticipant(clientId);
-    //     updateClientList();
+        updateClientList();
     //     updateParticipants();
   });
   webstrate.on("clientPart", function(clientId) {
     updateParticipants();
+    updateClientList();
     //     removeParticipant(clientId);
     //     updateClientList();
     // RoomLogic.removeActivityView(clientId);
   });
-
   function updateParticipants() {
     //     console.log(webstrate.clients);
     var participants = document.getElementById("participants");
 
+    if (!participants) {
+      participants = document.createElement("div");
+      participants.id = "participants";
+      wrapper.append(participants);
+    }
     // attempt to prevent simultaneous async edits
     //     if (participants.className.includes("updating")) {
     //       if (!participants.className.includes(webstrate.clientId)) return;
@@ -1013,7 +1034,6 @@
         removeParticipant(clientID);
       }
     }
-    updateClientList();
     participants.className = "";
 
     // check if update makes sense
@@ -1022,11 +1042,7 @@
     }
   }
 
-  function updateClientList() {
-    //     console.log(webstrate.clients);
-    var clientList = document.getElementById("clientList");
-    clientList.replaceChildren(webstrate.clients);
-  }
+  
 
   function addParticipant(id) {
     //     console.log("ADD_PARTICIPANT: " + id);
@@ -1035,10 +1051,10 @@
     let color = hashStringToColor(id); 
     color = color.substring(1);
 
-    var sheet = document.createElement('style')
-    sheet.innerHTML = '.p' + id + ' {border-color: #'+ color +'; outline: #'+ color +'; color: #'+ color +';}';
-    sheet.id = "style-"+id;
-    document.body.appendChild(sheet);
+    var participantSheet = document.createElement('style')
+    participantSheet.innerHTML = '.p' + id + ' {border-color: #'+ color +'; outline: #'+ color +'; color: #'+ color +';} .p' + id + ' .settings-button,.p' + id + ' .open-layers-button {background-color: #'+ color +';} .p' + id + ' .sidebar,.p' + id + ' .add-button,.p' + id + ' .invite-button,.p' + id + ' .layers-sidebar,.p' + id + ' .participant-item-avatar {background-color: #'+ color +'; filter: brightness(0.9);}';
+    participantSheet.id = "style-"+id;
+    if (!document.getElementById(participantSheet.id)) document.body.appendChild(participantSheet);
 
     var newParticipant = document.createElement("div", { approved: true });
     newParticipant.className = "participant p" + id;
@@ -1091,6 +1107,7 @@
         //         e.target.parentNode.classList.remove(webstrate.clientId);
       }
     }, false);
+    updateClientList();
   }
 
   function removeParticipant(id) {
@@ -1191,7 +1208,7 @@
     if (openLayersButton && layersMenu) {
       openLayersButton.addEventListener("click", function() {
         layersMenu.classList.toggle("layers-on");
-//         layersMenu.style.width = "400px";
+        //         layersMenu.style.width = "400px";
         updateLayersList();
       });
     }
@@ -1199,7 +1216,7 @@
     if (closeLayersButton && layersMenu) {
       closeLayersButton.onclick = function() {
         layersMenu.classList.remove("layers-on");
-//         layersMenu.style.width = "0px";
+        //         layersMenu.style.width = "0px";
       };
     }
 
@@ -1558,7 +1575,7 @@
   function toggleEdit() {
     //     const participantDiv = document.getElementById("participant-"+webstrate.clientId);
     wrapper.classList.toggle("edit");
-//     if (layersMenu) layersMenu.classList.toggle("layers-on");
+    //     if (layersMenu) layersMenu.classList.toggle("layers-on");
     //     document.documentElement.style
     //     .setProperty('--editMode', "1");
   }
@@ -1592,8 +1609,12 @@
         case "attributes":
           switch (mutation.attributeName) {
             case "class":
+//               handleMutationEdit(mutation);
               handleMutationLockDrag(mutation);
               handleMutationInteractionAwareness(mutation);
+              break;
+            case "style":
+              updateLayersList();
               break;
             case "data-scroll-left":
               var attributeValue = mutation.target.dataset.scrollLeft;
@@ -1614,6 +1635,13 @@
       setupElement(newElement);
       setupMediaPlaybackSync(newElement);
     });
+  }
+  
+  function handleMutationEdit(mutation){
+    if (mutation.oldValue.includes("edit") != mutation.target.className.includes("edit")) {
+//       console.log("edit toggle");
+      setupAllElements();
+    }
   }
 
   function handleMutationLockDrag(mutation) {
@@ -1646,7 +1674,7 @@
     subtree: true,
     //     characterDataOldValue: true // pass old data to callback
     attributes: true,
-    //     attributeOldValue: true,
+    attributeOldValue: true,
     attributeFilter: ['class', 'style', 'data-scroll-left', 'data-scroll-top']
   });
 
@@ -1677,16 +1705,24 @@
 
   const container = document.getElementById("wrapper");
   webstrate.on("loaded", function(webstrateID, clientId, user) {
-    playground.childNodes.forEach(function(element){
-      setupElement(element);
-    });
+    setupEverything();
+  });
+
+  function setupEverything(){
+    setupAllElements();
 
     var allMedia = playground.querySelectorAll("object, video, audio, .media");
     allMedia.forEach(function(element){
       //       console.log(element);
       setupMediaPlaybackSync(element);
     });
-  });
+  }
+  
+  function setupAllElements(){
+    playground.childNodes.forEach(function(element){
+      setupElement(element);
+    });
+  }
 
   function setupElement(element) {
     if (!element.className) return;
@@ -1718,7 +1754,9 @@
       x2: rect2.right - rect1.right,
       y2: rect2.bottom - rect1.bottom
     };
-
+    var existingDrag = Draggable.get(element);
+    if (existingDrag) existingDrag.kill();
+    
     var elementDrag = Draggable.create(element, {
       type: "left,top",
       bounds: container,
@@ -1735,7 +1773,7 @@
         const participantCursor = document.getElementById("participantCursor-"+webstrate.clientId);
         participantCursor.style.visibility = "visible";
       },
-      liveSnap: (playground.classList.contains("edit")),
+//       liveSnap: (playground.classList.contains("edit")),
       snap:{
         x: function(endValue) {
           return Math.round(endValue / dragUnit) * dragUnit;
@@ -1749,6 +1787,9 @@
     if (element.className.includes("lock-drag")) {
       elementDrag.disable();
     }
+    
+    existingDrag = Draggable.get(handle);
+    if (existingDrag) existingDrag.kill();
 
     var handleDrag = Draggable.create(handle, {
       bounds: container,
@@ -1808,13 +1849,9 @@
         //         setupMediaPlaybackSync(windowContent);
       });
 
-      //temp duplicate
-      const duplicateButton = element.querySelector('#duplicateButton');
-      if(duplicateButton) duplicateButton.addEventListener('click', () => {
-        var newElement = element.cloneNode(true);
-        newElement.id = "";
-        newElement.querySelector(".window-content").id = "";
-        playground.append(newElement);
+      const minimizeButton = element.querySelector('#minimizeButton');
+      if(minimizeButton) minimizeButton.addEventListener('click', () => {
+        element.style.display = "none";
       });
 
       // Change the color of the lock button.
@@ -1823,6 +1860,7 @@
 
       if(lockButton) lockButton.addEventListener('click', () => {
         const lockIcon = lockButton.querySelector('i');
+        
         element.classList.toggle('lock-drag');
         handle.classList.toggle('lock-drag');
         lockButton.classList.toggle('lock-active');
@@ -2113,7 +2151,7 @@
       });
       imageGrid.appendChild(imgElement);
     });
-    
+
     presets.forEach(presetNode => {
       const imgElement = document.createElement('div');
       imgElement.className = 'image-item';
@@ -2126,30 +2164,131 @@
 
     // Add Image from URL
     const addButton = taskbar.querySelector('.add-button');
-//     const urlInput = taskbar.querySelector('.url-input');
+    //     const urlInput = taskbar.querySelector('.url-input');
 
     addButton.addEventListener('click', function() {
-//       const url = urlInput.value.trim();
-//       if (url) {
-//         const imgElement = document.createElement('div');
-//         imgElement.className = 'image-item';
-//         imgElement.innerHTML = `<img src="${url}" alt="Uploaded image" onerror="this.parentElement.remove()">`;
-//         imageGrid.appendChild(imgElement);
-//         urlInput.value = '';
-//       } else {
-//         alert('Please enter a valid URL');
-//       }
+      //       const url = urlInput.value.trim();
+      //       if (url) {
+      //         const imgElement = document.createElement('div');
+      //         imgElement.className = 'image-item';
+      //         imgElement.innerHTML = `<img src="${url}" alt="Uploaded image" onerror="this.parentElement.remove()">`;
+      //         imageGrid.appendChild(imgElement);
+      //         urlInput.value = '';
+      //       } else {
+      //         alert('Please enter a valid URL');
+      //       }
       let selectedElements = imageGrid.querySelectorAll(".selected");
-      selectedElements.forEach(element => (element.childNodes[0].classList.contains("preset")) ? addWindowFromPresetId(element.childNodes[0].dataset.presetId) : addWindowFromURL(element.childNodes[0].src, element.childNodes[0].getAttribute("type")));
+      selectedElements.forEach(element => {
+        element.classList.remove('selected');
+        (element.childNodes[0].classList.contains("preset")) ? addWindowFromPresetId(element.childNodes[0].dataset.presetId) : addWindowFromURL(element.childNodes[0].src, element.childNodes[0].getAttribute("type"))
+      });
     });
-    
   });
-  
+
   function openSettings(){
     const taskbar = document.getElementById("taskbar-"+webstrate.clientId);
     const settings = taskbar.querySelector('#settings');
     settings.style.display = 'flex';
   }
+
+  function updateClientList() {
+    //     console.log(webstrate.clients);
+//     var clientList = document.getElementById("clientList");
+//     if (clientList) clientList.replaceChildren(webstrate.clients);
+
+    const taskbar = document.getElementById("taskbar-"+webstrate.clientId);
+    if (taskbar) {
+      const participantContainer = taskbar.querySelector('.participant-item-container');
+      participantContainer.innerHTML = "";
+
+      webstrate.clients.forEach(participant => {
+        const participantElement = document.createElement('div');
+        participantElement.className = 'participant-item';
+        participantElement.innerHTML = `
+            <div class="participant-item-avatar"></div>
+            <div>${participant}</div>
+        `;
+        participantContainer.appendChild(participantElement);
+      });
+    }
+
+  }
+</script><script id="script-preset">
+  function setupRoomPreset(preset=0) {
+    const wrapper = document.getElementById("wrapper");
+    wrapper.innerHTML = "";
+    updateParticipants();
+    createTaskbar(webstrate.clientId);
+    //     webstrate.signal("createTaskbar");
+    updateClientList();
+    //     wrapper.classList.add("background"+preset);
+    //     const templates = document.getElementById("templates");
+    var roomPresetHTML;
+    switch (preset) {
+      case 0:
+        wrapper.classList.add("background0");
+        wrapper.classList.remove("background1");
+        wrapper.classList.remove("background2");
+        roomPresetHTML = document.querySelector("#roomPreset0");
+        break;
+      case 1:
+        wrapper.classList.remove("background0");
+        wrapper.classList.add("background1");
+        wrapper.classList.remove("background2");
+        roomPresetHTML = document.querySelector("#roomPreset1");
+        break;
+      case 2:
+        wrapper.classList.remove("background0");
+        wrapper.classList.remove("background1");
+        wrapper.classList.add("background2");
+        roomPresetHTML = document.querySelector("#roomPreset2");
+        break;
+      default:
+        wrapper.classList.remove("background0");
+        wrapper.classList.remove("background1");
+        wrapper.classList.remove("background2");
+        break;
+    }
+    console.log(roomPresetHTML.childNodes.length);
+    //     if (roomPresetHTML) {
+    roomPresetHTML.childNodes.forEach(function(node) {
+      var newNode = node.cloneNode(true);
+      newNode.id = "";
+      wrapper.append(newNode);
+    });
+    //     } 
+
+  }
+
+  function saveRoomPreset() {
+    const wrapperClone = document.getElementById("wrapper").cloneNode(true);
+    const participants = wrapperClone.querySelector("#participants");
+    participants.remove();
+    var presetHTML = wrapperClone.getElementsByClassName("window-container");
+
+    //     templates.querySelector("roomPresets").append(presetHTML);
+    //     wrapper.childNodes.forEach(node => {
+    //       if (node.className.includes("window-container")) {
+    //         presetHTML += node.getHTML();
+    //       }
+    //     });
+    return presetHTML;
+  }
+
+  function applyPreset(html) {
+    setupRoomPreset();
+    const wrapper = document.getElementById("wrapper");
+    //     wrapper.outerHTML = html;
+    wrapper.setHTML(html);
+  }
+
+  //   webstrate.on("signal", function(message, senderId, node) {
+  //     console.log(message);
+  //     if (senderId != webstrate.clientId && message === "createTaskbar") {
+  //       createTaskbar(webstrate.clientId);
+  //     }
+  //   });
+
 </script><div id="templates" style="display: none;">
 
     <div class="window-container" id="" style="translate: none; rotate: none; scale: none; touch-action: none; cursor: grab; user-select: none;">
@@ -2171,7 +2310,7 @@
           <button id="lockButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-unlock" style="touch-action: none;" aria-hidden="true"></i></button>
           <button id="closeButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-x" style="touch-action: none;" aria-hidden="true"></i></button>
           <button class="toolbar-button" style="touch-action: none;" id="fullscreenButton"><i class="fa-solid fa-up-right-and-down-left-from-center" style="touch-action: none;" aria-hidden="true"></i></button>
-          <button class="toolbar-button" style="touch-action: none;" id="duplicateButton"><i class="fa-solid fa-minus" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="touch-action: none;" id="minimizeButton"><i class="fa-solid fa-minus" style="touch-action: none;" aria-hidden="true"></i></button>
         </div>
         </div></div>
       <div class="resize-handle" style="translate: none; rotate: none; scale: none; transform: translate3d(960px, 960px, 0px); touch-action: none; cursor: grab; user-select: none;"></div></div><div id="participant-menus" class="ui"><div class="main-interface">
@@ -2203,6 +2342,8 @@
           </li>
           <li class="menu-item" data-content="storage-space">
             <span><i class="fas fa-images"></i> Storage Space</span>
+          </li><li class="menu-item" data-content="room-presets">
+            <span><i class="fas fa-images"></i>Room Presets</span>
           </li>
           <li class="menu-item" data-content="additional-feature">
             <span><i class="fas fa-ellipsis-h"></i> Other</span>
@@ -2216,22 +2357,7 @@
           <h2>Participant List</h2>
           <div class="participant-item-container">
             <!-- Participants will be added here dynamically -->
-            <div class="participant-item">
-              <div class="participant-item-avatar">JD</div>
-              <div>John Doe</div>
-            </div><div class="participant-item">
-            <div class="participant-item-avatar">JS</div>
-            <div>Jane Smith</div>
-            </div><div class="participant-item">
-            <div class="participant-item-avatar">MJ</div>
-            <div>Mike Johnson</div>
-            </div><div class="participant-item">
-            <div class="participant-item-avatar">SW</div>
-            <div>Sarah Williams</div>
-            </div><div class="participant-item">
-            <div class="participant-item-avatar">DB</div>
-            <div>David Brown</div>
-            </div></div>
+            </div>
           <div class="invite-section">
             <input type="email" placeholder="Enter invitee's email" class="email-input">
             <button class="invite-button">Invite</button>
@@ -2291,6 +2417,20 @@
               </div>
           </div>
           <div class="upload-section">
+  <form action="" enctype="multipart/form-data" method="post">
+    <input name="file" type="file" autocomplete="off" multiple="">
+    <input type="submit" value="Upload" autocomplete="off">
+  </form>
+  <button class="add-button">Add</button>
+</div>
+        </div><div id="room-presets" class="content-section">
+          <h2>Room Presets (does nothing right now)</h2>
+          <div class="image-grid-container">
+            <div class="image-grid">
+              <!-- Images will be added here dynamically -->
+              </div>
+          </div>
+          <div class="upload-section">
             <i class="fas fa-cloud-upload-alt upload-icon"></i>
             <input type="text" placeholder="insert URL here" class="url-input">
             <button class="add-button">Add</button>
@@ -2310,7 +2450,7 @@
             
         </ul>
     </div></div><div id="presets">
-<div id="preset0" class="preset">
+<div id="note" class="preset">
 
 <style id="style-main" type="text">
 		.note {
@@ -2325,7 +2465,7 @@
 			outline: none;
 			box-shadow: 15px 15px 20px gray;
 		}
-	</style><div class="note" contenteditable="true"></div></div><div id="dice-pit"><style id="style-dice-pit" type="text">
+	</style><div class="note" contenteditable="true"></div></div><!-- <div id="dice-pit"><style id="style-dice-pit" type="text">
   .ball {
     width: 125px;
     height: 125px;
@@ -2450,19 +2590,235 @@
   }
 </script>
 <div class="ballPit" id="ballPit0" type="text"><img alt="" class="ball" src="dice-six-faces-one.png" style="translate: none; rotate: none; scale: none; z-index: 1001; cursor: grab; touch-action: none; user-select: none; transform: translate(-50%, -50%) translate3d(182px, 241px, 0px);" identifier="IMG0.4655046644195828" uxa="" data-face="0"></div>
-</div></div></div>
+</div> --></div><div id="roomPresets"><div id="roomPreset0"><div class="window-container" id="window-1753194352351-1" style="translate: none; rotate: none; scale: none; touch-action: none; cursor: grab; user-select: none; z-index: 1020; top: 448px; left: 1472px;" data-window-number="5"><div class="window-title" style="touch-action: none;">Window 5</div>
+
+
+
+      <div class="window-controls" style="touch-action: none;"><div class="window-dragbar" style="touch-action: none;">
+        ::::
+        </div><div class="window-toolbar" style="touch-action: none;">
+        <div class="nav-options" style="display: none; touch-action: none;">
+          <button class="toolbar-button" id="backButton" style="touch-action: none;"><i class="fa-solid fa-arrow-left" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" id="forthButton" style="touch-action: none;"><i class="fa-solid fa-arrow-right" style="touch-action: none;" aria-hidden="true"></i></button>
+        </div>
+        <div class="search-bar" style="touch-action: none;">
+          <i class="fa-solid fa-magnifying-glass fa-lg" style="margin-right: 0.5rem; touch-action: none;" aria-hidden="true"></i>
+          <input type="text" placeholder="Search" class="search-box" contenteditable="true" style="touch-action: none;" value="https://videoplayground.xyz/splendid-bird-19/HeHeartlandGarden5828constructionuc3.gif">
+        </div>
+        <div class="window-options" style="touch-action: none;">
+          <button id="lockButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-unlock" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button id="closeButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-x" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="touch-action: none;" id="fullscreenButton"><i class="fa-solid fa-up-right-and-down-left-from-center" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="touch-action: none;" id="minimizeButton"><i class="fa-solid fa-minus" style="touch-action: none;" aria-hidden="true"></i></button>
+        </div>
+        </div></div>
+      <div class="resize-handle" style="translate: none; rotate: none; scale: none; transform: translate3d(320px, 320px, 0px); touch-action: none; cursor: grab; user-select: none;"></div><img class="window-content" src="https://videoplayground.xyz/splendid-bird-19/HeHeartlandGarden5828constructionuc3.gif" style="touch-action: none;" id="v7ISoXCc3A26" name="v7ISoXCc3A26"></div><div class="window-container" id="window-1753194763392-4" style="translate: none; rotate: none; scale: none; touch-action: none; cursor: grab; user-select: none; z-index: 1007; top: 128px; left: 832px; height: 384px; width: 960px;" data-window-number="2"><div class="window-title" style="touch-action: none;">Window 2</div>
+
+
+
+      <div class="window-controls" style="touch-action: none;"><div class="window-dragbar" style="touch-action: none;">
+        ::::
+        </div><div class="window-toolbar" style="touch-action: none;">
+        <div class="nav-options" style="display: none; touch-action: none;">
+          <button class="toolbar-button" id="backButton" style="touch-action: none;"><i class="fa-solid fa-arrow-left" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" id="forthButton" style="touch-action: none;"><i class="fa-solid fa-arrow-right" style="touch-action: none;" aria-hidden="true"></i></button>
+        </div>
+        <div class="search-bar" style="touch-action: none;">
+          <i class="fa-solid fa-magnifying-glass fa-lg" style="margin-right: 0.5rem; touch-action: none;" aria-hidden="true"></i>
+          <input type="text" placeholder="Search" class="search-box" contenteditable="true" style="touch-action: none;" value="https://videoplayground.xyz/splendid-bird-19/deafatlanticconstruct16.gif">
+        </div>
+        <div class="window-options" style="touch-action: none;">
+          <button id="lockButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-unlock" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button id="closeButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-x" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="touch-action: none;" id="fullscreenButton"><i class="fa-solid fa-up-right-and-down-left-from-center" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="touch-action: none;" id="minimizeButton"><i class="fa-solid fa-minus" style="touch-action: none;" aria-hidden="true"></i></button>
+        </div>
+        </div></div>
+      <div class="resize-handle" style="translate: none; rotate: none; scale: none; transform: translate3d(960px, 384px, 0px); touch-action: none; cursor: grab; user-select: none; z-index: 1006;"></div><img class="window-content" src="https://videoplayground.xyz/splendid-bird-19/deafatlanticconstruct16.gif" style="touch-action: none;" id="PPw9tTr6fWt8" name="PPw9tTr6fWt8"></div><div class="window-container" id="window-1753194766277-5" style="translate: none; rotate: none; scale: none; touch-action: none; cursor: grab; user-select: text; z-index: 1000; top: 128px; left: 512px;" data-window-number="3"><div class="window-title" style="touch-action: none;">Window 3</div>
+
+
+
+      <div class="window-controls" style="touch-action: none;"><div class="window-dragbar" style="touch-action: none;">
+        ::::
+        </div><div class="window-toolbar" style="touch-action: none;">
+        <div class="nav-options" style="display: none; touch-action: none;">
+          <button class="toolbar-button" id="backButton" style="touch-action: none;"><i class="fa-solid fa-arrow-left" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" id="forthButton" style="touch-action: none;"><i class="fa-solid fa-arrow-right" style="touch-action: none;" aria-hidden="true"></i></button>
+        </div>
+        <div class="search-bar" style="touch-action: none;">
+          <i class="fa-solid fa-magnifying-glass fa-lg" style="margin-right: 0.5rem; touch-action: none;" aria-hidden="true"></i>
+          <input type="text" placeholder="Search" class="search-box" contenteditable="true" style="touch-action: none;" value="note">
+        </div>
+        <div class="window-options" style="touch-action: none;">
+          <button id="lockButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-unlock" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button id="closeButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-x" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="touch-action: none;" id="fullscreenButton"><i class="fa-solid fa-up-right-and-down-left-from-center" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="touch-action: none;" id="minimizeButton"><i class="fa-solid fa-minus" style="touch-action: none;" aria-hidden="true"></i></button>
+        </div>
+        </div></div>
+      <div class="resize-handle" style="translate: none; rotate: none; scale: none; transform: translate3d(320px, 320px, 0px); touch-action: none; cursor: grab; user-select: none;"></div><div id="kMcLHo6UgegY" class="window-content" style="touch-action: none;">
+
+<style id="style-main" type="" style="touch-action: none;">
+		.note {
+			width: 100%;
+			min-height: 100%;
+			box-shadow: 5px 5px 10px gray;
+			background-color: rgb(255, 255, 150);
+			font-size: 24pt;
+			word-wrap: break-word;
+		}
+		.note:focus {
+			outline: none;
+			box-shadow: 15px 15px 20px gray;
+		}
+	</style><div class="note" contenteditable="true" style="touch-action: none;">under construction</div></div></div></div><div id="roomPreset1"><div class="window-container" id="window-1753194763391-3" style="translate: none; rotate: none; scale: none; touch-action: none; cursor: grab; user-select: none; z-index: 1004; top: 320px; left: 0px; height: 448px; width: 1152px;" data-window-number="1"><div class="window-title" style="touch-action: none;">Window 1</div>
+
+
+
+      <div class="window-controls" style="touch-action: none;"><div class="window-dragbar" style="touch-action: none;">
+        ::::
+        </div><div class="window-toolbar" style="touch-action: none;">
+        <div class="nav-options" style="display: none; touch-action: none;">
+          <button class="toolbar-button" id="backButton" style="touch-action: none;"><i class="fa-solid fa-arrow-left" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" id="forthButton" style="touch-action: none;"><i class="fa-solid fa-arrow-right" style="touch-action: none;" aria-hidden="true"></i></button>
+        </div>
+        <div class="search-bar" style="touch-action: none;">
+          <i class="fa-solid fa-magnifying-glass fa-lg" style="margin-right: 0.5rem; touch-action: none;" aria-hidden="true"></i>
+          <input type="text" placeholder="Search" class="search-box" contenteditable="true" style="touch-action: none;" value="https://videoplayground.xyz/splendid-bird-19/MoMotorCity4109construct.gif">
+        </div>
+        <div class="window-options" style="touch-action: none;">
+          <button id="lockButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-unlock" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button id="closeButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-x" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="touch-action: none;" id="fullscreenButton"><i class="fa-solid fa-up-right-and-down-left-from-center" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="touch-action: none;" id="minimizeButton"><i class="fa-solid fa-minus" style="touch-action: none;" aria-hidden="true"></i></button>
+        </div>
+        </div></div>
+      <div class="resize-handle" style="translate: none; rotate: none; scale: none; transform: translate3d(1152px, 448px, 0px); touch-action: none; cursor: grab; user-select: none; z-index: 1003;"></div><img class="window-content" src="https://videoplayground.xyz/splendid-bird-19/MoMotorCity4109construct.gif" style="touch-action: none;" id="Auofs29EaiZi" name="Auofs29EaiZi"></div><div class="window-container" id="window-1753194279033-0" style="translate: none; rotate: none; scale: none; touch-action: none; cursor: grab; user-select: none; z-index: 1001; top: 1024px; left: 768px;" data-window-number="1"><div class="window-title" style="touch-action: none;">Window 1</div>
+
+
+
+      <div class="window-controls" style="touch-action: none;"><div class="window-dragbar" style="touch-action: none;">
+        ::::
+        </div><div class="window-toolbar" style="touch-action: none;">
+        <div class="nav-options" style="display: none; touch-action: none;">
+          <button class="toolbar-button" id="backButton" style="touch-action: none;"><i class="fa-solid fa-arrow-left" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" id="forthButton" style="touch-action: none;"><i class="fa-solid fa-arrow-right" style="touch-action: none;" aria-hidden="true"></i></button>
+        </div>
+        <div class="search-bar" style="touch-action: none;">
+          <i class="fa-solid fa-magnifying-glass fa-lg" style="margin-right: 0.5rem; touch-action: none;" aria-hidden="true"></i>
+          <input type="text" placeholder="Search" class="search-box" contenteditable="true" style="touch-action: none;" value="https://wikipedia.com">
+        </div>
+        <div class="window-options" style="touch-action: none;">
+          <button id="lockButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-unlock" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button id="closeButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-x" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="touch-action: none;" id="fullscreenButton"><i class="fa-solid fa-up-right-and-down-left-from-center" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="touch-action: none;" id="minimizeButton"><i class="fa-solid fa-minus" style="touch-action: none;" aria-hidden="true"></i></button>
+        </div>
+        </div></div>
+      <div class="resize-handle" style="translate: none; rotate: none; scale: none; transform: translate3d(320px, 320px, 0px); touch-action: none; cursor: grab; user-select: none;"></div><object class="window-content" data="https://wikipedia.com" style="touch-action: none;" id="F5K4PIIt8yx5" name="F5K4PIIt8yx5"></object></div><div class="window-container" id="window-1753194288999-0" style="translate: none; rotate: none; scale: none; touch-action: none; cursor: grab; user-select: none; z-index: 1003; top: 576px; left: 128px;" data-window-number="2"><div class="window-title" style="touch-action: none;">Window 2</div>
+
+
+
+      <div class="window-controls" style="touch-action: none;"><div class="window-dragbar" style="touch-action: none;">
+        ::::
+        </div><div class="window-toolbar" style="touch-action: none;">
+        <div class="nav-options" style="display: none; touch-action: none;">
+          <button class="toolbar-button" id="backButton" style="touch-action: none;"><i class="fa-solid fa-arrow-left" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" id="forthButton" style="touch-action: none;"><i class="fa-solid fa-arrow-right" style="touch-action: none;" aria-hidden="true"></i></button>
+        </div>
+        <div class="search-bar" style="touch-action: none;">
+          <i class="fa-solid fa-magnifying-glass fa-lg" style="margin-right: 0.5rem; touch-action: none;" aria-hidden="true"></i>
+          <input type="text" placeholder="Search" class="search-box" contenteditable="true" style="touch-action: none;" value="https://be6e5700-67aa-44df-adc8-5cb4840e155f.mdnplay.dev/shared-assets/images/examples/surfer.jpg">
+        </div>
+        <div class="window-options" style="touch-action: none;">
+          <button id="lockButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-unlock" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button id="closeButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-x" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="touch-action: none;" id="fullscreenButton"><i class="fa-solid fa-up-right-and-down-left-from-center" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="touch-action: none;" id="minimizeButton"><i class="fa-solid fa-minus" style="touch-action: none;" aria-hidden="true"></i></button>
+        </div>
+        </div></div>
+      <div class="resize-handle" style="translate: none; rotate: none; scale: none; transform: translate3d(320px, 320px, 0px); touch-action: none; cursor: grab; user-select: none;"></div><object class="window-content" data="https://be6e5700-67aa-44df-adc8-5cb4840e155f.mdnplay.dev/shared-assets/images/examples/surfer.jpg" style="touch-action: none;" id="SFYmoGT3F6h4" name="SFYmoGT3F6h4"></object></div><div class="window-container" id="window-1753194294502-0" style="translate: none; rotate: none; scale: none; touch-action: none; cursor: grab; user-select: none; z-index: 1005; top: 576px; left: 640px;" data-window-number="3"><div class="window-title" style="touch-action: none;">Window 3</div>
+
+
+
+      <div class="window-controls" style="touch-action: none;"><div class="window-dragbar" style="touch-action: none;">
+        ::::
+        </div><div class="window-toolbar" style="touch-action: none;">
+        <div class="nav-options" style="display: none; touch-action: none;">
+          <button class="toolbar-button" id="backButton" style="touch-action: none;"><i class="fa-solid fa-arrow-left" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" id="forthButton" style="touch-action: none;"><i class="fa-solid fa-arrow-right" style="touch-action: none;" aria-hidden="true"></i></button>
+        </div>
+        <div class="search-bar" style="touch-action: none;">
+          <i class="fa-solid fa-magnifying-glass fa-lg" style="margin-right: 0.5rem; touch-action: none;" aria-hidden="true"></i>
+          <input type="text" placeholder="Search" class="search-box" contenteditable="true" style="touch-action: none;" value="https://be6e5700-67aa-44df-adc8-5cb4840e155f.mdnplay.dev/shared-assets/images/examples/surfer.jpg">
+        </div>
+        <div class="window-options" style="touch-action: none;">
+          <button id="lockButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-unlock" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button id="closeButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-x" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="touch-action: none;" id="fullscreenButton"><i class="fa-solid fa-up-right-and-down-left-from-center" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="touch-action: none;" id="minimizeButton"><i class="fa-solid fa-minus" style="touch-action: none;" aria-hidden="true"></i></button>
+        </div>
+        </div></div>
+      <div class="resize-handle" style="translate: none; rotate: none; scale: none; transform: translate3d(320px, 320px, 0px); touch-action: none; cursor: grab; user-select: none;"></div><object class="window-content" data="https://be6e5700-67aa-44df-adc8-5cb4840e155f.mdnplay.dev/shared-assets/images/examples/surfer.jpg" style="touch-action: none;" id="HPiAUFbPMUWs" name="HPiAUFbPMUWs"></object></div></div><div id="roomPreset2"><div class="window-container" id="window-1753194471856-0" style="translate: none; rotate: none; scale: none; touch-action: none; cursor: grab; user-select: text; z-index: 1026; top: 320px; left: 448px;" data-window-number="8"><div class="window-title" style="touch-action: none;">Window 8</div>
+
+
+
+      <div class="window-controls" style="touch-action: none;"><div class="window-dragbar" style="touch-action: none;">
+        ::::
+        </div><div class="window-toolbar" style="touch-action: none;">
+        <div class="nav-options" style="display: none; touch-action: none;">
+          <button class="toolbar-button" id="backButton" style="touch-action: none;"><i class="fa-solid fa-arrow-left" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" id="forthButton" style="touch-action: none;"><i class="fa-solid fa-arrow-right" style="touch-action: none;" aria-hidden="true"></i></button>
+        </div>
+        <div class="search-bar" style="touch-action: none;">
+          <i class="fa-solid fa-magnifying-glass fa-lg" style="margin-right: 0.5rem; touch-action: none;" aria-hidden="true"></i>
+          <input type="text" placeholder="Search" class="search-box" contenteditable="true" style="touch-action: none;" value="note">
+        </div>
+        <div class="window-options" style="touch-action: none;">
+          <button id="lockButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-unlock" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button id="closeButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-x" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="touch-action: none;" id="fullscreenButton"><i class="fa-solid fa-up-right-and-down-left-from-center" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="touch-action: none;" id="minimizeButton"><i class="fa-solid fa-minus" style="touch-action: none;" aria-hidden="true"></i></button>
+        </div>
+        </div></div>
+      <div class="resize-handle" style="translate: none; rotate: none; scale: none; transform: translate3d(320px, 320px, 0px); touch-action: none; cursor: grab; user-select: none;"></div><div id="saYWCkvxFuwa" class="window-content" style="touch-action: none;">
+
+<style id="style-main" type="" style="touch-action: none;">
+		.note {
+			width: 100%;
+			min-height: 100%;
+			box-shadow: 5px 5px 10px gray;
+			background-color: rgb(255, 255, 150);
+			font-size: 24pt;
+			word-wrap: break-word;
+		}
+		.note:focus {
+			outline: none;
+			box-shadow: 15px 15px 20px gray;
+		}
+	</style><div class="note" contenteditable="true" style="touch-action: none;">this is a saved note</div></div></div><div class="window-container" id="window-1753194495005-0" style="translate: none; rotate: none; scale: none; touch-action: none; cursor: grab; user-select: none; z-index: 1032; top: 192px; left: 768px; height: 640px; width: 960px;" data-window-number="9"><div class="window-title" style="touch-action: none;">Window 9</div>
+
+
+
+      <div class="window-controls" style="touch-action: none;"><div class="window-dragbar" style="touch-action: none;">
+        ::::
+        </div><div class="window-toolbar" style="touch-action: none;">
+        <div class="nav-options" style="display: none; touch-action: none;">
+          <button class="toolbar-button" id="backButton" style="touch-action: none;"><i class="fa-solid fa-arrow-left" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" id="forthButton" style="touch-action: none;"><i class="fa-solid fa-arrow-right" style="touch-action: none;" aria-hidden="true"></i></button>
+        </div>
+        <div class="search-bar" style="touch-action: none;">
+          <i class="fa-solid fa-magnifying-glass fa-lg" style="margin-right: 0.5rem; touch-action: none;" aria-hidden="true"></i>
+          <input type="text" placeholder="Search" class="search-box" contenteditable="true" style="touch-action: none;" value="https://1a31e613-d751-44e7-82aa-d2d0081c52f8.mdnplay.dev/shared-assets/videos/flower.webm">
+        </div>
+        <div class="window-options" style="touch-action: none;">
+          <button id="lockButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-unlock" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button id="closeButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-x" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="touch-action: none;" id="fullscreenButton"><i class="fa-solid fa-up-right-and-down-left-from-center" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="touch-action: none;" id="minimizeButton"><i class="fa-solid fa-minus" style="touch-action: none;" aria-hidden="true"></i></button>
+        </div>
+        </div></div>
+      <div class="resize-handle" style="translate: none; rotate: none; scale: none; transform: translate3d(960px, 640px, 0px); touch-action: none; cursor: grab; user-select: none; z-index: 1030;"></div><video class="window-content" style="touch-action: none;" name="pCIK4CleEOf5" src="https://1a31e613-d751-44e7-82aa-d2d0081c52f8.mdnplay.dev/shared-assets/videos/flower.webm" id="pCIK4CleEOf5" controls=""></video></div></div></div></div>
 	
 	
-<div id="wrapper" class="">
-		<div id="participants" class=""></div>
-		<div id="miscContainer">
-			<div id="clients">
-			  <p class="" style="position: relative; z-index: 99;">Clients:</p>
-			  <ul id="clientList"></ul>
-			</div>
-			<form action="" enctype="multipart/form-data" method="post">
-				<input name="file" type="file" autocomplete="off" multiple="">
-				<input type="submit" value="Upload" autocomplete="off">
-			</form>
-		</div>
-    </div></body></html>
+<div id="wrapper" class=""></div><style id="style-XsRU9TOUc">.pXsRU9TOUc {border-color: #1ad74b; outline: #1ad74b; color: #1ad74b;} .pXsRU9TOUc .settings-button,.pXsRU9TOUc .open-layers-button {background-color: #1ad74b;} .pXsRU9TOUc .sidebar,.pXsRU9TOUc .add-button,.pXsRU9TOUc .invite-button,.pXsRU9TOUc .layers-sidebar,.pXsRU9TOUc .participant-item-avatar {background-color: #1ad74b; filter: brightness(0.9);}</style></body></html>
