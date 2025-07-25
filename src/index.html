@@ -991,7 +991,164 @@
     
 
     
-    <div id="wrapper" class=""><div id="participants" class=""></div><div class="window-container lock-drag" id="window-1753463997413-17" style="translate: none; rotate: none; scale: none; user-select: text; z-index: 1044; top: 192px; left: 0px; height: 1984px; width: 1280px;" data-window-number="1"><div class="window-title" style="">Window 1</div>
+    <div id="wrapper" class=""><div id="participants" class=""><div class="participant p4vG144IjO" id="participant-4vG144IjO"><div class="participantView p4vG144IjO" id="participantView-4vG144IjO" style="width: 1710px; height: 1270px; translate: none; rotate: none; scale: none; transform: translate(0px);"><i class="fa fa-3x fa-mouse-pointer participantCursor p4vG144IjO" id="participantCursor-4vG144IjO" aria-hidden="true" style="translate: none; rotate: none; scale: none; transform: translate(1660px, 19px); display: none;"></i></div><transient id="controlView-4vG144IjO" class="controlView p4vG144IjO"><div id="taskbar-4vG144IjO" class="ui"><div class="main-interface">
+    
+    <button id="settings-button" class="settings-button">
+    <i class="fas fa-cog"></i> Settings
+    </button><button id="view-mode" class="settings-button">Individual</button><button id="openLayersButton" class="open-layers-button">☰ Layers</button><button id="toggleEditButton" class="settings-button">Toggle Edit Mode</button><button id="addWindowButton" class="settings-button">
+    Add Window</button>
+    <!-- Your main content would go here --><select class="add-select">
+              <option value="https://be6e5700-67aa-44df-adc8-5cb4840e155f.mdnplay.dev/shared-assets/images/examples/surfer.jpg">Image</option><option value="https://1a31e613-d751-44e7-82aa-d2d0081c52f8.mdnplay.dev/shared-assets/videos/flower.webm">Video</option><option value="https://videoplayground.xyz/frontpage/">Webstrate (front page)</option><option value="https://videoplayground.xyz/helpless-turkey-86/">Webstrate (dev Playground)</option><option value="https://wikipedia.com">Wikipedia</option><option value="https://playingcards.io/357gwm">Chess</option>
+              <option value="https://www.watchparty.me/watch/null-run-perceive">Watch Party</option>
+              <option value="https://jukebox.today/videoplayground">Jukebox</option><option value="https://demo.webstrates.net/curvy-owl-14/">Tank Trouble</option>
+              
+            </select>
+    </div><div id="settings" class="settings-overlay" style="display: none;">
+    <div class="settings-container">
+      <!-- Left sidebar navigation -->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <h3>Settings</h3>
+          <button id="close-settings" class="close-button">×</button>
+        </div>
+        <ul class="sidebar-menu">
+          <li class="menu-item active" data-content="participant-list">
+            <span><i class="fas fa-users"></i> Participant List</span>
+          </li>
+          <li class="menu-item" data-content="customize">
+            <span><i class="fas fa-paint-brush"></i> Customize</span>
+          </li>
+          <li class="menu-item" data-content="storage-space">
+            <span><i class="fas fa-images"></i> Storage Space</span>
+          </li><li class="menu-item" data-content="room-presets">
+            <span><i class="fas fa-images"></i>Room Presets</span>
+          </li><li class="menu-item" data-content="scripts-list">
+            <span><i class="fas fa-images"></i>Scripts and Styles</span>
+          </li>
+          <li class="menu-item" data-content="additional-feature">
+            <span><i class="fas fa-ellipsis-h"></i> Other</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Content area -->
+      <div class="content-area">
+        <div id="participant-list" class="content-section active">
+          <h2>Participant List</h2>
+          <div class="participant-item-container"><div class="participant-item">
+            <div class="participant-item-avatar"></div>
+            <div>4vG144IjO</div>
+        </div></div>
+          <div class="invite-section">
+            <input type="email" placeholder="Enter invitee's email" class="email-input">
+            <button class="invite-button">Invite</button>
+            <div class="copy-link">
+              <i class="fas fa-copy copy-icon"></i>
+              <span class="copy-text">Copy Link</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="customize" class="content-section">
+          <h2>Customize</h2>
+          <div class="customize-option">
+            <div class="option-label">Preset</div>
+            <div class="toggle-button off" data-option="preset"></div>
+            <select class="preset-select">
+              <option value="default">Default</option>
+              <option value="dark">Dark Mode</option>
+              <option value="light">Light Mode</option>
+              <option value="professional">Professional</option>
+            </select>
+          </div>
+          <div class="customize-option">
+            <div class="option-label">Mini Map</div>
+            <div class="toggle-button off" data-option="minimap"></div>
+          </div>
+
+          <div class="customize-option">
+    <div class="option-label">Background Image</div>
+    <button id="noneButton">None</button>
+<input type="file" class="background-image-uploader" accept="image/*"></div><h3>Color Settings</h3>
+          <div class="color-option">
+            <div class="option-label">Background</div>
+            <div class="color-picker-container">
+              <input type="color" class="color-picker" value="#ffffff" data-target="background">
+              <input type="text" class="rgb-input" placeholder="RGB" data-target="background">
+            </div>
+          </div>
+          <div class="color-option">
+            <div class="option-label">Elements</div>
+            <div class="color-picker-container">
+              <input type="color" class="color-picker" value="#f0f0f0" data-target="elements">
+              <input type="text" class="rgb-input" placeholder="RGB" data-target="elements">
+            </div>
+          </div>
+          <div class="color-option">
+            <div class="option-label">Setting Window</div>
+            <div class="color-picker-container">
+              <input type="color" class="color-picker" value="#2c3e50" data-target="settings">
+              <input type="text" class="rgb-input" placeholder="RGB" data-target="settings">
+            </div>
+          </div>
+        </div>
+
+        <div id="storage-space" class="content-section">
+          <h2>Storage Space</h2>
+          <div class="image-grid-container">
+            <div class="image-grid">
+              <!-- Images will be added here dynamically -->
+              <div class="image-item"><img src="https://videoplayground.xyz/favicon.ico" class="preset" data-preset-id="note" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>note</h3></div><div class="image-item"><img src="https://videoplayground.xyz/favicon.ico" class="preset" data-preset-id="chessboard" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>chessboard</h3></div></div>
+          </div>
+          <div class="upload-section">
+  <form action="" enctype="multipart/form-data" method="post">
+    <input name="file" type="file" autocomplete="off" multiple="">
+    <input type="submit" value="Upload" autocomplete="off">
+  </form>
+  <button class="add-button">Add</button>
+</div>
+        </div>
+        <div id="room-presets" class="content-section">
+          <h2>Room Presets (coming soon)</h2>
+          <div class="image-grid-container">
+            <div class="image-grid">
+              <!-- Images will be added here dynamically -->
+              </div>
+          </div>
+          <div class="upload-section">
+            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+            <input type="text" placeholder="insert URL here" class="url-input">
+            <button class="add-button">Add</button>
+          </div>
+        </div>
+        
+        <div id="scripts-list" class="content-section">
+          <h2>Scripts and Styles (coming soon)</h2>
+          <div class="script-item-container">
+            <div class="script-item"></div><!-- scripts will be added here dynamically  Participants will be added here dynamically -->
+            </div>
+          <div class="reload-section">
+            <h3>Script changes will take effect on reload</h3><h3>
+<!--             <input type="email" placeholder="Enter invitee's email" class="email-input"> -->
+            <button class="reload-button">Reload</button>
+<!--             <div class="copy-link">
+              <i class="fas fa-copy copy-icon"></i>
+              <span class="copy-text">Copy Link</span>
+            </div> -->
+          </h3></div>
+        </div>
+        
+        <div id="additional-feature" class="content-section">
+          <h2>Other Features</h2>
+          <p>Additional features will be added here.</p>
+        </div>
+      </div>
+    </div>
+    </div><div id="layersMenu" class="layers-sidebar">
+        <span class="close-button" onclick="closeLayersMenu()" id="closeLayersButton">×</span>
+        <h2>Layers</h2>
+        <ul id="layersList"><li data-window-id="window-1753463997413-17"><span class="drag-handle" title="Drag to reorder">≡</span><input type="text" class="layer-rename"><span class="layer-eye" title="Toggle visibility"><i class="fa-regular fa-eye"></i></span><span class="layer-close" title="Close window"><i class="fa-solid fa-xmark"></i></span></li><li data-window-id="window-1753470565851-0"><span class="drag-handle" title="Drag to reorder">≡</span><input type="text" class="layer-rename"><span class="layer-eye" title="Toggle visibility"><i class="fa-regular fa-eye"></i></span><span class="layer-close" title="Close window"><i class="fa-solid fa-xmark"></i></span></li><li data-window-id="window-1753470422737-2"><span class="drag-handle" title="Drag to reorder">≡</span><input type="text" class="layer-rename"><span class="layer-eye" title="Toggle visibility"><i class="fa-regular fa-eye"></i></span><span class="layer-close" title="Close window"><i class="fa-solid fa-xmark"></i></span></li><li data-window-id="window-1753470257641-1"><span class="drag-handle" title="Drag to reorder">≡</span><input type="text" class="layer-rename"><span class="layer-eye" title="Toggle visibility"><i class="fa-regular fa-eye"></i></span><span class="layer-close" title="Close window"><i class="fa-solid fa-xmark"></i></span></li></ul>
+    </div></div></transient></div></div><div class="window-container lock-drag" id="window-1753463997413-17" style="translate: none; rotate: none; scale: none; user-select: text; z-index: 1044; top: 192px; left: 0px; height: 1984px; width: 1280px;" data-window-number="1"><div class="window-title" style="">Window 1</div>
 
 
 
@@ -1028,7 +1185,7 @@
 			outline: none;
 			box-shadow: 15px 15px 20px gray;
 		}
-	</style><div class="note" contenteditable="true" style=""><div style="">I realized this could be a welcome message for participants with instructions/reference and stuff</div><div style=""><br style=""></div><div style="">but for now its just us lol</div><div style=""><br style=""></div><div style="">thank you for developing, testing and documenting feedback/bugs!! it really helps!</div><div style="">thank you Bruno for setting up the feedback table which I should be using right now</div><div style=""><br style=""></div><div style="">apologies in advance for this wall of text</div><div style=""><br style=""></div><div style="">"patch notes"</div><div style="">v0.7 - helpless-turkey-86</div><div style="">- kill draggable objs to avoid possible memory leak</div><div style="">- restyle ui in a way that sucks slightly less</div><div style="">- draggables always snap to grid</div><div style="">- toggling edit mode shows grid</div><div style="">- restyled window containers with padding on the edges</div><div style="">- - sorry if anything broke and lmk if anything looks weird</div><div style="">-fixed background change to stop double upload</div><div style=""><br style=""></div><div style="">current tasks (roughly priority order)</div><div style="">- electron app: GSAP flip between participant view presets [julian]</div><div style="">- redesign toolbar</div><div style="">- design preset/prearranged rooms</div><div style="">- document feedback</div><div style=""><br style=""></div><div style="">next steps</div><div style="">- triage testing feedback</div><div style="">- write a README/how to use</div><div style="">- multiselect windows (feels high priority to me)</div><div style="">- resize wrapper element</div><div style="">- more consistent&nbsp;(auto/stateful)&nbsp;window address functionality</div><div style="">- more consistent (auto/stateful) window naming</div><div style="">- more intuitive add window flow (drag+drop?)</div><div style="">- smart/auto-sort z-indices (toggleable)</div><div style="">- scripts and styles easy toggle (coming soon)</div><div style="">- restyle windows from settings ("elements" under "customize" currently does nothing)</div><div style=""><br style=""></div><div style="">notes/ramble</div><div style=""><div style="">- This is a local copy of this note spawned for each webstrate, but we could have one live/shared notepad/playground if we wanted</div><div style="">- - we could also just link to a google doc</div><div style="">- strongly recommend reading up a little bit on GSAP Flip (and GSAP in general) if you're interested in improving the UX animations/tweens/"juice"</div></div><div style="">- ideally: setting up a chess board, moving the pieces around on the board etc feels snappy and intuitive&nbsp;in context with other windows in the playground</div><div style="">- look into GSAP scrollsmoother</div><div style="">-- WASD camera navigation</div><div style="">- unsure: performance issues? sometimes i'm lagging with a lot of windows</div></div></div></div><div class="window-container" id="window-1753470257641-1" style="translate: none; rotate: none; scale: none; touch-action: none; cursor: grab; user-select: none; z-index: 2; top: 0px; left: 0px;" data-window-number="2"><div class="window-title" style="touch-action: none;">Window 2</div>
+	</style><div class="note" contenteditable="true" style=""><div style="">I realized this could be a welcome message for participants with instructions/reference and stuff</div><div style=""><br style=""></div><div style="">but for now its just us lol</div><div style=""><br style=""></div><div style="">thank you for developing, testing and documenting feedback/bugs!! it really helps!</div><div style="">thank you Bruno for setting up the feedback table which I should be using right now</div><div style=""><br style=""></div><div style="">apologies in advance for this wall of text</div><div style=""><br style=""></div><div style="">"patch "</div><div style="">v0.7 - helpless-turkey-86</div><div stnotesyle=""><div style="">-incorporated Bruno's background editor</div>- kill draggable objs to avoid possible memory leak</div><div style="">- restyle ui in a way that sucks slightly less</div><div style="">- draggables always snap to grid</div><div style="">- toggling edit mode shows grid</div><div style="">- restyled window containers with padding on the edges</div><div style="">- - sorry if anything broke and lmk if anything looks weird</div><div style="">-fixed background change to stop double upload</div><div style=""><br style=""></div><div style="">current tasks (roughly priority order)</div><div style="">- electron app: GSAP flip between participant view presets [julian]</div><div style="">- redesign toolbar</div><div style="">- design preset/prearranged rooms</div><div style="">- document feedback</div><div style=""><br style=""></div><div style="">next steps</div><div style="">- triage testing feedback</div><div style="">- write a README/how to use</div><div style="">- multiselect windows (feels high priority to me)</div><div style="">- resize wrapper element</div><div style="">- more consistent&nbsp;(auto/stateful)&nbsp;window address functionality</div><div style="">- more consistent (auto/stateful) window naming</div><div style="">- more intuitive add window flow (drag+drop?)</div><div style="">- smart/auto-sort z-indices (toggleable)</div><div style="">- scripts and styles easy toggle (coming soon)</div><div style="">- restyle windows from settings ("elements" under "customize" currently does nothing)</div><div style=""><br style=""></div><div style="">notes/ramble</div><div style=""><div style="">- This is a local copy of this note spawned for each webstrate, but we could have one live/shared notepad/playground if we wanted</div><div style="">- - we could also just link to a google doc</div><div style="">- strongly recommend reading up a little bit on GSAP Flip (and GSAP in general) if you're interested in improving the UX animations/tweens/"juice"</div></div><div style="">- ideally: setting up a chess board, moving the pieces around on the board etc feels snappy and intuitive&nbsp;in context with other windows in the playground</div><div style="">- look into GSAP scrollsmoother</div><div style="">-- WASD camera navigation</div><div style="">- unsure: performance issues? sometimes i'm lagging with a lot of windows</div></div></div></div><div class="window-container" id="window-1753470257641-1" style="translate: none; rotate: none; scale: none; touch-action: none; cursor: grab; user-select: none; z-index: 2; top: 0px; left: 0px;" data-window-number="2"><div class="window-title" style="touch-action: none;">Window 2</div>
 
 
 
@@ -1094,7 +1251,7 @@
           <button class="toolbar-button" style="" id="minimizeButton"><i class="fa-solid fa-minus" style="" aria-hidden="true"></i></button>
         </div>
         </div></div>
-      <div class="resize-handle lock-drag" style="translate: none; rotate: none; scale: none; transform: translate3d(1600px, 1088px, 0px); user-select: text; z-index: 1041;"></div><object class="window-content" data="https://docs.google.com/spreadsheets/d/1sTrxka4QQkD3i5lVamCYuSQMQaBGd2A5t0VQDlh14wo/edit?usp=sharing" style="" id="t9kJBPTCFDTF" name="t9kJBPTCFDTF"></object></div></div>
+      <div class="resize-handle lock-drag" style="translate: none; rotate: none; scale: none; transform: translate3d(1600px, 1088px, 0px); user-select: text; z-index: 1041;"></div><iframe class="window-content" style="" id="t9kJBPTCFDTF" name="t9kJBPTCFDTF" _https:="" src="https://docs.google.com/spreadsheets/d/1sTrxka4QQkD3i5lVamCYuSQMQaBGd2A5t0VQDlh14wo/edit?usp=sharing&quot;"></iframe></div></div>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script><script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Draggable.min.js"></script><script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/DrawSVGPlugin.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/EaselPlugin.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Flip.min.js"></script>
@@ -3077,7 +3234,7 @@
           <button class="toolbar-button" style="touch-action: none;" id="minimizeButton"><i class="fa-solid fa-minus" style="touch-action: none;" aria-hidden="true"></i></button>
         </div>
         </div></div>
-      <div class="resize-handle" style="translate: none; rotate: none; scale: none; transform: translate3d(320px, 320px, 0px); touch-action: none; cursor: grab; user-select: none;"></div><object class="window-content" data="https://wikipedia.com" style="touch-action: none;" id="F5K4PIIt8yx5" name="F5K4PIIt8yx5"></object></div><div class="window-container" id="window-1753194288999-0" style="translate: none; rotate: none; scale: none; touch-action: none; cursor: grab; user-select: none; z-index: 1003; top: 576px; left: 128px;" data-window-number="2"><div class="window-title" style="touch-action: none;">Window 2</div>
+      <div class="resize-handle" style="translate: none; rotate: none; scale: none; transform: translate3d(320px, 320px, 0px); touch-action: none; cursor: grab; user-select: none;"></div><iframe class="window-content" src="https://wikipedia.com" style="touch-action: none;" id="F5K4PIIt8yx5" name="F5K4PIIt8yx5"></iframe></div><div class="window-container" id="window-1753194288999-0" style="translate: none; rotate: none; scale: none; touch-action: none; cursor: grab; user-select: none; z-index: 1003; top: 576px; left: 128px;" data-window-number="2"><div class="window-title" style="touch-action: none;">Window 2</div>
 
 
 
@@ -3183,4 +3340,4 @@
       <div class="resize-handle" style="translate: none; rotate: none; scale: none; transform: translate3d(960px, 640px, 0px); touch-action: none; cursor: grab; user-select: none; z-index: 1030;"></div><video class="window-content" style="touch-action: none;" name="pCIK4CleEOf5" src="https://1a31e613-d751-44e7-82aa-d2d0081c52f8.mdnplay.dev/shared-assets/videos/flower.webm" id="pCIK4CleEOf5" controls=""></video></div></div></div></div>
 	
 	
-</body></html>
+<style id="style-4vG144IjO">.p4vG144IjO {border-color: #3a0151; outline: #3a0151; color: #3a0151;} .p4vG144IjO .settings-button,.p4vG144IjO .open-layers-button {background-color: #3a0151;} .p4vG144IjO .sidebar,.p4vG144IjO .add-button,.p4vG144IjO .invite-button,.p4vG144IjO .layers-sidebar,.p4vG144IjO .participant-item-avatar {background-color: #3a0151; filter: brightness(0.9);}</style></body></html>
