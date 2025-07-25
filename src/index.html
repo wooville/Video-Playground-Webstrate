@@ -1,4 +1,4 @@
-<html><head>
+<html style="touch-action: pan-x; scroll-behavior: auto;"><head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <script crossorigin="anonymous" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -18,6 +18,7 @@
     top:0px;
   }
 
+  .edit,
   .background0 {
     background-size:320px 320px, 320px 320px, 64px 64px, 64px 64px;
     background-position:-1px -1px, -1px -1px, -1px -1px, -1px -1px;
@@ -27,20 +28,24 @@
       linear-gradient(rgba(0,0,0,.1) 1px, transparent 1px),
       linear-gradient(90deg, rgba(0,0,0,.1) 1px, transparent 1px);
   }
-  
+
   .background1{
     background: radial-gradient(80% 40%, white, black);
   }
-  
+
   .background2 {
     background-image: url(https://cdn-dynmedia-1.microsoft.com/is/image/microsoftcorp/Blade011_Feature_VP5_Desktop_Video_Trigger_1864x1052_Desktop_tbmnl_en-us?scl=1);
+  }
+
+  .participant{
+    z-index: 999999;
   }
 
   .participantView {
     /*         height: 100%;
     width: 100%; */
     box-sizing: border-box;
-    z-index: 9999;
+    z-index: 999999;
     position: absolute;
     border-style: solid;
     /*     box-shadow: 0px 0px 2px; */
@@ -50,7 +55,7 @@
   .participantCursor {
     /*     height: 64px;
     width: 64px; */
-    z-index: 9999;
+    z-index: 999999;
     /*         color: #ffffff; */
     position: absolute;
     /*     transform: translate(-50%, -50%); */
@@ -87,12 +92,14 @@
     z-index: 999999;
   }
   .ui {
+    cursor:auto;
     z-index: 999999;
   }
   .mainInterface {
     z-index: 999999;
   }
   .settings {
+    cursor:auto;
     z-index: 999999;
   }
   .taskbar {
@@ -100,19 +107,6 @@
     height:100%;
   }
 </style><style>
-  /*     #chessWrapper {
-  pointer-events: none
-  } */
-
-  .chessground {
-    width: 500px;
-    height: 500px;
-  }
-
-  cg-board {
-    background-color: #bfcfdd;
-  }
-  </style><style>
   .box {
     overflow: clip;
     overscroll-behavior: contain;
@@ -191,10 +185,10 @@
   
   <style id="layers-sidebar">
   .layers-sidebar {
+    z-index: 999999;
     height: 100%;
     width: 0;
     position: fixed;
-    z-index: 1001;
     top: 0;
     right: 0;
     background-color: #4A6FA5;
@@ -204,20 +198,20 @@
     align-items: center;
     font-family: Arial, Helvetica, sans-serif;
     color: black;
-}
+  }
   .layers-sidebar.layers-on {
     width:400px;
   }
 
-.close-button {
+  .close-button {
     top: 20px;
     position: absolute;
     right: 30px;
     font-size: 48px;
     margin-left: 20px;
     cursor: pointer;
-}
-  </style><style id="layers-button">
+  }
+</style><style id="layers-button">
   .open-layers-button {
     font-family: Arial, Helvetica, sans-serif;
     color: white;
@@ -247,6 +241,7 @@
 }
   </style><style id="layers-list">
 #layersList {
+  z-index: 999999;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -256,6 +251,7 @@
 }
 
 #layersList li {
+   z-index: 999999;
   padding: 8px 12px;
   background: #f5f5f5;
   margin-bottom: 4px;
@@ -321,224 +317,11 @@
   color: #f00;
   border-radius: 3px;
 }
-  </style><style id="window-style">
-  iframe {
-    border:none;
-  }
-
-  .window-container {
-    /*       overflow: hidden; */
-    text-align: center;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    /*         overflow: clip; */
-    width: 20rem;
-    height: 20rem;
-    background-color: rgba(0,0,0,0);
-    position: absolute;
-    outline: none;
-    /*       padding-top: 6rem; */
-    /*         resize: both; */
-  }
-  .window-container:hover {
-    background-color: rgba(0,0,0,0);
-    outline-color: black;
-    outline: solid;
-  }
-  #wrapper.edit .window-container .window-controls {
-    visibility:visible;
-  }
-  #wrapper.edit .window-container .resize-handle {
-    visibility:visible;
-  }
-  #wrapper.edit .window-container.lock-drag {
-    outline-color: yellow;
-  }
-
-  .window-controls {
-    visibility: hidden;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    height: 6rem;
-    width: 100%;
-    position: absolute;
-    background-color: fff;
-    /*       border-color: black;
-    border-style: solid;
-    border-radius: .5rem; */
-    margin-top: -6rem;
-    outline-style: solid;
-    pointer-events: all;
-  }
-
-  .window-dragbar {
-    box-sizing: border-box;
-    height: 2rem;
-    width: 100%;
-    font-size: larger;
-    font-weight: bold;
-    cursor: move;
-    position: absolute;
-    text-align: center;
-    background-color: #fff;
-  }
-
-  .window-toolbar {
-    box-sizing: border-box;
-    width: 100%;
-    height: 4rem;
-    background-color: #03A6A1;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    column-gap: 1rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    top: 2rem;
-    position: absolute;
-  }
-
-  .window-content-container {
-    overflow: scroll;
-    box-sizing: border-box;
-    /*         background-color: #B5FCCD; */
-    /*         flex-grow: 1; */
-    background-color: rgba(0,0,0,0);
-    width: 100%;
-    height: 100%;
-    /*       text-align: center;
-    align-items: center; */
-    position: absolute;
-    /*       padding-bottom: 6rem; */
-  }
-
-  .window-content {
-    /*       overflow: auto; */
-    box-sizing: border-box;
-    /*         background-color: #B5FCCD; */
-    /*         flex-grow: 1; */
-    background-color: rgba(0,0,0,0);
-    width: 100%;
-    height: 100%;
-    /*       text-align: center;
-    align-items: center; */
-    position: absolute;
-    aspect-ratio: 1;
-    padding:1rem;
-/*     object-fit: scale-down; */
-    /*       padding-bottom: 6rem; */
-  }
-/*   .image-item {
-    aspect-ratio: 1;
-    background-color: rgba(0, 0, 0, 0.05);
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-
-  .image-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  } */
-
-  .content-frame {
-    width: 100%;
-    height: 100%;
-  }
-
-  /*     .box {
-  overflow: clip;
-  overscroll-behavior: contain;
-  box-sizing: border-box;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  /*     top: 4%;
-  left: 5%; */
-  background: transparent;
-  justify-content: center;
-  align-items: center;
-  padding: 16px;
-  } */
-
-  #closeButton {
-    background-image: linear-gradient(45deg, #ff1c1c 0%, hsl(0, 100%, 53%)  51%);
-  } 
-
-  .toolbar-button {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    background-image: linear-gradient(45deg, #B5FCCD 0%, #7AC6D2  51%);
-    border-style: dashed;
-  }
-
-  .search-box {
-    width: 10rem;
-    height: 2rem;
-    border-radius: 1rem;
-    text-align: center;
-    align-self: center;
-    background-color: white;
-    white-space: nowrap;
-    overflow: hidden;
-  }
-
-  .toolbar-button:hover {
-    cursor: pointer;
-  }
-
-  .toolbar-button:active {
-    opacity: 0.8;
-  }
-
-  .lock-active {
-    background-image: linear-gradient(45deg, yellow 0%, gold 51%);
-    color: black;
-  }
-
-  .resize-handle {
-    visibility:hidden;
-    box-sizing: border-box;
-    position: absolute;
-    width: 0px;
-    height: 0px;
-    margin-left: -2rem;
-    margin-top: -2rem;
-    border-style: solid;
-    border-width: 0 0 2rem 2rem;
-    border-color: transparent transparent #aaa transparent;
-    /*     border-color:inherit; */
-    cursor: nw-resize !important;
-    z-index: 9;
-  }
-  
-  .window-container.playground-active {
-    outline:solid;
-  }
-  
-  .window-title {
-    visibility: hidden;
-    pointer-events: none;
-    font-size: 2rem;
-    margin-top: -3rem;
-    z-index: 9;
-  }
-  
-  .window-container:hover .window-title {
-    visibility: visible;
-  }
-</style><style id="settings-style">
+  </style><style id="settings-style">
   /* Main interface styles */
   .main-interface {
-    position: absolute;
+    z-index:999999;
+    position: fixed;
     padding: 20px;
     display: flex;
     justify-content: flex-end;
@@ -563,7 +346,7 @@
     display: flex;
     align-items: center;
     margin: .5rem;
-    z-index: 1000;
+/*     z-index: 1000; */
   }
   
   #view-mode {
@@ -583,12 +366,14 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     display: none;
-    z-index: 1000;
+    z-index: 999999;
     justify-content: center;
     align-items: center;
   }
 
   .settings-container {
+    cursor:auto;
+    z-index: 99999;
     display: flex;
     width: 80%;
     max-width: 1000px;
@@ -601,6 +386,7 @@
 
   /* Sidebar styles */
   .sidebar {
+    z-index: 999999;
     width: 250px !important; /* Added !important to ensure this takes precedence */
     min-width: 250px !important; /* Added to prevent shrinking */
     max-width: 250px !important; /* Added to prevent expanding */
@@ -612,6 +398,7 @@
   }
 
   .sidebar-header {
+    z-index: 999999;
     padding: 20px;
     display: flex;
     justify-content: space-between;
@@ -620,6 +407,7 @@
   }
 
   .close-button {
+    z-index: 999999;
     background: none;
     border: none;
     color: white;
@@ -660,6 +448,7 @@
 
   /* Content area styles */
   .content-area {
+    z-index: 999999;
     flex-grow: 1;
     padding: 20px;
     overflow-y: auto;
@@ -892,10 +681,53 @@
     border-radius: 5px;
     background-color: white;
   }
+  
+  /* script List Styles */
+  .script-item-container {
+    max-height: calc(100% - 180px);
+    overflow-y: auto;
+    margin-bottom: 0;
+  }
+
+  .script-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+  }
+
+  .script-item-checkbox {
+    width: 2rem;
+    height: 2rem;
+    margin-right: 1rem;
+  }
+
+  .invite-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+    position: sticky;
+    bottom: 0;
+    margin-top: 20px;
+  }
 
   .add-button {
     padding: 10px 15px;
     background-color: #4a6fa5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .delete-button {
+    padding: 10px 15px;
+    background-color: red;
     color: white;
     border: none;
     border-radius: 5px;
@@ -912,13 +744,358 @@
     width:100%;
   }
 </style>
-  </head>
-  <body>
+  <style id="window-style">
+  iframe {
+    border:none;
+  }
+
+  .window-container {
+    will-change: transform;
+    /*       overflow: hidden; */
+/*     text-align: center; */
+    box-sizing: border-box;
+    /*     display: flex; */
+/*     flex-direction: column; */
+    /*         overflow: clip; */
+    width: 20rem;
+    height: 20rem;
+    background-color: rgba(0,0,0,0);
+    position: absolute;
+    outline: none;
+/*     margin:-1rem; */
+/*     outline-offset:1rem; */
+/*     padding: 6rem; */
+    /*     margin:-1rem;
+    padding-left:1rem; */
+    /*     padding-top:4rem; */
+    /*       padding-top: 6rem; */
+    /*         resize: both; */
+  }
+  .window-container:hover {
+    background-color: rgba(0,0,0,0);
+    outline-color: black;
+    outline: solid;
+  }
+  #wrapper.edit .window-container .window-controls {
+    visibility:visible;
+  }
+  #wrapper.edit .window-container .resize-handle {
+    visibility:visible;
+  }
+  .window-container.lock-drag {
+    outline-color: yellow;
+  }
+  .window-container.lock-drag .window-title {
+    color: yellow;
+  }
+
+  .window-controls {
+    top:0px;
+    left:0px;
+    visibility: hidden;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    height: 6rem;
+    width: 100%;
+    position: absolute;
+    background-color: fff;
+    /*       border-color: black;
+    border-style: solid;
+    border-radius: .5rem; */
+    margin-top: -6rem;
+    border-style: solid;
+    pointer-events: all;
+  }
+
+  .window-dragbar {
+    box-sizing: border-box;
+    height: 2rem;
+    width: 100%;
+    font-size: larger;
+    font-weight: bold;
+    cursor: move;
+    position: absolute;
+    text-align: center;
+    background-color: #fff;
+  }
+
+  .window-toolbar {
+    box-sizing: border-box;
+    width: 100%;
+    height: 4rem;
+    top:0px;
+    left:0px;
+    background-color: #03A6A1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    column-gap: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    top: 2rem;
+    position: absolute;
+  }
+
+  .window-content-container {
+    overflow: scroll;
+    box-sizing: border-box;
+    /*         background-color: #B5FCCD; */
+    /*         flex-grow: 1; */
+    background-color: rgba(0,0,0,0);
+    width: 100%;
+    height: 100%;
+    /*       text-align: center;
+    align-items: center; */
+    position: absolute;
+    /*       padding-bottom: 6rem; */
+  }
+
+  .window-content {
+    /*       overflow: auto; */
+    box-sizing: border-box;
+    /*         background-color: #B5FCCD; */
+    /*         flex-grow: 1; */
+    background-color: rgba(0,0,0,0);
+    width: 100%;
+    height: 100%;
+/*     text-align: center; */
+/*     align-items: left; */
+    position: absolute;
+    top:0px;
+    left:0px;
+    aspect-ratio: 1;
+    padding:4rem;
+/*     margin-left: -1rem; */
+/*     margin-top: .333rem; */
+/*         padding-block: 2rem;
+    padding-inline: 2rem; */
+    /*     padding:1rem;
+    margin:-1rem; */
+    /*     object-fit: scale-down; */
+    /*       padding-bottom: 6rem; */
+  }
+  /*   .image-item {
+  aspect-ratio: 1;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  }
+
+  .image-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  } */
+
+  .content-frame {
+    width: 100%;
+    height: 100%;
+  }
+
+  /*     .box {
+  overflow: clip;
+  overscroll-behavior: contain;
+  box-sizing: border-box;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  /*     top: 4%;
+  left: 5%; */
+  background: transparent;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  } */
+
+  #closeButton {
+    background-image: linear-gradient(45deg, #ff1c1c 0%, hsl(0, 100%, 53%)  51%);
+  } 
+
+  .toolbar-button {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background-image: linear-gradient(45deg, #B5FCCD 0%, #7AC6D2  51%);
+    border-style: dashed;
+  }
+
+  .search-box {
+    width: 10rem;
+    height: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+    align-self: center;
+    background-color: white;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .toolbar-button:hover {
+    cursor: pointer;
+  }
+
+  .toolbar-button:active {
+    opacity: 0.8;
+  }
+
+  .lock-active {
+    background-image: linear-gradient(45deg, yellow 0%, gold 51%);
+    color: black;
+  }
+
+  .resize-handle {
+    visibility:hidden;
+    box-sizing: border-box;
+    position: absolute;
+    width: 0px;
+    height: 0px;
+    margin-left: -2rem;
+    margin-top: -1.5rem;
+    border-style: solid;
+    border-width: 0 0 2rem 2rem;
+    border-color: transparent transparent #aaa transparent;
+    /*     border-color:inherit; */
+    cursor: nw-resize !important;
+    z-index: 9;
+  }
+
+  .window-container.playground-active {
+    outline:solid;
+  }
+
+  .window-title {
+    visibility: hidden;
+    pointer-events: none;
+    font-size: 2rem;
+    margin-top: -3rem;
+    z-index: 9;
+  }
+
+  .window-container:hover .window-title {
+    visibility: visible;
+  }
+</style></head>
+  <body style="
+          background-image: url('abstract-background-blur-949587.jpg');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-attachment: fixed;
+        ">
     
 
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Draggable.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/DrawSVGPlugin.min.js"></script>
+    
+    <div id="wrapper" class=""><div id="participants" class=""></div><div class="window-container lock-drag" id="window-1753463997413-17" style="translate: none; rotate: none; scale: none; user-select: text; z-index: 1044; top: 192px; left: 0px; height: 1984px; width: 1280px;" data-window-number="1"><div class="window-title" style="">Window 1</div>
+
+
+
+      <div class="window-controls" style=""><div class="window-dragbar" style="">
+        ::::
+        </div><div class="window-toolbar" style="">
+        <div class="nav-options" style="display: none;">
+          <button class="toolbar-button" id="backButton" style=""><i class="fa-solid fa-arrow-left" style="" aria-hidden="true"></i></button>
+          <button class="toolbar-button" id="forthButton" style=""><i class="fa-solid fa-arrow-right" style="" aria-hidden="true"></i></button>
+        </div>
+        <div class="search-bar" style="">
+          <i class="fa-solid fa-magnifying-glass fa-lg" style="margin-right: 0.5rem;" aria-hidden="true"></i>
+          <input type="text" placeholder="Search" class="search-box" contenteditable="true" style="" value="note">
+        </div>
+        <div class="window-options" style="">
+          <button id="lockButton" class="toolbar-button lock-active" style=""><i class="fa-solid fa-lock" style="" aria-hidden="true"></i></button>
+          <button id="closeButton" class="toolbar-button" style=""><i class="fa-solid fa-x" style="" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="" id="fullscreenButton"><i class="fa-solid fa-up-right-and-down-left-from-center" style="" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="" id="minimizeButton"><i class="fa-solid fa-minus" style="" aria-hidden="true"></i></button>
+        </div>
+        </div></div>
+      <div class="resize-handle lock-drag" style="translate: none; rotate: none; scale: none; transform: translate3d(1280px, 1984px, 0px); user-select: text; z-index: 1045;"></div><div id="032JbfyeMoO2" class="window-content" style="">
+
+<style id="style-note" type="" style="">
+		.note {
+			width: 100%;
+			min-height: 100%;
+			box-shadow: 5px 5px 10px gray;
+			background-color: rgb(255, 255, 150);
+			font-size: 24pt;
+			word-wrap: break-word;
+		}
+		.note:focus {
+			outline: none;
+			box-shadow: 15px 15px 20px gray;
+		}
+	</style><div class="note" contenteditable="true" style=""><div style="">I realized this could be a welcome message for participants with instructions/reference and stuff</div><div style=""><br style=""></div><div style="">but for now its just us lol</div><div style=""><br style=""></div><div style="">thank you for developing, testing and documenting feedback/bugs!! it really helps!</div><div style="">thank you Bruno for setting up the feedback table which I should be using right now</div><div style=""><br style=""></div><div style="">apologies in advance for this wall of text</div><div style=""><br style=""></div><div style="">"patch notes"</div><div style="">v0.7 - helpless-turkey-86</div><div style="">- kill draggable objs to avoid possible memory leak</div><div style="">- restyle ui in a way that sucks slightly less</div><div style="">- draggables always snap to grid</div><div style="">- toggling edit mode shows grid</div><div style="">- restyled window containers with padding on the edges</div><div style="">- - sorry if anything broke and lmk if anything looks weird</div><div style="">-fixed background change to stop double upload</div><div style=""><br style=""></div><div style="">current tasks (roughly priority order)</div><div style="">- electron app: GSAP flip between participant view presets [julian]</div><div style="">- redesign toolbar</div><div style="">- design preset/prearranged rooms</div><div style="">- document feedback</div><div style=""><br style=""></div><div style="">next steps</div><div style="">- triage testing feedback</div><div style="">- write a README/how to use</div><div style="">- multiselect windows (feels high priority to me)</div><div style="">- resize wrapper element</div><div style="">- more consistent&nbsp;(auto/stateful)&nbsp;window address functionality</div><div style="">- more consistent (auto/stateful) window naming</div><div style="">- more intuitive add window flow (drag+drop?)</div><div style="">- smart/auto-sort z-indices (toggleable)</div><div style="">- scripts and styles easy toggle (coming soon)</div><div style="">- restyle windows from settings ("elements" under "customize" currently does nothing)</div><div style=""><br style=""></div><div style="">notes/ramble</div><div style=""><div style="">- This is a local copy of this note spawned for each webstrate, but we could have one live/shared notepad/playground if we wanted</div><div style="">- - we could also just link to a google doc</div><div style="">- strongly recommend reading up a little bit on GSAP Flip (and GSAP in general) if you're interested in improving the UX animations/tweens/"juice"</div></div><div style="">- ideally: setting up a chess board, moving the pieces around on the board etc feels snappy and intuitive&nbsp;in context with other windows in the playground</div><div style="">- look into GSAP scrollsmoother</div><div style="">-- WASD camera navigation</div><div style="">- unsure: performance issues? sometimes i'm lagging with a lot of windows</div></div></div></div><div class="window-container" id="window-1753470257641-1" style="translate: none; rotate: none; scale: none; touch-action: none; cursor: grab; user-select: none; z-index: 2; top: 0px; left: 0px;" data-window-number="2"><div class="window-title" style="touch-action: none;">Window 2</div>
+
+
+
+      <div class="window-controls" style="touch-action: none;"><div class="window-dragbar" style="touch-action: none;">
+        ::::
+        </div><div class="window-toolbar" style="touch-action: none;">
+        <div class="nav-options" style="display: none; touch-action: none;">
+          <button class="toolbar-button" id="backButton" style="touch-action: none;"><i class="fa-solid fa-arrow-left" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" id="forthButton" style="touch-action: none;"><i class="fa-solid fa-arrow-right" style="touch-action: none;" aria-hidden="true"></i></button>
+        </div>
+        <div class="search-bar" style="touch-action: none;">
+          <i class="fa-solid fa-magnifying-glass fa-lg" style="margin-right: 0.5rem; touch-action: none;" aria-hidden="true"></i>
+          <input type="text" placeholder="Search" class="search-box" contenteditable="true" style="touch-action: none;">
+        </div>
+        <div class="window-options" style="touch-action: none;">
+          <button id="lockButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-unlock" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button id="closeButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-x" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="touch-action: none;" id="fullscreenButton"><i class="fa-solid fa-up-right-and-down-left-from-center" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="touch-action: none;" id="minimizeButton"><i class="fa-solid fa-minus" style="touch-action: none;" aria-hidden="true"></i></button>
+        </div>
+        </div></div>
+      <div class="resize-handle" style="translate: none; rotate: none; scale: none; transform: translate3d(320px, 320px, 0px); touch-action: none; cursor: grab; user-select: none;"></div><img class="window-content" src="https://videoplayground.xyz/helpless-turkey-86/construction0.gif" style="touch-action: none;" id="Ceh0eIv28rLT" name="Ceh0eIv28rLT"></div><div class="window-container" id="window-1753470422737-2" style="translate: none; rotate: none; scale: none; touch-action: none; cursor: grab; user-select: none; z-index: 3; top: 0px; left: 192px; height: 320px; width: 1088px;" data-window-number="3"><div class="window-title" style="touch-action: none;">Window 3</div>
+
+
+
+      <div class="window-controls" style="touch-action: none;"><div class="window-dragbar" style="touch-action: none;">
+        ::::
+        </div><div class="window-toolbar" style="touch-action: none;">
+        <div class="nav-options" style="display: none; touch-action: none;">
+          <button class="toolbar-button" id="backButton" style="touch-action: none;"><i class="fa-solid fa-arrow-left" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" id="forthButton" style="touch-action: none;"><i class="fa-solid fa-arrow-right" style="touch-action: none;" aria-hidden="true"></i></button>
+        </div>
+        <div class="search-bar" style="touch-action: none;">
+          <i class="fa-solid fa-magnifying-glass fa-lg" style="margin-right: 0.5rem; touch-action: none;" aria-hidden="true"></i>
+          <input type="text" placeholder="Search" class="search-box" contenteditable="true" style="touch-action: none;">
+        </div>
+        <div class="window-options" style="touch-action: none;">
+          <button id="lockButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-unlock" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button id="closeButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-x" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="touch-action: none;" id="fullscreenButton"><i class="fa-solid fa-up-right-and-down-left-from-center" style="touch-action: none;" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="touch-action: none;" id="minimizeButton"><i class="fa-solid fa-minus" style="touch-action: none;" aria-hidden="true"></i></button>
+        </div>
+        </div></div>
+      <div class="resize-handle" style="translate: none; rotate: none; scale: none; transform: translate3d(1088px, 320px, 0px); touch-action: none; cursor: grab; user-select: none; z-index: 1025;"></div><img class="window-content" src="https://videoplayground.xyz/helpless-turkey-86/construstion.gif" style="touch-action: none;" id="WKBmrhaZrsY3" name="WKBmrhaZrsY3"></div><div class="window-container lock-drag" id="window-1753470565851-0" style="translate: none; rotate: none; scale: none; user-select: text; z-index: 1042; top: 192px; left: 1280px; height: 1088px; width: 1600px;" data-window-number="4"><div class="window-title" style="">Window 4</div>
+
+
+
+      <div class="window-controls" style=""><div class="window-dragbar" style="">
+        ::::
+        </div><div class="window-toolbar" style="">
+        <div class="nav-options" style="display: none;">
+          <button class="toolbar-button" id="backButton" style=""><i class="fa-solid fa-arrow-left" style="" aria-hidden="true"></i></button>
+          <button class="toolbar-button" id="forthButton" style=""><i class="fa-solid fa-arrow-right" style="" aria-hidden="true"></i></button>
+        </div>
+        <div class="search-bar" style="">
+          <i class="fa-solid fa-magnifying-glass fa-lg" style="margin-right: 0.5rem;" aria-hidden="true"></i>
+          <input type="text" placeholder="Search" class="search-box" contenteditable="true" style="">
+        </div>
+        <div class="window-options" style="">
+          <button id="lockButton" class="toolbar-button lock-active" style=""><i class="fa-solid fa-lock" style="" aria-hidden="true"></i></button>
+          <button id="closeButton" class="toolbar-button" style=""><i class="fa-solid fa-x" style="" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="" id="fullscreenButton"><i class="fa-solid fa-up-right-and-down-left-from-center" style="" aria-hidden="true"></i></button>
+          <button class="toolbar-button" style="" id="minimizeButton"><i class="fa-solid fa-minus" style="" aria-hidden="true"></i></button>
+        </div>
+        </div></div>
+      <div class="resize-handle lock-drag" style="translate: none; rotate: none; scale: none; transform: translate3d(1600px, 1088px, 0px); user-select: text; z-index: 1041;"></div><object class="window-content" data="https://docs.google.com/spreadsheets/d/1sTrxka4QQkD3i5lVamCYuSQMQaBGd2A5t0VQDlh14wo/edit?usp=sharing" style="" id="t9kJBPTCFDTF" name="t9kJBPTCFDTF"></object></div></div>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script><script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Draggable.min.js"></script><script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/DrawSVGPlugin.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/EaselPlugin.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Flip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/GSDevTools.min.js"></script>
@@ -957,12 +1134,21 @@
 
     //     addParticipant(clientId);
     //     updateClientList();
-    
+//     const scrollContents = document.getElementById("contents");
+    //really neat
+//     let smoother = ScrollSmoother.create({
+//       wrapper: document.body,
+//       content: wrapper,
+//       smooth: 1,
+//       effects: true,
+//       normalizeScroll: true
+//     });
+
     updateParticipants();
     createTaskbar(clientId);
     updateClientList();
-//     saveRoomPreset();
-//     setupRoomPreset(0);
+    //     saveRoomPreset();
+    //     setupRoomPreset(0);
     //     const participantElement = participants.querySelector("#participant-"+clientId);
     //     const videoElement = participants.querySelector("#participantVideo-"+clientId);
 
@@ -987,7 +1173,7 @@
   });
   webstrate.on("clientJoin", function(clientId) {
     //         addParticipant(clientId);
-        updateClientList();
+    updateClientList();
     //     updateParticipants();
   });
   webstrate.on("clientPart", function(clientId) {
@@ -1042,7 +1228,7 @@
     }
   }
 
-  
+
 
   function addParticipant(id) {
     //     console.log("ADD_PARTICIPANT: " + id);
@@ -1170,7 +1356,6 @@
     xSetter(e.x);
     ySetter(e.y);
 
-
     participantCursor.style.display = "block";
   });
 
@@ -1222,8 +1407,8 @@
 
     initLayersList();
     controlView.append(taskbar);
-    const participantView = document.getElementById("participantView-"+webstrate.clientId);
-    participantView.append(controlView);
+    const participant = document.getElementById("participant-"+webstrate.clientId);
+    participant.append(controlView);
   }
 
   function initLayersList() {
@@ -1389,6 +1574,8 @@
       closeButton.title = 'Close window';
       closeButton.addEventListener('click', function(e) {
         e.stopPropagation();
+        var drag = Draggable.get(window);
+        if (drag) drag.kill();
         window.remove();
         updateLayersList();
       });
@@ -1637,12 +1824,12 @@
     });
   }
   
-  function handleMutationEdit(mutation){
-    if (mutation.oldValue.includes("edit") != mutation.target.className.includes("edit")) {
-//       console.log("edit toggle");
-      setupAllElements();
-    }
-  }
+//   function handleMutationEdit(mutation){
+//     if (mutation.oldValue.includes("edit") != mutation.target.className.includes("edit")) {
+// //       console.log("edit toggle");
+//       setupAllElements();
+//     }
+//   }
 
   function handleMutationLockDrag(mutation) {
     // check draggable locks
@@ -1674,7 +1861,7 @@
     subtree: true,
     //     characterDataOldValue: true // pass old data to callback
     attributes: true,
-    attributeOldValue: true,
+//     attributeOldValue: true,
     attributeFilter: ['class', 'style', 'data-scroll-left', 'data-scroll-top']
   });
 
@@ -2010,6 +2197,8 @@
     const menuItems = taskbar.querySelectorAll('.menu-item');
     const contentSections = taskbar.querySelectorAll('.content-section');
 
+    const assets = webstrate.assets;
+
     // Open task bar when settings button is clicked
     settingsButton.addEventListener('click', function() {
       settings.style.display = 'flex';
@@ -2112,7 +2301,11 @@
         const target = this.getAttribute('data-target');
         if (target === 'background') {
           document.body.style.backgroundColor = color;
-        } else if (target === 'settings') {
+        } else if (target === 'elements') {
+          console.log(color);
+          //           taskbar.querySelector('.sidebar').style.backgroundColor = color;
+        }
+        else if (target === 'settings') {
           taskbar.querySelector('.sidebar').style.backgroundColor = color;
         }
       });
@@ -2135,11 +2328,71 @@
           alert('Please enter a valid hex color (e.g., #FFFFFF)');
         }
       });
+
+      const backgroundUploader = taskbar.querySelector('.background-image-uploader');
+      const noneButton = taskbar.querySelector('#noneButton');
+      const bodyElement = document.body;
+
+      backgroundUploader.addEventListener('change', async function(event) {
+        const file = event.target.files[0];
+        if (!file || !file.type.startsWith('image/')) {
+          alert('Please upload a valid image file.');
+          return;
+        }
+
+        // Upload the file to Webstrates as an asset
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        var imageURL;
+
+        var imageResponse = await fetch(window.location.pathname + "/" + file.name, {
+            method: 'GET',
+          });
+        
+        if (imageResponse.ok) {
+            const assetName = file.name;
+            // The asset will be available at: <current webstrate URL>/<file.name>
+            imageURL = `${assetName}`;
+          } else {
+            alert('Failed to upload image.');
+          }
+
+        if (!imageURL) {
+          const response = await fetch(window.location.pathname, {
+            method: 'POST',
+            body: formData
+          });
+
+
+          if (response.ok) {
+            const assetName = file.name;
+            // The asset will be available at: <current webstrate URL>/<file.name>
+            imageURL = `${assetName}`;
+          } else {
+            alert('Failed to upload image.');
+          }
+        }
+
+        // Apply it to body (shared across all participants)
+        if (imageURL) bodyElement.setAttribute('style', `
+          background-image: url('${imageURL}');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-attachment: fixed;
+        `);
+      });
+
+      // Reset button
+      noneButton.addEventListener('click', function() {
+        bodyElement.removeAttribute('style');
+      });
+
     });
 
     // Sample Images for Storage Space
     const imageGrid = taskbar.querySelector('.image-grid');
-    const assets = webstrate.assets;
     const presets = templates.querySelectorAll(".preset");
 
     assets.forEach(assetObj => {
@@ -2193,8 +2446,8 @@
 
   function updateClientList() {
     //     console.log(webstrate.clients);
-//     var clientList = document.getElementById("clientList");
-//     if (clientList) clientList.replaceChildren(webstrate.clients);
+    //     var clientList = document.getElementById("clientList");
+    //     if (clientList) clientList.replaceChildren(webstrate.clients);
 
     const taskbar = document.getElementById("taskbar-"+webstrate.clientId);
     if (taskbar) {
@@ -2320,7 +2573,7 @@
     </button><button id="view-mode" class="settings-button">Individual</button><button id="openLayersButton" class="open-layers-button">☰ Layers</button><button id="toggleEditButton" class="settings-button">Toggle Edit Mode</button><button id="addWindowButton" class="settings-button">
     Add Window</button>
     <!-- Your main content would go here --><select class="add-select">
-              <option value="https://be6e5700-67aa-44df-adc8-5cb4840e155f.mdnplay.dev/shared-assets/images/examples/surfer.jpg">Image</option><option value="https://1a31e613-d751-44e7-82aa-d2d0081c52f8.mdnplay.dev/shared-assets/videos/flower.webm">Video</option><option value="https://videoplayground.xyz/frontpage/">Webstrate (front page)</option><option value="https://videoplayground.xyz/quiet-catfish-65/">Webstrate (playground2)</option><option value="https://wikipedia.com">Wikipedia</option><option value="https://playingcards.io/357gwm">Chess</option>
+              <option value="https://be6e5700-67aa-44df-adc8-5cb4840e155f.mdnplay.dev/shared-assets/images/examples/surfer.jpg">Image</option><option value="https://1a31e613-d751-44e7-82aa-d2d0081c52f8.mdnplay.dev/shared-assets/videos/flower.webm">Video</option><option value="https://videoplayground.xyz/frontpage/">Webstrate (front page)</option><option value="https://videoplayground.xyz/helpless-turkey-86/">Webstrate (dev Playground)</option><option value="https://wikipedia.com">Wikipedia</option><option value="https://playingcards.io/357gwm">Chess</option>
               <option value="https://www.watchparty.me/watch/null-run-perceive">Watch Party</option>
               <option value="https://jukebox.today/videoplayground">Jukebox</option><option value="https://demo.webstrates.net/curvy-owl-14/">Tank Trouble</option>
               
@@ -2344,6 +2597,8 @@
             <span><i class="fas fa-images"></i> Storage Space</span>
           </li><li class="menu-item" data-content="room-presets">
             <span><i class="fas fa-images"></i>Room Presets</span>
+          </li><li class="menu-item" data-content="scripts-list">
+            <span><i class="fas fa-images"></i>Scripts and Styles</span>
           </li>
           <li class="menu-item" data-content="additional-feature">
             <span><i class="fas fa-ellipsis-h"></i> Other</span>
@@ -2385,7 +2640,10 @@
             <div class="toggle-button off" data-option="minimap"></div>
           </div>
 
-          <h3>Color Settings</h3>
+          <div class="customize-option">
+    <div class="option-label">Background Image</div>
+    <button id="noneButton">None</button>
+<input type="file" class="background-image-uploader" accept="image/*"></div><h3>Color Settings</h3>
           <div class="color-option">
             <div class="option-label">Background</div>
             <div class="color-picker-container">
@@ -2423,8 +2681,9 @@
   </form>
   <button class="add-button">Add</button>
 </div>
-        </div><div id="room-presets" class="content-section">
-          <h2>Room Presets (does nothing right now)</h2>
+        </div>
+        <div id="room-presets" class="content-section">
+          <h2>Room Presets (coming soon)</h2>
           <div class="image-grid-container">
             <div class="image-grid">
               <!-- Images will be added here dynamically -->
@@ -2436,7 +2695,23 @@
             <button class="add-button">Add</button>
           </div>
         </div>
-
+        
+        <div id="scripts-list" class="content-section">
+          <h2>Scripts and Styles (coming soon)</h2>
+          <div class="script-item-container">
+            <div class="script-item"></div><!-- scripts will be added here dynamically  Participants will be added here dynamically -->
+            </div>
+          <div class="reload-section">
+            <h3>Script changes will take effect on reload</h3><h3>
+<!--             <input type="email" placeholder="Enter invitee's email" class="email-input"> -->
+            <button class="reload-button">Reload</button>
+<!--             <div class="copy-link">
+              <i class="fas fa-copy copy-icon"></i>
+              <span class="copy-text">Copy Link</span>
+            </div> -->
+          </h3></div>
+        </div>
+        
         <div id="additional-feature" class="content-section">
           <h2>Other Features</h2>
           <p>Additional features will be added here.</p>
@@ -2452,7 +2727,7 @@
     </div></div><div id="presets">
 <div id="note" class="preset">
 
-<style id="style-main" type="text">
+<style id="style-note" type="text">
 		.note {
 			width: 100%;
 			min-height: 100%;
@@ -2465,7 +2740,94 @@
 			outline: none;
 			box-shadow: 15px 15px 20px gray;
 		}
-	</style><div class="note" contenteditable="true"></div></div><!-- <div id="dice-pit"><style id="style-dice-pit" type="text">
+	</style><div class="note" contenteditable="true"></div></div><div id="chessboard" class="preset">
+
+<style id="style-chess" type="text">
+  .chess-board {
+/*     border: 5px solid black;
+    width: 800px; */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  }
+
+  .chess-board .white {
+/*     height: 20%;
+    width: 20%; */
+    background-color: black;
+  }
+
+  .chess-board .black {
+/*     height: 20%;
+    width: 20%; */
+    background-color: white;
+  }
+</style><div style="touch-action: none;" class="chess-board window-content">
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+    <div class="black" style="touch-action: none;"></div>
+    <div class="white" style="touch-action: none;"></div>
+  </div></div><!-- <div id="dice-pit"><style id="style-dice-pit" type="text">
   .ball {
     width: 125px;
     height: 125px;
@@ -2821,4 +3183,4 @@
       <div class="resize-handle" style="translate: none; rotate: none; scale: none; transform: translate3d(960px, 640px, 0px); touch-action: none; cursor: grab; user-select: none; z-index: 1030;"></div><video class="window-content" style="touch-action: none;" name="pCIK4CleEOf5" src="https://1a31e613-d751-44e7-82aa-d2d0081c52f8.mdnplay.dev/shared-assets/videos/flower.webm" id="pCIK4CleEOf5" controls=""></video></div></div></div></div>
 	
 	
-<div id="wrapper" class=""></div><style id="style-XsRU9TOUc">.pXsRU9TOUc {border-color: #1ad74b; outline: #1ad74b; color: #1ad74b;} .pXsRU9TOUc .settings-button,.pXsRU9TOUc .open-layers-button {background-color: #1ad74b;} .pXsRU9TOUc .sidebar,.pXsRU9TOUc .add-button,.pXsRU9TOUc .invite-button,.pXsRU9TOUc .layers-sidebar,.pXsRU9TOUc .participant-item-avatar {background-color: #1ad74b; filter: brightness(0.9);}</style></body></html>
+</body></html>
