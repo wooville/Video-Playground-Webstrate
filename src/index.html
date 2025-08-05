@@ -1,4 +1,4 @@
-<html style="touch-action: pan-x; scroll-behavior: auto;"><head>
+<html style="touch-action: pan-x; scroll-behavior: smooth;"><head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <script crossorigin="anonymous" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -324,8 +324,9 @@
     position: fixed;
     padding: 20px;
     display: flex;
-    justify-content: flex-end;
-    user-select:none;
+    justify-content: flex-start;
+    width: auto;
+    height: 69.600px;
 /*     flex-direction: row; */
   }
   #settings-button {
@@ -347,6 +348,8 @@
     display: flex;
     align-items: center;
     margin: .5rem;
+    width: auto;
+    height: auto;
 /*     z-index: 1000; */
   }
   
@@ -746,8 +749,10 @@
   }
 </style>
   <style id="window-style">
+
   iframe {
     border:none;
+    /* pointer-events:none; */
   }
 
   .window-container {
@@ -758,11 +763,11 @@
     /*     display: flex; */
 /*     flex-direction: column; */
     /*         overflow: clip; */
-    width: 20rem;
-    height: 20rem;
+    width: 40rem;
+    height: 40rem;
     background-color: rgba(0,0,0,0);
-    position: absolute;
     outline: none;
+    position: absolute;
 /*     margin:-1rem; */
 /*     outline-offset:1rem; */
 /*     padding: 6rem; */
@@ -798,7 +803,7 @@
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    height: 6rem;
+    height: 7rem;
     width: 100%;
     position: absolute;
     background-color: fff;
@@ -825,7 +830,7 @@
   .window-toolbar {
     box-sizing: border-box;
     width: 100%;
-    height: 4rem;
+    height: 5rem;
     top:0px;
     left:0px;
     background-color: #03A6A1;
@@ -838,6 +843,11 @@
     padding-right: 1rem;
     top: 2rem;
     position: absolute;
+  }
+
+.window-toolbar-narrow {
+    display: block !important;
+    text-align: center;
   }
 
   .window-content-container {
@@ -981,191 +991,13 @@
   .window-container:hover .window-title {
     visibility: visible;
   }
+
 </style></head>
-  <body>
+  <body style="background-image: url(&quot;&quot;); background-size: cover; background-position: center center; background-repeat: no-repeat; background-attachment: fixed;">
     
 
     
-    <div id="wrapper" class=""><div id="participants" class=""><div class="participant psVk08Sbex" id="participant-sVk08Sbex"><div class="participantView psVk08Sbex" id="participantView-sVk08Sbex" style="width: 1070px; height: 910px; translate: none; rotate: none; scale: none; transform: translate(1081px);"><i class="fa fa-3x fa-mouse-pointer participantCursor psVk08Sbex" id="participantCursor-sVk08Sbex" aria-hidden="true" style="translate: none; rotate: none; scale: none; transform: translate(-50%, -50%) translate(737px, 7px); display: none; visibility: visible;"></i></div><transient id="controlView-sVk08Sbex" class="controlView psVk08Sbex"><div id="taskbar-sVk08Sbex" class="ui"><div class="main-interface">
-    
-    <button id="settings-button" class="settings-button">
-    <i class="fas fa-cog"></i> Settings
-    </button><button id="view-mode" class="settings-button">Individual</button><button id="openLayersButton" class="open-layers-button">☰ Layers</button><button id="toggleEditButton" class="settings-button">Toggle Edit Mode</button><button id="addWindowButton" class="settings-button">
-    Add Window</button>
-    <!-- Your main content would go here --><select class="add-select">
-              <option value="https://be6e5700-67aa-44df-adc8-5cb4840e155f.mdnplay.dev/shared-assets/images/examples/surfer.jpg">Image</option><option value="https://1a31e613-d751-44e7-82aa-d2d0081c52f8.mdnplay.dev/shared-assets/videos/flower.webm">Video</option><option value="https://videoplayground.xyz/frontpage/">Webstrate (front page)</option><option value="https://videoplayground.xyz/helpless-turkey-86/">Webstrate (dev Playground)</option><option value="https://wikipedia.com">Wikipedia</option><option value="https://playingcards.io/357gwm">Chess</option>
-              <option value="https://www.watchparty.me/watch/null-run-perceive">Watch Party</option>
-              <option value="https://jukebox.today/videoplayground">Jukebox</option><option value="https://demo.webstrates.net/curvy-owl-14/">Tank Trouble</option>
-              
-            </select>
-    </div><div id="settings" class="settings-overlay" style="display: none;">
-    <div class="settings-container">
-      <!-- Left sidebar navigation -->
-      <div class="sidebar">
-        <div class="sidebar-header">
-          <h3>Settings</h3>
-          <button id="close-settings" class="close-button">×</button>
-        </div>
-        <ul class="sidebar-menu">
-          <li class="menu-item" data-content="participant-list">
-            <span><i class="fas fa-users"></i> Participant List</span>
-          </li>
-          <li class="menu-item" data-content="customize">
-            <span><i class="fas fa-paint-brush"></i> Customize</span>
-          </li>
-          <li class="menu-item active" data-content="storage-space">
-            <span><i class="fas fa-images"></i> Storage Space</span>
-          </li><li class="menu-item" data-content="room-presets">
-            <span><i class="fas fa-images"></i>Room Presets</span>
-          </li><li class="menu-item" data-content="scripts-list">
-            <span><i class="fas fa-images"></i>Scripts and Styles</span>
-          </li>
-          <li class="menu-item" data-content="additional-feature">
-            <span><i class="fas fa-ellipsis-h"></i> Other</span>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Content area -->
-      <div class="content-area">
-        <div id="participant-list" class="content-section">
-          <h2>Participant List</h2>
-          <div class="participant-item-container"><div class="participant-item">
-            <div class="participant-item-avatar"></div>
-            <div>sVk08Sbex</div>
-        </div></div>
-          <div class="invite-section">
-            <input type="email" placeholder="Enter invitee's email" class="email-input">
-            <button class="invite-button">Invite</button>
-            <div class="copy-link">
-              <i class="fas fa-copy copy-icon"></i>
-              <span class="copy-text">Copy Link</span>
-            </div>
-          </div>
-        </div>
-
-        <div id="customize" class="content-section">
-          <h2>Customize</h2>
-          <div class="customize-option">
-            <div class="option-label">Preset</div>
-            <div class="toggle-button off" data-option="preset"></div>
-            <select class="preset-select">
-              <option value="default">Default</option>
-              <option value="dark">Dark Mode</option>
-              <option value="light">Light Mode</option>
-              <option value="professional">Professional</option>
-            </select>
-          </div>
-          <div class="customize-option">
-            <div class="option-label">Mini Map</div>
-            <div class="toggle-button off" data-option="minimap"></div>
-          </div>
-
-          <div class="customize-option">
-    <div class="option-label">Background Image</div>
-    <button id="noneButton">None</button>
-<input type="file" class="background-image-uploader" accept="image/*"></div><h3>Color Settings</h3>
-          <div class="color-option">
-            <div class="option-label">Background</div>
-            <div class="color-picker-container">
-              <input type="color" class="color-picker" value="#ffffff" data-target="background">
-              <input type="text" class="rgb-input" placeholder="RGB" data-target="background">
-            </div>
-          </div>
-          <div class="color-option">
-            <div class="option-label">Elements</div>
-            <div class="color-picker-container">
-              <input type="color" class="color-picker" value="#f0f0f0" data-target="elements">
-              <input type="text" class="rgb-input" placeholder="RGB" data-target="elements">
-            </div>
-          </div>
-          <div class="color-option">
-            <div class="option-label">Setting Window</div>
-            <div class="color-picker-container">
-              <input type="color" class="color-picker" value="#2c3e50" data-target="settings">
-              <input type="text" class="rgb-input" placeholder="RGB" data-target="settings">
-            </div>
-          </div>
-        </div>
-
-        <div id="storage-space" class="content-section active">
-          <h2>Storage Space</h2>
-          <div class="image-grid-container">
-            <div class="image-grid">
-              <!-- Images will be added here dynamically -->
-              <div class="image-item"><img src="abstract-background-blur-949587.jpg" type="image/jpeg" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>abstract-background-blur-949587.jpg</h3></div><div class="image-item"><img src="arrangements.jpg" type="image/jpeg" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>arrangements.jpg</h3></div><div class="image-item"><img src="bB.svg" type="image/svg+xml" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>bB.svg</h3></div><div class="image-item"><img src="bK.svg" type="image/svg+xml" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>bK.svg</h3></div><div class="image-item"><img src="bN.svg" type="image/svg+xml" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>bN.svg</h3></div><div class="image-item"><img src="bP.svg" type="image/svg+xml" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>bP.svg</h3></div><div class="image-item"><img src="bQ.svg" type="image/svg+xml" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>bQ.svg</h3></div><div class="image-item"><img src="bR.svg" type="image/svg+xml" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>bR.svg</h3></div><div class="image-item"><img src="construction0.gif" type="image/gif" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>construction0.gif</h3></div><div class="image-item"><img src="construction1.gif" type="image/gif" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>construction1.gif</h3></div><div class="image-item"><img src="construction2.gif" type="image/gif" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>construction2.gif</h3></div><div class="image-item"><img src="construstion.gif" type="image/gif" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>construstion.gif</h3></div><div class="image-item"><img src="mvc-stage-cliff-of-desolation.gif" type="image/gif" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>mvc-stage-cliff-of-desolation.gif</h3></div><div class="image-item"><img src="mvc-stage-neo-stpetersburg.gif" type="image/gif" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>mvc-stage-neo-stpetersburg.gif</h3></div><div class="image-item"><img src="mvc1-rock-castle-stage.gif" type="image/gif" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>mvc1-rock-castle-stage.gif</h3></div><div class="image-item"><img src="wB.svg" type="image/svg+xml" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>wB.svg</h3></div><div class="image-item"><img src="wK.svg" type="image/svg+xml" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>wK.svg</h3></div><div class="image-item"><img src="wN.svg" type="image/svg+xml" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>wN.svg</h3></div><div class="image-item"><img src="wP.svg" type="image/svg+xml" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>wP.svg</h3></div><div class="image-item"><img src="wQ.svg" type="image/svg+xml" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>wQ.svg</h3></div><div class="image-item"><img src="wR.svg" type="image/svg+xml" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>wR.svg</h3></div><div class="image-item"><img src="https://videoplayground.xyz/favicon.ico" class="preset" data-preset-id="note" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>note</h3></div><div class="image-item"><img src="https://videoplayground.xyz/favicon.ico" class="preset" data-preset-id="chessboard" alt="Uploaded image" onerror="this.parentElement.remove()"><h3>chessboard</h3></div></div>
-          </div>
-          <div class="upload-section">
-  <form action="" enctype="multipart/form-data" method="post">
-    <input name="file" type="file" autocomplete="off" multiple="">
-    <input type="submit" value="Upload" autocomplete="off">
-  </form>
-  <button class="add-button">Add</button>
-</div>
-        </div>
-        <div id="room-presets" class="content-section">
-          <h2>Room Presets (coming soon)</h2>
-          <div class="image-grid-container">
-            <div class="image-grid">
-              <!-- Images will be added here dynamically -->
-              </div>
-          </div>
-          <div class="upload-section">
-            <i class="fas fa-cloud-upload-alt upload-icon"></i>
-            <input type="text" placeholder="insert URL here" class="url-input">
-            <button class="add-button">Add</button>
-          </div>
-        </div>
-        
-        <div id="scripts-list" class="content-section">
-          <h2>Scripts and Styles (coming soon)</h2>
-          <div class="script-item-container">
-            <div class="script-item"></div><!-- scripts will be added here dynamically  Participants will be added here dynamically -->
-            </div>
-          <div class="reload-section">
-            <h3>Script changes will take effect on reload</h3><h3>
-<!--             <input type="email" placeholder="Enter invitee's email" class="email-input"> -->
-            <button class="reload-button">Reload</button>
-<!--             <div class="copy-link">
-              <i class="fas fa-copy copy-icon"></i>
-              <span class="copy-text">Copy Link</span>
-            </div> -->
-          </h3></div>
-        </div>
-        
-        <div id="additional-feature" class="content-section">
-          <h2>Other Features</h2>
-          <p>Additional features will be added here.</p>
-        </div>
-      </div>
-    </div>
-    </div><div id="layersMenu" class="layers-sidebar">
-        <span class="close-button" onclick="closeLayersMenu()" id="closeLayersButton">×</span>
-        <h2>Layers</h2>
-        <ul id="layersList"><li data-window-id="window-1753779981818-0"><span class="drag-handle" title="Drag to reorder">≡</span><input type="text" class="layer-rename"><span class="layer-eye" title="Toggle visibility"><i class="fa-regular fa-eye"></i></span><span class="layer-close" title="Close window"><i class="fa-solid fa-xmark"></i></span></li></ul>
-    </div></div></transient></div></div><div class="window-container" id="window-1753779981818-0" style="translate: none; rotate: none; scale: none; touch-action: none; cursor: grab; user-select: none; z-index: 1004; top: 1088px; left: 2048px;" data-window-number="1"><div class="window-title" style="touch-action: none;">Window 1</div>
-
-
-
-      <div class="window-controls" style="touch-action: none;"><div class="window-dragbar" style="touch-action: none;">
-        ::::
-        </div><div class="window-toolbar" style="touch-action: none;">
-        <div class="nav-options" style="display: none; touch-action: none;">
-          <button class="toolbar-button" id="backButton" style="touch-action: none;"><i class="fa-solid fa-arrow-left" style="touch-action: none;" aria-hidden="true"></i></button>
-          <button class="toolbar-button" id="forthButton" style="touch-action: none;"><i class="fa-solid fa-arrow-right" style="touch-action: none;" aria-hidden="true"></i></button>
-        </div>
-        <div class="search-bar" style="touch-action: none;">
-          <i class="fa-solid fa-magnifying-glass fa-lg" style="margin-right: 0.5rem; touch-action: none;" aria-hidden="true"></i>
-          <input type="text" placeholder="Search" class="search-box" contenteditable="true" style="touch-action: none;" value="https://be6e5700-67aa-44df-adc8-5cb4840e155f.mdnplay.dev/shared-assets/images/examples/surfer.jpg">
-        </div>
-        <div class="window-options" style="touch-action: none;">
-          <button id="lockButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-unlock" style="touch-action: none;" aria-hidden="true"></i></button>
-          <button id="closeButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-x" style="touch-action: none;" aria-hidden="true"></i></button>
-          <button class="toolbar-button" style="touch-action: none;" id="fullscreenButton"><i class="fa-solid fa-up-right-and-down-left-from-center" style="touch-action: none;" aria-hidden="true"></i></button>
-          <button class="toolbar-button" style="touch-action: none;" id="minimizeButton"><i class="fa-solid fa-minus" style="touch-action: none;" aria-hidden="true"></i></button>
-        </div>
-        </div></div>
-      <div class="resize-handle" style="translate: none; rotate: none; scale: none; transform: translate3d(320px, 320px, 0px); touch-action: none; cursor: grab; user-select: none;"></div><object class="window-content" data="https://be6e5700-67aa-44df-adc8-5cb4840e155f.mdnplay.dev/shared-assets/images/examples/surfer.jpg" style="touch-action: none;" id="9LiOvikvSiYH" name="9LiOvikvSiYH"></object></div></div>
+    <div id="wrapper" class=""></div>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script><script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Draggable.min.js"></script><script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/DrawSVGPlugin.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/EaselPlugin.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Flip.min.js"></script>
@@ -1192,7 +1024,7 @@
   let isDraggingLayer = false;
   let draggedItem = null;
   let dragStartIndex = 0;
-  let windowCounter = 0;
+  //   let windowCounter = 0;
 
   //   document.designMode = “on”;
   //   var participants = document.getElementById("participants");
@@ -1205,15 +1037,15 @@
 
     //     addParticipant(clientId);
     //     updateClientList();
-//     const scrollContents = document.getElementById("contents");
+    //     const scrollContents = document.getElementById("contents");
     //really neat
-//     let smoother = ScrollSmoother.create({
-//       wrapper: document.body,
-//       content: wrapper,
-//       smooth: 1,
-//       effects: true,
-//       normalizeScroll: true
-//     });
+    //     let smoother = ScrollSmoother.create({
+    //       wrapper: document.body,
+    //       content: wrapper,
+    //       smooth: 1,
+    //       effects: true,
+    //       normalizeScroll: true
+    //     });
 
     updateParticipants();
     createTaskbar(clientId);
@@ -1415,7 +1247,7 @@
   });
 
   // cursor presence (child of view)
-  window.addEventListener("mousemove", function(e) {
+  window.addEventListener("pointermove", function(e) {
     const participantCursor = document.getElementById("participantCursor-"+webstrate.clientId);
     const participantView = document.getElementById("participantView-"+webstrate.clientId);
     if (!participantCursor || !participantView){
@@ -1428,6 +1260,17 @@
     ySetter(e.y);
 
     participantCursor.style.display = "block";
+    //     console.log(document.activeElement);
+  });
+
+  window.addEventListener("focusout", function(e) {
+    const participantCursor = document.getElementById("participantCursor-"+webstrate.clientId);
+    const participantView = document.getElementById("participantView-"+webstrate.clientId);
+    if (!participantCursor || !participantView){
+      return;
+    }
+
+    participantCursor.style.display = "none";
   });
 
   window.addEventListener("mouseout", function(e) {
@@ -1599,7 +1442,7 @@
       if (!title) {
         title = document.createElement('div');
         title.className = 'window-title';
-        title.textContent = `Window ${window.dataset.windowNumber || ++windowCounter}`;
+        title.textContent = `Window ${window.dataset.windowNumber || getWindowCounter()}`;
         window.prepend(title);
       }
       nameInput.value = title.textContent;
@@ -1663,7 +1506,7 @@
       }
 
       if (!window.dataset.windowNumber) {
-        window.dataset.windowNumber = windowCounter;
+        window.dataset.windowNumber = getWindowCounter();
       }
     });
   }
@@ -1692,10 +1535,50 @@
     updateLayersList();
   }
 
+  wrapper.addEventListener("drop", (event) => {
+    doDrop(event);
+  });
+
+  wrapper.addEventListener("dragover", (event) => {
+    doDragOver(event);
+  });
+
+  function doDragOver(event) {
+    const isLink = event.dataTransfer.types.includes("text/plain");
+    if (isLink) {
+      event.preventDefault();
+    }
+  }
+
+  function doDrop(event) {
+    const lines = event.dataTransfer.getData("text/plain").split("\n");
+    console.log(lines);
+    lines
+      .filter((line) => !line.startsWith("#"))
+      .forEach((line) => {
+      const link = document.createElement("a");
+      link.href = line;
+      link.textContent = line;
+      event.target.appendChild(link);
+    });
+    event.preventDefault();
+  }
+
+  function getWindowCounter() {
+    var windows = wrapper.querySelectorAll(".window-container");
+    var max = 0;
+    windows.forEach(w => {
+      //       console.log(w.dataset.windowNumber);
+      max = Math.max(w.dataset.windowNumber, max)
+    });
+    return max;
+  }
+
   function addWindow() {
     const template = templates.querySelector(".window-container");
     //TODO put in electron
     const preset = document.getElementById("taskbar-"+webstrate.clientId).querySelector(".add-select").value;
+
     const newWindow = template.cloneNode(true);
     newWindow.id = "";
 
@@ -1705,24 +1588,71 @@
       Math.max(...Array.from(windows).map(w => parseInt(window.getComputedStyle(w).zIndex) || 0)) + 1 : 1;
 
     let addressBar = newWindow.querySelector(".search-box");
+
+    let addressSelect = newWindow.querySelector(".address-select");
     let windowContent = newWindow.querySelector(".window-content");
 
     // Handle content creation if not found in template
     if (!windowContent) {
-      //     if (preset === "Image") {
-      //       windowContent = document.createElement("img");
-      //     } else {
-      windowContent = document.createElement("object");
-      //     }
+      if (preset === "image") {
+        addressSelect.innerHTML = '';
+        const opt = document.createElement("option");
+        opt.value = "";
+        opt.innerHTML = 'None';
+        addressSelect.append(opt);
+        webstrate.assets.forEach(a => {
+          const opt = document.createElement("option");
+          opt.value = a.fileName;
+          opt.innerHTML = a.fileName;
+          if (a.mimeType.includes('image')) addressSelect.append(opt);
+        })
+        windowContent = document.createElement("img");
+        windowContent.src = addressSelect.value;
+        //         console.log(windowContent.src);
+      } else if (preset === "video") {
+        addressSelect.innerHTML = '';
+        const opt = document.createElement("option");
+        opt.value = "";
+        opt.innerHTML = 'None';
+        addressSelect.append(opt);
+        webstrate.assets.forEach(a => {
+          const opt = document.createElement("option");
+          opt.value = a.fileName;
+          opt.innerHTML = a.fileName;
+          if (a.mimeType.includes('video')) addressSelect.append(opt);
+        })
+        windowContent = document.createElement("video");
+        windowContent.src = addressSelect.value;
+      } else if (preset === "audio") {
+        addressSelect.innerHTML = '';
+        const opt = document.createElement("option");
+        opt.value = "";
+        opt.innerHTML = 'None';
+        addressSelect.append(opt);
+        webstrate.assets.forEach(a => {
+          const opt = document.createElement("option");
+          opt.value = a.fileName;
+          opt.innerHTML = a.fileName;
+          if (a.mimeType.includes('audio')) addressSelect.append(opt);
+        })
+        windowContent = document.createElement("audio");
+        windowContent.src = addressSelect.value;
+      } else if (preset==="note") {
+        windowContent = setupWindowPresetContent(preset);
+        addressSelect.style.display = 'none';
+      } else {
+        windowContent = document.createElement("iframe");
+        windowContent.src = addressSelect.value;
+      }
       windowContent.classList.add("window-content");
       newWindow.append(windowContent);
     }
 
     // Set window content
-    addressBar.value = preset;
+    //     addressBar.value = preset;
     //     windowContent.type = type;
-    windowContent.data = preset; // mostly redundant for dif htmls tags
-    windowContent.src = preset;
+    //     windowContent.data = preset; // mostly redundant for dif htmls tags
+    //     windowContent.src = preset;
 
     //     windowContent.webstrate.on("attributeChanged", function(attributeName, oldValue, newValue) {
     //       // An attribute was changed by another client.
@@ -1737,10 +1667,10 @@
     if (!newWindow.querySelector('.window-title')) {
       const title = document.createElement('div');
       title.className = 'window-title';
-      title.textContent = `Window ${++windowCounter}`;
+      title.textContent = `Window ${getWindowCounter()+1}`;
       newWindow.prepend(title);
     }
-    newWindow.dataset.windowNumber = windowCounter;
+    newWindow.dataset.windowNumber = getWindowCounter()+1;
     wrapper.append(newWindow);
     //     wrapper.webstrate.signal("addImg", this.webstrate.clients);
 
@@ -1792,6 +1722,22 @@
     wrapper.append(newWindow);
     updateLayersList();
     //     wrapper.webstrate.signal("addImg", this.webstrate.clients);
+  }
+
+  function setupWindowPresetContent(presetId){
+    const preset = templates.querySelector("#"+presetId);
+    //     let addressBar = newWindow.querySelector(".search-box");
+    //     addressBar.value = presetId;
+    var windowContent = preset.cloneNode(true);
+    windowContent.querySelectorAll("style").forEach(sheet => sheet.type = "");
+    windowContent.querySelectorAll("script").forEach(script => script.type = "");
+    //     windowContent.querySelectorAll("style").forEach(sheet => sheet.type = "");
+    windowContent.classList.remove("preset");
+    windowContent.id = "";
+    //     }
+
+    windowContent.classList.add("window-content");
+    return windowContent
   }
 
   function addWindowFromURL(url, type="") {
@@ -1854,6 +1800,25 @@
     var b = hash & 0x0000FF;
     return "#" + ("0" + r.toString(16)).substr(-2) + ("0" + g.toString(16)).substr(-2) + ("0" + b.toString(16)).substr(-2);
   }
+
+  document.addEventListener('keydown', function (e) {
+    var speed = window.innerHeight/4;
+    console.log(e.keyCode);
+    if (document.activeElement != document.body) return;
+    if (e.keyCode === 87){
+      window.scrollBy(0, -speed);
+      console.log(e.keyCode);
+    } else if (e.keyCode === 65){
+      window.scrollBy(-speed, 0);
+      console.log(e.keyCode);
+    } else if (e.keyCode === 83){
+      window.scrollBy(0, speed);
+      console.log(e.keyCode);
+    } else if (e.keyCode === 68){
+      window.scrollBy(speed, 0);
+      console.log(e.keyCode);
+    }
+  });
 </script><script id="script-playground">
   const playground = document.getElementById("wrapper");
   const playgroundObserver = new MutationObserver(function(mutations) {
@@ -1867,7 +1832,7 @@
         case "attributes":
           switch (mutation.attributeName) {
             case "class":
-//               handleMutationEdit(mutation);
+              //               handleMutationEdit(mutation);
               handleMutationLockDrag(mutation);
               handleMutationInteractionAwareness(mutation);
               break;
@@ -1894,13 +1859,13 @@
       setupMediaPlaybackSync(newElement);
     });
   }
-  
-//   function handleMutationEdit(mutation){
-//     if (mutation.oldValue.includes("edit") != mutation.target.className.includes("edit")) {
-// //       console.log("edit toggle");
-//       setupAllElements();
-//     }
-//   }
+
+  //   function handleMutationEdit(mutation){
+  //     if (mutation.oldValue.includes("edit") != mutation.target.className.includes("edit")) {
+  // //       console.log("edit toggle");
+  //       setupAllElements();
+  //     }
+  //   }
 
   function handleMutationLockDrag(mutation) {
     // check draggable locks
@@ -1932,7 +1897,7 @@
     subtree: true,
     //     characterDataOldValue: true // pass old data to callback
     attributes: true,
-//     attributeOldValue: true,
+    //     attributeOldValue: true,
     attributeFilter: ['class', 'style', 'data-scroll-left', 'data-scroll-top']
   });
 
@@ -1975,7 +1940,7 @@
       setupMediaPlaybackSync(element);
     });
   }
-  
+
   function setupAllElements(){
     playground.childNodes.forEach(function(element){
       setupElement(element);
@@ -1997,6 +1962,8 @@
     const handle = setupDraggableSubElement(element, "resize-handle");
     const deleteBtn = element.querySelector("#closeButton");
     if (deleteBtn) deleteBtn.addEventListener('mousedown', function (e) {
+//       var existingDrag = Draggable.get(element);
+//       if (existingDrag) existingDrag.kill();
       element.remove();
     });
 
@@ -2014,13 +1981,17 @@
     };
     var existingDrag = Draggable.get(element);
     if (existingDrag) existingDrag.kill();
-    
+
     var elementDrag = Draggable.create(element, {
       type: "left,top",
       bounds: container,
       autoScroll: 1,
       inertia: true,
       dragClickables: false,
+      onPress: function(e) {
+        //         e.stopPropagation();
+        //         console.log(e.x);
+      },
       onDragStart:function () {
         element.classList.add("p"+webstrate.clientId);
         const participantCursor = document.getElementById("participantCursor-"+webstrate.clientId);
@@ -2031,7 +2002,7 @@
         const participantCursor = document.getElementById("participantCursor-"+webstrate.clientId);
         participantCursor.style.visibility = "visible";
       },
-//       liveSnap: (playground.classList.contains("edit")),
+      //       liveSnap: (playground.classList.contains("edit")),
       snap:{
         x: function(endValue) {
           return Math.round(endValue / dragUnit) * dragUnit;
@@ -2045,15 +2016,17 @@
     if (element.className.includes("lock-drag")) {
       elementDrag.disable();
     }
-    
+
     existingDrag = Draggable.get(handle);
     if (existingDrag) existingDrag.kill();
 
     var handleDrag = Draggable.create(handle, {
       bounds: container,
+      //       type: "left,top",
       autoScroll: 1,
       onPress: function(e) {
         e.stopPropagation();
+        //         console.log(e.pageX);
       },
       onDrag: function() {      
         TweenLite.set(element, { width: this.x + 0, height: this.y + 0 });      
@@ -2082,8 +2055,9 @@
 
     if (element.className.includes("window-container")) {
       const newId = generateID(12);
-      if (!element.id) element.id = "container-"+newId;
+      if (!element.id) element.id = "window-container-"+newId;
       const addressBar = element.querySelector('.search-box');
+      const addressSelect = element.querySelector('.address-select');
       const windowContent = element.querySelector('.window-content');
       if (windowContent){
         if (!windowContent.id) windowContent.id = newId;
@@ -2092,6 +2066,9 @@
           windowContent.dataset.scrollLeft = windowContent.scrollLeft;
           windowContent.dataset.scrollTop = windowContent.scrollTop;
         });
+        //         windowContent.addEventListener("pointerover", function(e) {
+        //           console.log("ahhsdfasd");
+        //         });
       } 
 
       if(addressBar) addressBar.addEventListener("keyup", (e) => {
@@ -2106,6 +2083,20 @@
         windowContent.src = (addressBar.value);
         //         setupMediaPlaybackSync(windowContent);
       });
+      
+      if(addressSelect) addressSelect.addEventListener("change", (e) => {
+//         if (e.key !== "Enter") return;
+        //         if (addressBar.value.includes("http")) {
+        //           windowContent.type = "text/html";
+        //         } else {
+        //           windowContent.type = "text/html";
+        //         }
+        //         open(addressBar.value, windowContent.name);
+//         windowContent.data = (addressBar.value);
+        windowContent.src = (addressSelect.value);
+        console.log(windowContent.src);
+        //         setupMediaPlaybackSync(windowContent);
+      });
 
       const minimizeButton = element.querySelector('#minimizeButton');
       if(minimizeButton) minimizeButton.addEventListener('mousedown', () => {
@@ -2118,7 +2109,7 @@
 
       if(lockButton) lockButton.addEventListener('mousedown', () => {
         const lockIcon = lockButton.querySelector('i');
-        
+
         element.classList.toggle('lock-drag');
         handle.classList.toggle('lock-drag');
         lockButton.classList.toggle('lock-active');
@@ -2134,6 +2125,8 @@
 
       const fullscreenButton = element.querySelector('#fullscreenButton');
       if(fullscreenButton) fullscreenButton.addEventListener('mousedown', () => {
+        console.log(windowContent.ownerDocument.referrer);
+
         if (windowContent.requestFullscreen) {
           windowContent.requestFullscreen();
         } else if (windowContent.mozRequestFullScreen) { // Firefox
@@ -2414,20 +2407,20 @@
         // Upload the file to Webstrates as an asset
         const formData = new FormData();
         formData.append('file', file);
-        
+
         var imageURL;
 
         var imageResponse = await fetch(window.location.pathname + "/" + file.name, {
-            method: 'GET',
-          });
-        
+          method: 'GET',
+        });
+
         if (imageResponse.ok) {
-            const assetName = file.name;
-            // The asset will be available at: <current webstrate URL>/<file.name>
-            imageURL = `${assetName}`;
-          } else {
-            alert('Failed to upload image.');
-          }
+          const assetName = file.name;
+          // The asset will be available at: <current webstrate URL>/<file.name>
+          imageURL = `${assetName}`;
+        } else {
+          alert('Failed to upload image.');
+        }
 
         if (!imageURL) {
           const response = await fetch(window.location.pathname, {
@@ -2448,6 +2441,28 @@
         // Apply it to body (shared across all participants)
         if (imageURL) bodyElement.setAttribute('style', `
           background-image: url('${imageURL}');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-attachment: fixed;
+        `);
+      });
+
+      const bgSelect = taskbar.querySelector(".bg-select");
+      bgSelect.innerHTML = '';
+      const opt = document.createElement("option");
+      opt.value = "";
+      opt.innerHTML = "None";
+      bgSelect.append(opt);
+      webstrate.assets.forEach(a => {
+        const opt = document.createElement("option");
+        opt.value = a.fileName;
+        opt.innerHTML = a.fileName;
+        if (a.mimeType.includes('image')) bgSelect.append(opt);
+      })
+      bgSelect.addEventListener('change', function() {
+        bodyElement.setAttribute('style', `
+          background-image: url('${bgSelect.value}');
           background-size: cover;
           background-position: center;
           background-repeat: no-repeat;
@@ -2613,6 +2628,37 @@
   //     }
   //   });
 
+</script><script id="short-toolbar">
+ // Single observer for all window containers
+// Setup resize observer for window containers
+const windowResizeObserver = new ResizeObserver((entries) => {
+    entries.forEach(entry => {
+        const container = entry.target;
+        const toolbar = container.querySelector('.window-toolbar');
+        
+        if (entry.contentRect.width <= 448) {
+            toolbar.classList.add('window-toolbar-narrow');
+        } else {
+            toolbar.classList.remove('window-toolbar-narrow');
+        }
+    });
+});
+
+// Apply to existing windows
+document.querySelectorAll('.window-container').forEach(window => {
+    windowResizeObserver.observe(window);
+});
+
+// Watch for new windows being added
+new MutationObserver((mutations) => {
+    mutations.forEach(mutation => {
+        mutation.addedNodes.forEach(node => {
+            if (node.classList && node.classList.contains('window-container')) {
+                windowResizeObserver.observe(node);
+            }
+        });
+    });
+}).observe(document.body, { childList: true, subtree: true });
 </script><div id="templates" style="display: none;">
 
     <div class="window-container" id="" style="translate: none; rotate: none; scale: none; touch-action: none; cursor: grab; user-select: none;">
@@ -2621,32 +2667,40 @@
 
       <div class="window-controls"><div class="window-dragbar">
         ::::
-        </div><div class="window-toolbar">
+        </div><div class="window-toolbar window-toolbar-narrow">
         <div class="nav-options" style="display: none; touch-action: none;">
           <button class="toolbar-button" id="backButton" style="touch-action: none;"><i class="fa-solid fa-arrow-left" style="touch-action: none;" aria-hidden="true"></i></button>
           <button class="toolbar-button" id="forthButton" style="touch-action: none;"><i class="fa-solid fa-arrow-right" style="touch-action: none;" aria-hidden="true"></i></button>
         </div>
-        <div class="search-bar" style="touch-action: none;">
-          <i class="fa-solid fa-magnifying-glass fa-lg" style="margin-right: 0.5rem; touch-action: none;" aria-hidden="true"></i>
-          <input type="text" placeholder="Search" class="search-box" contenteditable="true" style="touch-action: none;">
-        </div>
+        <div class="asset-select" style="touch-action: none;">
+          
+          
+        <select class="address-select">
+              <option value="https://wikipedia.com">Wikipedia</option><option value="https://www.google.com/search?igu=1">Google</option><option value="https://www.youtube.com/embed/lJIrF4YjHfQ">Youtube</option><option value="https://playingcards.io/357gwm">Chess</option>
+              <option value="https://www.watchparty.me/watch/null-run-perceive">Watch Party</option>
+              <option value="https://jukebox.today/videoplayground">Jukebox</option><option value="https://demo.webstrates.net/curvy-owl-14/">Tank Trouble</option>
+              
+            <option value="https://videoplayground.xyz/frontpage/">Playground</option><option value="https://be6e5700-67aa-44df-adc8-5cb4840e155f.mdnplay.dev/shared-assets/images/examples/surfer.jpg">Image</option><option value="https://1a31e613-d751-44e7-82aa-d2d0081c52f8.mdnplay.dev/shared-assets/videos/flower.webm">Video</option></select></div>
         <div class="window-options" style="touch-action: none;">
           <button id="lockButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-unlock" style="touch-action: none;" aria-hidden="true"></i></button>
           <button id="closeButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-x" style="touch-action: none;" aria-hidden="true"></i></button>
           <button class="toolbar-button" style="touch-action: none;" id="fullscreenButton"><i class="fa-solid fa-up-right-and-down-left-from-center" style="touch-action: none;" aria-hidden="true"></i></button>
           <button class="toolbar-button" style="touch-action: none;" id="minimizeButton"><i class="fa-solid fa-minus" style="touch-action: none;" aria-hidden="true"></i></button>
         </div>
-        </div></div>
-      <div class="resize-handle" style="translate: none; rotate: none; scale: none; transform: translate3d(960px, 960px, 0px); touch-action: none; cursor: grab; user-select: none;"></div></div><div id="participant-menus" class="ui"><div class="main-interface">
+        <div class="search-bar" style="display:none;touch-action: none;">
+          <i class="fa-solid fa-magnifying-glass fa-lg" style="margin-right: 0.5rem; touch-action: none;" aria-hidden="true"></i>
+          <input type="text" placeholder="Search" class="search-box" contenteditable="true" style="touch-action: none;">
+        </div></div></div>
+      <div class="resize-handle" style="translate: none; rotate: none; scale: none; transform: translate3d(960px, 960px, 0px); touch-action: none; cursor: grab; user-select: none;"></div></div><div id="participant-menus" class="ui"><div class="main-interface" style="transform: scale(1); left: 0px; top: 0px;">
     
     <button id="settings-button" class="settings-button">
     <i class="fas fa-cog"></i> Settings
-    </button><button id="view-mode" class="settings-button">Individual</button><button id="openLayersButton" class="open-layers-button">☰ Layers</button><button id="toggleEditButton" class="settings-button">Toggle Edit Mode</button><button id="addWindowButton" class="settings-button">
+    </button><button id="openLayersButton" class="open-layers-button settings-button">☰ Layers</button><button id="toggleEditButton" class="settings-button">Toggle Edit Mode</button><button id="addWindowButton" class="settings-button">
     Add Window</button>
-    <!-- Your main content would go here --><select class="add-select">
-              <option value="https://be6e5700-67aa-44df-adc8-5cb4840e155f.mdnplay.dev/shared-assets/images/examples/surfer.jpg">Image</option><option value="https://1a31e613-d751-44e7-82aa-d2d0081c52f8.mdnplay.dev/shared-assets/videos/flower.webm">Video</option><option value="https://videoplayground.xyz/frontpage/">Webstrate (front page)</option><option value="https://videoplayground.xyz/helpless-turkey-86/">Webstrate (dev Playground)</option><option value="https://wikipedia.com">Wikipedia</option><option value="https://playingcards.io/357gwm">Chess</option>
-              <option value="https://www.watchparty.me/watch/null-run-perceive">Watch Party</option>
-              <option value="https://jukebox.today/videoplayground">Jukebox</option><option value="https://demo.webstrates.net/curvy-owl-14/">Tank Trouble</option>
+    <!-- Your main content would go here --><select class="add-select settings-button">
+              <option value="webpage">Webpage</option><option value="note">Text</option><option value="image">Image</option><option value="video">Video</option><option value="audio">Audio</option>
+              
+              
               
             </select>
     </div><div id="settings" class="settings-overlay" style="display: none;">
@@ -2666,12 +2720,12 @@
           </li>
           <li class="menu-item" data-content="storage-space">
             <span><i class="fas fa-images"></i> Storage Space</span>
-          </li><li class="menu-item" data-content="room-presets">
+          </li><li class="menu-item" data-content="room-presets" style="display:none">
             <span><i class="fas fa-images"></i>Room Presets</span>
-          </li><li class="menu-item" data-content="scripts-list">
+          </li><li class="menu-item" data-content="scripts-list" style="display:none">
             <span><i class="fas fa-images"></i>Scripts and Styles</span>
           </li>
-          <li class="menu-item" data-content="additional-feature">
+          <li class="menu-item" data-content="additional-feature" style="display:none">
             <span><i class="fas fa-ellipsis-h"></i> Other</span>
           </li>
         </ul>
@@ -2696,7 +2750,7 @@
 
         <div id="customize" class="content-section">
           <h2>Customize</h2>
-          <div class="customize-option">
+          <div class="customize-option" style="display:none">
             <div class="option-label">Preset</div>
             <div class="toggle-button off" data-option="preset"></div>
             <select class="preset-select">
@@ -2706,15 +2760,18 @@
               <option value="professional">Professional</option>
             </select>
           </div>
-          <div class="customize-option">
+          <div class="customize-option" style="display:none">
             <div class="option-label">Mini Map</div>
             <div class="toggle-button off" data-option="minimap"></div>
           </div>
 
-          <div class="customize-option">
+          <div class="customize-option" style="display:none">
     <div class="option-label">Background Image</div>
     <button id="noneButton">None</button>
-<input type="file" class="background-image-uploader" accept="image/*"></div><h3>Color Settings</h3>
+<input type="file" class="background-image-uploader" accept="image/*"></div><div class="customize-option">
+    <div class="option-label">Background Image</div>
+    
+<select class="bg-select"></select></div><h3>Color Settings</h3>
           <div class="color-option">
             <div class="option-label">Background</div>
             <div class="color-picker-container">
@@ -3029,7 +3086,7 @@
 
       <div class="window-controls" style="touch-action: none;"><div class="window-dragbar" style="touch-action: none;">
         ::::
-        </div><div class="window-toolbar" style="touch-action: none;">
+        </div><div class="window-toolbar window-toolbar-narrow" style="touch-action: none;">
         <div class="nav-options" style="display: none; touch-action: none;">
           <button class="toolbar-button" id="backButton" style="touch-action: none;"><i class="fa-solid fa-arrow-left" style="touch-action: none;" aria-hidden="true"></i></button>
           <button class="toolbar-button" id="forthButton" style="touch-action: none;"><i class="fa-solid fa-arrow-right" style="touch-action: none;" aria-hidden="true"></i></button>
@@ -3051,7 +3108,7 @@
 
       <div class="window-controls" style="touch-action: none;"><div class="window-dragbar" style="touch-action: none;">
         ::::
-        </div><div class="window-toolbar" style="touch-action: none;">
+        </div><div class="window-toolbar window-toolbar-narrow" style="touch-action: none;">
         <div class="nav-options" style="display: none; touch-action: none;">
           <button class="toolbar-button" id="backButton" style="touch-action: none;"><i class="fa-solid fa-arrow-left" style="touch-action: none;" aria-hidden="true"></i></button>
           <button class="toolbar-button" id="forthButton" style="touch-action: none;"><i class="fa-solid fa-arrow-right" style="touch-action: none;" aria-hidden="true"></i></button>
@@ -3073,7 +3130,7 @@
 
       <div class="window-controls" style="touch-action: none;"><div class="window-dragbar" style="touch-action: none;">
         ::::
-        </div><div class="window-toolbar" style="touch-action: none;">
+        </div><div class="window-toolbar window-toolbar-narrow" style="touch-action: none;">
         <div class="nav-options" style="display: none; touch-action: none;">
           <button class="toolbar-button" id="backButton" style="touch-action: none;"><i class="fa-solid fa-arrow-left" style="touch-action: none;" aria-hidden="true"></i></button>
           <button class="toolbar-button" id="forthButton" style="touch-action: none;"><i class="fa-solid fa-arrow-right" style="touch-action: none;" aria-hidden="true"></i></button>
@@ -3110,7 +3167,7 @@
 
       <div class="window-controls" style="touch-action: none;"><div class="window-dragbar" style="touch-action: none;">
         ::::
-        </div><div class="window-toolbar" style="touch-action: none;">
+        </div><div class="window-toolbar window-toolbar-narrow" style="touch-action: none;">
         <div class="nav-options" style="display: none; touch-action: none;">
           <button class="toolbar-button" id="backButton" style="touch-action: none;"><i class="fa-solid fa-arrow-left" style="touch-action: none;" aria-hidden="true"></i></button>
           <button class="toolbar-button" id="forthButton" style="touch-action: none;"><i class="fa-solid fa-arrow-right" style="touch-action: none;" aria-hidden="true"></i></button>
@@ -3132,7 +3189,7 @@
 
       <div class="window-controls" style="touch-action: none;"><div class="window-dragbar" style="touch-action: none;">
         ::::
-        </div><div class="window-toolbar" style="touch-action: none;">
+        </div><div class="window-toolbar window-toolbar-narrow" style="touch-action: none;">
         <div class="nav-options" style="display: none; touch-action: none;">
           <button class="toolbar-button" id="backButton" style="touch-action: none;"><i class="fa-solid fa-arrow-left" style="touch-action: none;" aria-hidden="true"></i></button>
           <button class="toolbar-button" id="forthButton" style="touch-action: none;"><i class="fa-solid fa-arrow-right" style="touch-action: none;" aria-hidden="true"></i></button>
@@ -3154,7 +3211,7 @@
 
       <div class="window-controls" style="touch-action: none;"><div class="window-dragbar" style="touch-action: none;">
         ::::
-        </div><div class="window-toolbar" style="touch-action: none;">
+        </div><div class="window-toolbar window-toolbar-narrow" style="touch-action: none;">
         <div class="nav-options" style="display: none; touch-action: none;">
           <button class="toolbar-button" id="backButton" style="touch-action: none;"><i class="fa-solid fa-arrow-left" style="touch-action: none;" aria-hidden="true"></i></button>
           <button class="toolbar-button" id="forthButton" style="touch-action: none;"><i class="fa-solid fa-arrow-right" style="touch-action: none;" aria-hidden="true"></i></button>
@@ -3176,7 +3233,7 @@
 
       <div class="window-controls" style="touch-action: none;"><div class="window-dragbar" style="touch-action: none;">
         ::::
-        </div><div class="window-toolbar" style="touch-action: none;">
+        </div><div class="window-toolbar window-toolbar-narrow" style="touch-action: none;">
         <div class="nav-options" style="display: none; touch-action: none;">
           <button class="toolbar-button" id="backButton" style="touch-action: none;"><i class="fa-solid fa-arrow-left" style="touch-action: none;" aria-hidden="true"></i></button>
           <button class="toolbar-button" id="forthButton" style="touch-action: none;"><i class="fa-solid fa-arrow-right" style="touch-action: none;" aria-hidden="true"></i></button>
@@ -3198,7 +3255,7 @@
 
       <div class="window-controls" style="touch-action: none;"><div class="window-dragbar" style="touch-action: none;">
         ::::
-        </div><div class="window-toolbar" style="touch-action: none;">
+        </div><div class="window-toolbar window-toolbar-narrow" style="touch-action: none;">
         <div class="nav-options" style="display: none; touch-action: none;">
           <button class="toolbar-button" id="backButton" style="touch-action: none;"><i class="fa-solid fa-arrow-left" style="touch-action: none;" aria-hidden="true"></i></button>
           <button class="toolbar-button" id="forthButton" style="touch-action: none;"><i class="fa-solid fa-arrow-right" style="touch-action: none;" aria-hidden="true"></i></button>
@@ -3235,7 +3292,7 @@
 
       <div class="window-controls" style="touch-action: none;"><div class="window-dragbar" style="touch-action: none;">
         ::::
-        </div><div class="window-toolbar" style="touch-action: none;">
+        </div><div class="window-toolbar window-toolbar-narrow" style="touch-action: none;">
         <div class="nav-options" style="display: none; touch-action: none;">
           <button class="toolbar-button" id="backButton" style="touch-action: none;"><i class="fa-solid fa-arrow-left" style="touch-action: none;" aria-hidden="true"></i></button>
           <button class="toolbar-button" id="forthButton" style="touch-action: none;"><i class="fa-solid fa-arrow-right" style="touch-action: none;" aria-hidden="true"></i></button>
@@ -3254,4 +3311,4 @@
       <div class="resize-handle" style="translate: none; rotate: none; scale: none; transform: translate3d(960px, 640px, 0px); touch-action: none; cursor: grab; user-select: none; z-index: 1030;"></div><video class="window-content" style="touch-action: none;" name="pCIK4CleEOf5" src="https://1a31e613-d751-44e7-82aa-d2d0081c52f8.mdnplay.dev/shared-assets/videos/flower.webm" id="pCIK4CleEOf5" controls=""></video></div></div></div></div>
 	
 	
-<style id="style-sVk08Sbex">.psVk08Sbex {border-color: #d46293; outline: #d46293; color: #d46293;} .psVk08Sbex .settings-button,.psVk08Sbex .open-layers-button {background-color: #d46293;} .psVk08Sbex .sidebar,.psVk08Sbex .add-button,.psVk08Sbex .invite-button,.psVk08Sbex .layers-sidebar,.psVk08Sbex .participant-item-avatar {background-color: #d46293; filter: brightness(0.9);}</style></body></html>
+</body></html>
