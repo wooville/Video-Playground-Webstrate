@@ -65,7 +65,10 @@
     display:none;
     /*     background-image:url(underconstruction1.gif); */
     /*     background-image:url(arrow-cursor.svg); */
-    /* visibility: hidden; */
+/*     visibility: visible; */
+  }
+  .participantCursor.window {
+    visibility: hidden;
   }
 
   .participantVideo {
@@ -678,6 +681,17 @@
     bottom: 0;
     margin-top: 20px;
   }
+  .upload-section-url {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+    position: sticky;
+    bottom: 0;
+    margin-top: 20px;
+  }
   .url-input {
     flex: 1;
     padding: 10px;
@@ -721,6 +735,14 @@
   }
 
   .add-button {
+    padding: 10px 15px;
+    background-color: #4a6fa5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .add-button-url {
     padding: 10px 15px;
     background-color: #4a6fa5;
     color: white;
@@ -937,7 +959,7 @@
   }
 
   .search-box {
-    width: 10rem;
+    width: 12rem;
     height: 2rem;
     border-radius: 1rem;
     text-align: center;
@@ -997,7 +1019,7 @@
     
 
     
-    <div id="wrapper" class=""></div>
+    <div id="wrapper" class="edit"></div>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script><script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Draggable.min.js"></script><script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/DrawSVGPlugin.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/EaselPlugin.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Flip.min.js"></script>
@@ -1185,13 +1207,13 @@
 
     document.addEventListener('fullscreenchange', function (e) {
       if (document.fullscreenElement) {
-        //         console.log(e.srcElement.id);
-        var element = document.getElementById("window-container-"+e.target.id);
+        //         console.log(e.srcElement.id + "   " + e.target.id);
+        var element = e.target.closest(".window-container");
         element.classList.add("p"+webstrate.clientId);
         //         e.target.parentNode.classList.add(webstrate.clientId);
       }
       else {
-        var element = document.getElementById("window-container-"+e.target.id);
+        var element = e.target.closest(".window-container");
         element.classList.remove("p"+webstrate.clientId);
         //         e.target.parentNode.classList.remove(webstrate.clientId);
       }
@@ -1297,7 +1319,6 @@
 
     const toggleEditButton = taskbar.querySelector("#toggleEditButton");
     toggleEditButton.addEventListener("mousedown", toggleEdit);
-
     // Layers management setup
     const openLayersButton = taskbar.querySelector("#openLayersButton");
     const closeLayersButton = taskbar.querySelector("#closeLayersButton");
@@ -1535,9 +1556,9 @@
     updateLayersList();
   }
 
-  wrapper.addEventListener("drop", (event) => {
-    doDrop(event);
-  });
+//   wrapper.addEventListener("drop", (event) => {
+//     doDrop(event);
+//   });
 
   wrapper.addEventListener("dragover", (event) => {
     doDragOver(event);
@@ -1574,13 +1595,27 @@
     return max;
   }
 
-  function addWindow() {
+  function addWindow(e=null, url=null, type=null) {
     const template = templates.querySelector(".window-container");
     //TODO put in electron
-    const preset = document.getElementById("taskbar-"+webstrate.clientId).querySelector(".add-select").value;
+    const preset = (type) ? type : document.getElementById("taskbar-"+webstrate.clientId).querySelector(".add-select").value;
 
     const newWindow = template.cloneNode(true);
     newWindow.id = "";
+
+    // Calculate center position.
+    const viewportWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+    const viewportHeight = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+    const windowWidth = 800; // Default width or get from template
+    const windowHeight = 800; // Default height or get from template
+
+    const left = Math.max(0, (viewportWidth - windowWidth) / 2 + window.scrollX);
+    const top = Math.max(0, (viewportHeight - windowHeight) / 2 + window.scrollY);
+
+    // Set position and z-index.
+    newWindow.style.left = `${left}px`;
+    newWindow.style.top = `${top}px`;
+    newWindow.style.zIndex = getNextZIndex();
 
     // Set initial z-index higher than existing windows
     const windows = wrapper.querySelectorAll('.window-container');
@@ -1594,7 +1629,7 @@
 
     // Handle content creation if not found in template
     if (!windowContent) {
-      if (preset === "image") {
+      if (preset.includes("image")) {
         addressSelect.innerHTML = '';
         const opt = document.createElement("option");
         opt.value = "";
@@ -1606,10 +1641,14 @@
           opt.innerHTML = a.fileName;
           if (a.mimeType.includes('image')) addressSelect.append(opt);
         })
+//         const savedURLs = document.getElementById('taskbar').querySelector
+        
         windowContent = document.createElement("img");
-        windowContent.src = addressSelect.value;
+        addressSelect.style.display='none';
+        const defaultURL = 'https://0577e046-6f75-4e1a-99b8-c04c9a8840da.mdnplay.dev/shared-assets/images/examples/surfer.jpg';
+        windowContent.src = (url) ? url : defaultURL;
         //         console.log(windowContent.src);
-      } else if (preset === "video") {
+      } else if (preset.includes("video")) {
         addressSelect.innerHTML = '';
         const opt = document.createElement("option");
         opt.value = "";
@@ -1622,8 +1661,12 @@
           if (a.mimeType.includes('video')) addressSelect.append(opt);
         })
         windowContent = document.createElement("video");
-        windowContent.src = addressSelect.value;
-      } else if (preset === "audio") {
+        addressSelect.style.display='none';
+        const defaultURL = 'https://1a31e613-d751-44e7-82aa-d2d0081c52f8.mdnplay.dev/shared-assets/videos/flower.webm';
+        windowContent.src = (url) ? url : defaultURL;
+        windowContent.controls = true;
+        
+      } else if (preset.includes("audio")) {
         addressSelect.innerHTML = '';
         const opt = document.createElement("option");
         opt.value = "";
@@ -1636,13 +1679,20 @@
           if (a.mimeType.includes('audio')) addressSelect.append(opt);
         })
         windowContent = document.createElement("audio");
-        windowContent.src = addressSelect.value;
-      } else if (preset==="note") {
+        addressSelect.style.display='none';
+        const defaultURL = 'https://3f656425-2fd0-4562-925c-791315dd4178.mdnplay.dev/shared-assets/audio/t-rex-roar.mp3';
+        windowContent.src = (url) ? url : defaultURL;
+        windowContent.controls = true;
+      } else if (preset.includes("note") || preset.includes("dice")) {
         windowContent = setupWindowPresetContent(preset);
         addressSelect.style.display = 'none';
+        addressBar.style.display = 'none';
       } else {
         windowContent = document.createElement("iframe");
-        windowContent.src = addressSelect.value;
+//         addressSelect.style.display='none';
+        const defaultURL = 'https://videoplayground.xyz/new?prototypeUrl=https://github.com/wooville/Video-Playground-Webstrate/raw/refs/heads/main/zip/video_playground.zip';
+        console.log(url);
+        windowContent.src = (url) ? url : defaultURL;
       }
       windowContent.classList.add("window-content");
       newWindow.append(windowContent);
@@ -1663,7 +1713,7 @@
     //       } 
     //     });
 
-    // Add title if it doesn't exist
+    // Add title if it doesn't exist.
     if (!newWindow.querySelector('.window-title')) {
       const title = document.createElement('div');
       title.className = 'window-title';
@@ -1675,6 +1725,13 @@
     //     wrapper.webstrate.signal("addImg", this.webstrate.clients);
 
     updateLayersList();
+  }
+
+  // Helper function to get next z-index.
+  function getNextZIndex() {
+    const windows = wrapper.querySelectorAll('.window-container');
+    return windows.length > 0 ? 
+      Math.max(...Array.from(windows).map(w => parseInt(window.getComputedStyle(w).zIndex) || 0)) + 1 : 1;
   }
 
   if (layersList) layersList.addEventListener('mousedown', function(e) {
@@ -1750,10 +1807,10 @@
 
     var windowContent;
 
-    if (type.includes("image")) {
-      windowContent = document.createElement("img");
+    if (type) {
+      if (type.includes("image")) windowContent = document.createElement("img");
     } else {
-      windowContent = document.createElement("object");
+      windowContent = document.createElement("iframe");
     }
 
     windowContent.classList.add("window-content");
@@ -1836,22 +1893,36 @@
               handleMutationLockDrag(mutation);
               handleMutationInteractionAwareness(mutation);
               break;
+            case "src":
+              handleMutationWindowContent(mutation);
+              break;
             case "style":
               updateLayersList();
               break;
             case "data-scroll-left":
-              var attributeValue = mutation.target.dataset.scrollLeft;
-              mutation.target.scrollLeft = attributeValue;
+              //               var attributeValue = mutation.target.dataset.scrollLeft;
+              //               mutation.target.scrollLeft = attributeValue;
               break;
             case "data-scroll-top":
-              var attributeValue = mutation.target.dataset.scrollTop;
-              mutation.target.scrollTop = attributeValue;
+              //               var attributeValue = mutation.target.dataset.scrollTop;
+              //               mutation.target.scrollTop = attributeValue;
               break;
           }
           break;
       }
     });
   });
+
+  function handleMutationWindowContent(mutation){
+    var attributeValue = mutation.target.src;
+    var container = mutation.target.closest(".window-container");
+    if (container){
+      var addressBar = container.querySelector('.search-box');
+      if (addressBar) addressBar.value = attributeValue;
+      setupWindowContent(mutation.target);
+    } 
+
+  }
 
   function handleMutationNodeAddRemove(mutation){
     mutation.addedNodes.forEach(function(newElement) {
@@ -1898,7 +1969,7 @@
     //     characterDataOldValue: true // pass old data to callback
     attributes: true,
     //     attributeOldValue: true,
-    attributeFilter: ['class', 'style', 'data-scroll-left', 'data-scroll-top']
+    attributeFilter: ['class', 'src', 'style', 'data-scroll-left', 'data-scroll-top']
   });
 
   const mediaObserver = new MutationObserver(function(mutations) {
@@ -1962,8 +2033,8 @@
     const handle = setupDraggableSubElement(element, "resize-handle");
     const deleteBtn = element.querySelector("#closeButton");
     if (deleteBtn) deleteBtn.addEventListener('mousedown', function (e) {
-//       var existingDrag = Draggable.get(element);
-//       if (existingDrag) existingDrag.kill();
+      //       var existingDrag = Draggable.get(element);
+      //       if (existingDrag) existingDrag.kill();
       element.remove();
     });
 
@@ -2054,6 +2125,28 @@
     }
 
     if (element.className.includes("window-container")) {
+      element.addEventListener("mousemove", function(e) {
+        element.classList.add("p"+webstrate.clientId);
+        const participantCursor = document.getElementById("participantCursor-"+webstrate.clientId);
+        const participantView = document.getElementById("participantView-"+webstrate.clientId);
+        if (!participantCursor || !participantView){
+          return;
+        }
+
+        participantCursor.style.visibility = "hidden";
+        //       console.log(participantCursor.style.visibility);
+      });
+
+      element.addEventListener("mouseout", function(e) {
+        element.classList.remove("p"+webstrate.clientId);
+        const participantCursor = document.getElementById("participantCursor-"+webstrate.clientId);
+        const participantView = document.getElementById("participantView-"+webstrate.clientId);
+        if (!participantCursor || !participantView){
+          return;
+        }
+
+        participantCursor.style.visibility = "visible";
+      });
       const newId = generateID(12);
       if (!element.id) element.id = "window-container-"+newId;
       const addressBar = element.querySelector('.search-box');
@@ -2062,41 +2155,44 @@
       if (windowContent){
         if (!windowContent.id) windowContent.id = newId;
         if (!windowContent.name) windowContent.name = newId;
-        if (windowContent.contentWindow && windowContent.src === this.origin) windowContent.contentWindow.addEventListener("scroll", function(e) {
-          windowContent.dataset.scrollLeft = windowContent.scrollLeft;
-          windowContent.dataset.scrollTop = windowContent.scrollTop;
-        });
-        //         windowContent.addEventListener("pointerover", function(e) {
-        //           console.log("ahhsdfasd");
-        //         });
+        setupWindowContent(windowContent);
       } 
 
-      if(addressBar) addressBar.addEventListener("keyup", (e) => {
-        if (e.key !== "Enter") return;
-        //         if (addressBar.value.includes("http")) {
-        //           windowContent.type = "text/html";
-        //         } else {
-        //           windowContent.type = "text/html";
+      if(addressBar) {
+        addressBar.addEventListener("keyup", (e) => {
+          if (e.key !== "Enter") return;
+          //         if (addressBar.value.includes("http")) {
+          //           windowContent.type = "text/html";
+          //         } else {
+          //           windowContent.type = "text/html";
+          //         }
+          //         open(addressBar.value, windowContent.name);
+          windowContent.data = (addressBar.value);
+          windowContent.src = (addressBar.value);
+          //         setupMediaPlaybackSync(windowContent);
+        });
+        if (windowContent) addressBar.value = windowContent.src;
+      } 
+
+      if(addressSelect) {
+        addressSelect.addEventListener("change", (e) => {
+          //         if (e.key !== "Enter") return;
+          //         if (addressBar.value.includes("http")) {
+          //           windowContent.type = "text/html";
+          //         } else {
+          //           windowContent.type = "text/html";
+          //         }
+          //         open(addressBar.value, windowContent.name);
+          //         windowContent.data = (addressBar.value);
+          windowContent.src = (addressSelect.value);
+          //         console.log(windowContent.src);
+//                   setupMediaPlaybackSync(windowContent);
+        });
+        //         if (windowContent) {
+        //         let optionValues = [...selectElement.options].map(o => o.value)
+        //           addressSelect.value = windowContent.src;
         //         }
-        //         open(addressBar.value, windowContent.name);
-        windowContent.data = (addressBar.value);
-        windowContent.src = (addressBar.value);
-        //         setupMediaPlaybackSync(windowContent);
-      });
-      
-      if(addressSelect) addressSelect.addEventListener("change", (e) => {
-//         if (e.key !== "Enter") return;
-        //         if (addressBar.value.includes("http")) {
-        //           windowContent.type = "text/html";
-        //         } else {
-        //           windowContent.type = "text/html";
-        //         }
-        //         open(addressBar.value, windowContent.name);
-//         windowContent.data = (addressBar.value);
-        windowContent.src = (addressSelect.value);
-        console.log(windowContent.src);
-        //         setupMediaPlaybackSync(windowContent);
-      });
+      }
 
       const minimizeButton = element.querySelector('#minimizeButton');
       if(minimizeButton) minimizeButton.addEventListener('mousedown', () => {
@@ -2171,7 +2267,70 @@
     //     inPipMessage.style.display = "block";
   }
 
+  function setupWindowContent(windowContent) {
+//     console.log('setup window');
+//     const location = "";
+    setupMediaPlaybackSync(windowContent);
+    try {
+      
+      //       location = windowContent.contentWindow.location.toString();
+      //     }
+      //     catch (error) {
+      //       console.log('location err');
+      //     }
+//       console.log(windowContent.contentWindow);
+      if (windowContent.contentWindow) {
+        const addressBar = windowContent.closest('.window-container').querySelector('.search-box');
+        //           windowContent.contentWindow.addEventListener("scroll", function(e) {
+        //             windowContent.dataset.scrollLeft = windowContent.scrollLeft;
+        //             windowContent.dataset.scrollTop = windowContent.scrollTop;
+        //           });
+        function iframeURLChange(iframe, callback) {
+          var unloadHandler = function () {
+            // Timeout needed because the URL changes immediately after
+            // the `unload` event is dispatched.
 
+            setTimeout(function () {
+              try{
+                callback(iframe.contentWindow.location.href);
+              } catch (error) {
+                console.log('cross-origin err');
+              }
+            }, 0);
+
+          };
+
+          function attachUnload() {
+            // Remove the unloadHandler in case it was already attached.
+            // Otherwise, the change will be dispatched twice.
+            try {
+              iframe.contentWindow.removeEventListener("unload", unloadHandler);
+              iframe.contentWindow.addEventListener("unload", unloadHandler);
+            } catch (error) {
+              console.log('cross-origin err');
+            }
+
+          }
+
+          iframe.addEventListener("load", attachUnload);
+          attachUnload();
+        }
+
+        iframeURLChange(windowContent, function (newURL) {
+//           console.log(newURL);
+          if (windowContent.src != newURL) {
+            windowContent.src = newURL;
+            console.log("URL changed:", newURL);
+          } 
+        });
+      } 
+    } catch (error) {
+      console.log('cross-origin err');
+    }
+    //         windowContent.addEventListener("pointerover", function(e) {
+    //           console.log("ahhsdfasd");
+    //         });
+  }
 
   function setupDraggableSubElement(element, className) {
     var subElements = element.querySelectorAll("."+className);
@@ -2428,7 +2587,6 @@
             body: formData
           });
 
-
           if (response.ok) {
             const assetName = file.name;
             // The asset will be available at: <current webstrate URL>/<file.name>
@@ -2460,6 +2618,14 @@
         opt.innerHTML = a.fileName;
         if (a.mimeType.includes('image')) bgSelect.append(opt);
       })
+      const permGrid = templates.querySelectorAll('.image-item');
+      permGrid.forEach(a => {
+        const opt = document.createElement("option");
+        //         console.log(a.firstChild.src);
+        opt.value = a.childNodes[0].src;
+        opt.innerHTML = a.childNodes[0].src;
+        bgSelect.append(opt);
+      })
       bgSelect.addEventListener('change', function() {
         bodyElement.setAttribute('style', `
           background-image: url('${bgSelect.value}');
@@ -2480,7 +2646,13 @@
     // Sample Images for Storage Space
     const imageGrid = taskbar.querySelector('.image-grid');
     const presets = templates.querySelectorAll(".preset");
+    const permGrid = taskbar.querySelectorAll('.image-item');
 
+    permGrid.forEach(item => {
+      item.addEventListener('mousedown', function() {
+        item.classList.toggle('selected');
+      });
+    });
     assets.forEach(assetObj => {
       const imgElement = document.createElement('div');
       imgElement.className = 'image-item';
@@ -2502,8 +2674,45 @@
     });
 
     // Add Image from URL
+    const saveButton = taskbar.querySelector('.add-button-url');
     const addButton = taskbar.querySelector('.add-button');
-    //     const urlInput = taskbar.querySelector('.url-input');
+    const urlInput = taskbar.querySelector('.url-input');
+
+    const backgroundButton = taskbar.querySelector('.background-button');
+
+    saveButton.addEventListener('mousedown', async function() {
+      const url = urlInput.value.trim();
+      const response = await fetch(url, {
+        method: 'HEAD'
+      });
+      console.log(response.headers.get('Content-Type'));
+      if (url) {
+        const imgElement = document.createElement('div');
+        imgElement.className = 'image-item';
+        imgElement.innerHTML = `<img src="${url}" type="${(response) ? 'image' : response.headers.get('Content-Type')}" alt="Uploaded image" onerror="this.parentElement.remove()">`;
+        imgElement.addEventListener('mousedown', function() {
+          imgElement.classList.toggle('selected');
+        });
+        imageGrid.appendChild(imgElement);
+        urlInput.value = '';
+
+        const permGrid = templates.querySelector(".image-grid");
+        permGrid.appendChild(imgElement.cloneNode(true));
+      } else {
+        alert('Please enter a valid URL');
+      }
+    });
+
+    backgroundButton.addEventListener('mousedown', function() {
+      var sel = taskbar.querySelector('.selected');
+      document.body.setAttribute('style', `
+          background-image: url('${sel.childNodes[0].src}');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-attachment: fixed;
+        `);
+    });
 
     addButton.addEventListener('mousedown', function() {
       //       const url = urlInput.value.trim();
@@ -2519,9 +2728,44 @@
       let selectedElements = imageGrid.querySelectorAll(".selected");
       selectedElements.forEach(element => {
         element.classList.remove('selected');
-        (element.childNodes[0].classList.contains("preset")) ? addWindowFromPresetId(element.childNodes[0].dataset.presetId) : addWindowFromURL(element.childNodes[0].src, element.childNodes[0].getAttribute("type"))
+        (element.childNodes[0].classList.contains("preset")) ? addWindowFromPresetId(element.childNodes[0].dataset.presetId) : addWindow(null, element.childNodes[0].src, element.childNodes[0].getAttribute("type"))
       });
     });
+
+    const observer = new MutationObserver((mutationList) => {
+      //       mutationList
+      //         .filter((m) => m.type === 'childList')
+      //         .forEach((mutation) => {
+      //         refreshButtons();
+      //       });
+      mutationList
+        .filter((m) => m.type === 'attributes')
+        .forEach((mutation) => {
+        console.log(mutation.target);
+        refreshButtons();
+      });
+    });
+
+    function refreshButtons() {
+      const uploadSection = taskbar.querySelector(".upload-section");
+
+      var selected = imageGrid.querySelectorAll(".selected");
+      if (selected.length > 0){
+        uploadSection.style.display = "flex";
+      } else {
+        uploadSection.style.display = 'none';
+      }
+
+      if (selected.length === 1) {
+        backgroundButton.style.display = 'flex'
+      } else {
+        backgroundButton.style.display = 'none';
+      }
+    }
+
+    // Start observing the target for added/removed nodes
+    observer.observe(imageGrid, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+
   });
 
   function openSettings(){
@@ -2676,20 +2920,20 @@ new MutationObserver((mutations) => {
           
           
         <select class="address-select">
-              <option value="https://wikipedia.com">Wikipedia</option><option value="https://www.google.com/search?igu=1">Google</option><option value="https://www.youtube.com/embed/lJIrF4YjHfQ">Youtube</option><option value="https://playingcards.io/357gwm">Chess</option>
-              <option value="https://www.watchparty.me/watch/null-run-perceive">Watch Party</option>
+              <option value="https://videoplayground.xyz/new?prototypeUrl=https://github.com/wooville/Video-Playground-Webstrate/raw/refs/heads/main/zip/video_playground.zip">Playground</option><option value="https://wikipedia.com">Wikipedia</option><option value="https://www.google.com/search?igu=1">Google</option><option value="https://playingcards.io/357gwm">Chess</option>
+              <option value="https://opentogethertube.com/">OpenTogetherTube</option><option value="https://sync-tube.de/room/KVD8QK3d">SyncTube</option><option value="https://www.watchparty.me/watch/null-run-perceive">Watch Party</option>
               <option value="https://jukebox.today/videoplayground">Jukebox</option><option value="https://demo.webstrates.net/curvy-owl-14/">Tank Trouble</option>
               
-            <option value="https://videoplayground.xyz/frontpage/">Playground</option><option value="https://be6e5700-67aa-44df-adc8-5cb4840e155f.mdnplay.dev/shared-assets/images/examples/surfer.jpg">Image</option><option value="https://1a31e613-d751-44e7-82aa-d2d0081c52f8.mdnplay.dev/shared-assets/videos/flower.webm">Video</option></select></div>
-        <div class="window-options" style="touch-action: none;">
+            </select></div>
+        
+        <div class="search-bar" style="touch-action: none;">
+          <i class="fa-solid fa-magnifying-glass fa-lg" style="margin-right: 0.5rem; touch-action: none;" aria-hidden="true"></i>
+          <input type="text" placeholder="Search" class="search-box" contenteditable="true" style="touch-action: none;">
+        </div><div class="window-options" style="touch-action: none;">
           <button id="lockButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-unlock" style="touch-action: none;" aria-hidden="true"></i></button>
           <button id="closeButton" class="toolbar-button" style="touch-action: none;"><i class="fa-solid fa-x" style="touch-action: none;" aria-hidden="true"></i></button>
           <button class="toolbar-button" style="touch-action: none;" id="fullscreenButton"><i class="fa-solid fa-up-right-and-down-left-from-center" style="touch-action: none;" aria-hidden="true"></i></button>
           <button class="toolbar-button" style="touch-action: none;" id="minimizeButton"><i class="fa-solid fa-minus" style="touch-action: none;" aria-hidden="true"></i></button>
-        </div>
-        <div class="search-bar" style="display:none;touch-action: none;">
-          <i class="fa-solid fa-magnifying-glass fa-lg" style="margin-right: 0.5rem; touch-action: none;" aria-hidden="true"></i>
-          <input type="text" placeholder="Search" class="search-box" contenteditable="true" style="touch-action: none;">
         </div></div></div>
       <div class="resize-handle" style="translate: none; rotate: none; scale: none; transform: translate3d(960px, 960px, 0px); touch-action: none; cursor: grab; user-select: none;"></div></div><div id="participant-menus" class="ui"><div class="main-interface" style="transform: scale(1); left: 0px; top: 0px;">
     
@@ -2720,12 +2964,12 @@ new MutationObserver((mutations) => {
           </li>
           <li class="menu-item" data-content="storage-space">
             <span><i class="fas fa-images"></i> Storage Space</span>
-          </li><li class="menu-item" data-content="room-presets" style="display:none">
+          </li><li class="menu-item" data-content="room-presets" style="display: none;">
             <span><i class="fas fa-images"></i>Room Presets</span>
-          </li><li class="menu-item" data-content="scripts-list" style="display:none">
+          </li><li class="menu-item" data-content="scripts-list" style="display: none;">
             <span><i class="fas fa-images"></i>Scripts and Styles</span>
           </li>
-          <li class="menu-item" data-content="additional-feature" style="display:none">
+          <li class="menu-item" data-content="additional-feature" style="display: none;">
             <span><i class="fas fa-ellipsis-h"></i> Other</span>
           </li>
         </ul>
@@ -2738,7 +2982,7 @@ new MutationObserver((mutations) => {
           <div class="participant-item-container">
             <!-- Participants will be added here dynamically -->
             </div>
-          <div class="invite-section">
+          <div class="invite-section" style="display: none;">
             <input type="email" placeholder="Enter invitee's email" class="email-input">
             <button class="invite-button">Invite</button>
             <div class="copy-link">
@@ -2750,7 +2994,7 @@ new MutationObserver((mutations) => {
 
         <div id="customize" class="content-section">
           <h2>Customize</h2>
-          <div class="customize-option" style="display:none">
+          <div class="customize-option" style="display: none;">
             <div class="option-label">Preset</div>
             <div class="toggle-button off" data-option="preset"></div>
             <select class="preset-select">
@@ -2760,12 +3004,12 @@ new MutationObserver((mutations) => {
               <option value="professional">Professional</option>
             </select>
           </div>
-          <div class="customize-option" style="display:none">
+          <div class="customize-option" style="display: none;">
             <div class="option-label">Mini Map</div>
             <div class="toggle-button off" data-option="minimap"></div>
           </div>
 
-          <div class="customize-option" style="display:none">
+          <div class="customize-option" style="display: none;">
     <div class="option-label">Background Image</div>
     <button id="noneButton">None</button>
 <input type="file" class="background-image-uploader" accept="image/*"></div><div class="customize-option">
@@ -2800,14 +3044,18 @@ new MutationObserver((mutations) => {
           <div class="image-grid-container">
             <div class="image-grid">
               <!-- Images will be added here dynamically -->
-              </div>
+              <div class="image-item"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Rijpe_vruchten_van_Hertshooi_%28Hypericum%29._17-08-2024_%28d.j.b.%29.jpg/500px-Rijpe_vruchten_van_Hertshooi_%28Hypericum%29._17-08-2024_%28d.j.b.%29.jpg" type="image" alt="Uploaded image" onerror="this.parentElement.remove()"></div><div class="image-item"><img src="https://images.unsplash.com/photo-1746121813274-50f7f8d4bad4?q=80&amp;w=2103&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.1.0&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" type="image" alt="Uploaded image" onerror="this.parentElement.remove()"></div><div class="image-item"><img src="https://0577e046-6f75-4e1a-99b8-c04c9a8840da.mdnplay.dev/shared-assets/images/examples/surfer.jpg" type="image" alt="Uploaded image" onerror="this.parentElement.remove()"></div></div>
           </div>
-          <div class="upload-section">
-  <form action="" enctype="multipart/form-data" method="post">
+          <div class="upload-section-url">
+            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+            <input type="text" placeholder="insert URL here" class="url-input">
+            <button class="add-button-url">Save</button>
+          </div><div class="upload-section" style="display: none;">
+  <button class="add-button">Add to Playground</button><button class="background-button">Set as Background</button><form action="" enctype="multipart/form-data" method="post" style="display: none;">
     <input name="file" type="file" autocomplete="off" multiple="">
     <input type="submit" value="Upload" autocomplete="off">
   </form>
-  <button class="add-button">Add</button>
+  
 </div>
         </div>
         <div id="room-presets" class="content-section">
@@ -2848,7 +3096,7 @@ new MutationObserver((mutations) => {
     </div>
     </div><div id="layersMenu" class="layers-sidebar">
         <span class="close-button" onclick="closeLayersMenu()" id="closeLayersButton">×</span>
-        <h2>Layers</h2>
+        <h2 style="color: white;">Layers</h2>
         <ul id="layersList">
             
         </ul>
@@ -2955,7 +3203,8 @@ new MutationObserver((mutations) => {
     <div class="white" style="touch-action: none;"></div>
     <div class="black" style="touch-action: none;"></div>
     <div class="white" style="touch-action: none;"></div>
-  </div></div><!-- <div id="dice-pit"><style id="style-dice-pit" type="text">
+  </div></div>
+  <div id="dice-pit" class="preset"><style id="style-dice-pit" type="text">
   .ball {
     width: 125px;
     height: 125px;
@@ -2966,8 +3215,8 @@ new MutationObserver((mutations) => {
   }
 
   .ballPit {
-    width: 400px;
-    height: 400px;
+    width: 100%;
+    height: 100%;
     background-color: rgba(11, 21, 255, .2);
   }
   </style>
@@ -3080,7 +3329,7 @@ new MutationObserver((mutations) => {
   }
 </script>
 <div class="ballPit" id="ballPit0" type="text"><img alt="" class="ball" src="dice-six-faces-one.png" style="translate: none; rotate: none; scale: none; z-index: 1001; cursor: grab; touch-action: none; user-select: none; transform: translate(-50%, -50%) translate3d(182px, 241px, 0px);" identifier="IMG0.4655046644195828" uxa="" data-face="0"></div>
-</div> --></div><div id="roomPresets"><div id="roomPreset0"><div class="window-container" id="window-1753194352351-1" style="translate: none; rotate: none; scale: none; touch-action: none; cursor: grab; user-select: none; z-index: 1020; top: 448px; left: 1472px;" data-window-number="5"><div class="window-title" style="touch-action: none;">Window 5</div>
+</div></div><div id="roomPresets"><div id="roomPreset0"><div class="window-container" id="window-1753194352351-1" style="translate: none; rotate: none; scale: none; touch-action: none; cursor: grab; user-select: none; z-index: 1020; top: 448px; left: 1472px;" data-window-number="5"><div class="window-title" style="touch-action: none;">Window 5</div>
 
 
 
