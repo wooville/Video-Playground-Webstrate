@@ -778,8 +778,8 @@
   }
 
   .window-container {
-    will-change: transform;
-    /*       overflow: hidden; */
+/*     will-change: transform; */
+          overflow: hidden;
 /*     text-align: center; */
     box-sizing: border-box;
     /*     display: flex; */
@@ -788,8 +788,12 @@
     width: 40rem;
     height: 40rem;
     background-color: rgba(0,0,0,0);
+    outline-color: black;
     outline: none;
     position: absolute;
+    resize: none;
+    aspect-ratio: 1;
+/*     cursor: auto; */
 /*     margin:-1rem; */
 /*     outline-offset:1rem; */
 /*     padding: 6rem; */
@@ -797,12 +801,18 @@
     padding-left:1rem; */
     /*     padding-top:4rem; */
     /*       padding-top: 6rem; */
-    /*         resize: both; */
+/*             resize: both; */
   }
   .window-container:hover {
-    background-color: rgba(0,0,0,0);
-    outline-color: black;
+/*     background-color: rgba(0,0,0,0); */
+/*     outline-color: black; */
     outline: solid;
+  }
+  #wrapper.edit .window-container {
+    resize: both;
+    background-color: white;
+/*     padding-bottom: 4rem; */
+/*     border: solid; */
   }
   #wrapper.edit .window-container .window-controls {
     visibility:visible;
@@ -812,6 +822,7 @@
   }
   .window-container.lock-drag {
     outline-color: yellow;
+    border-color: yellow;
   }
   .window-container.lock-drag .window-title {
     color: yellow;
@@ -820,24 +831,27 @@
   .window-controls {
     top:0px;
     left:0px;
-    visibility: hidden;
+    display: none;
     overflow: hidden;
-    display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    height: 7rem;
+    height: 100%;
     width: 100%;
     position: absolute;
-    background-color: fff;
+    background-color: white;
     /*       border-color: black;
     border-style: solid;
     border-radius: .5rem; */
-    margin-top: -6rem;
+/*     margin-top: -6rem; */
     border-style: solid;
     pointer-events: all;
   }
+  #wrapper.edit .window-controls {
+    display: flex;
+  }
 
   .window-dragbar {
+    display:none;
     box-sizing: border-box;
     height: 2rem;
     width: 100%;
@@ -863,7 +877,7 @@
     column-gap: 1rem;
     padding-left: 1rem;
     padding-right: 1rem;
-    top: 2rem;
+/*     top: 2rem; */
     position: absolute;
   }
 
@@ -887,6 +901,7 @@
   }
 
   .window-content {
+    position: absolute;
     /*       overflow: auto; */
     box-sizing: border-box;
     /*         background-color: #B5FCCD; */
@@ -900,9 +915,12 @@
     top:0px;
     left:0px;
     aspect-ratio: 1;
-    padding:4rem;
+    padding: 4rem;
+    border:none;
+/*     resize: both; */
 /*     margin-left: -1rem; */
-/*     margin-top: .333rem; */
+    margin-top: 0rem;
+    margin-bottom: 0rem;
 /*         padding-block: 2rem;
     padding-inline: 2rem; */
     /*     padding:1rem;
@@ -910,6 +928,17 @@
     /*     object-fit: scale-down; */
     /*       padding-bottom: 6rem; */
   }
+  #wrapper.edit .window-content {
+    background-color: white;
+    margin-top: 4rem;
+/*     margin-bottom: 4rem; */
+    padding: 0rem 4rem 8rem 4rem;
+    border: solid;
+/*     padding-bottom: 2rem; */
+  }
+/*   #wrapper.edit .window-content iframe {
+    border: solid;
+  } */
   /*   .image-item {
   aspect-ratio: 1;
   background-color: rgba(0, 0, 0, 0.05);
@@ -1006,7 +1035,7 @@
     visibility: hidden;
     pointer-events: none;
     font-size: 2rem;
-    margin-top: -3rem;
+    margin-top: 0rem;
     z-index: 9;
   }
 
@@ -1015,22 +1044,28 @@
   }
 
 </style></head>
-  <body style="background-image: url(&quot;&quot;); background-size: cover; background-position: center center; background-repeat: no-repeat; background-attachment: fixed;">
+  <body style="
+          background-image: url('https://images.unsplash.com/photo-1746121813274-50f7f8d4bad4?q=80&amp;w=2103&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.1.0&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-attachment: fixed;
+        ">
     
 
     
-    <div id="wrapper" class="edit"></div>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script><script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Draggable.min.js"></script><script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/DrawSVGPlugin.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/EaselPlugin.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Flip.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/GSDevTools.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/InertiaPlugin.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Observer.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Physics2DPlugin.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrambleTextPlugin.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-    <!-- ScrollSmoother requires ScrollTrigger -->
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollSmoother.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script><div id="wrapper" class=""></div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 
 
@@ -1509,8 +1544,8 @@
       closeButton.title = 'Close window';
       closeButton.addEventListener('mousedown', function(e) {
         e.stopPropagation();
-        var drag = Draggable.get(window);
-        if (drag) drag.kill();
+//         var drag = Draggable.get(window);
+//         if (drag) drag.kill();
         window.remove();
         updateLayersList();
       });
@@ -1556,12 +1591,16 @@
     updateLayersList();
   }
 
-//   wrapper.addEventListener("drop", (event) => {
-//     doDrop(event);
-//   });
+  wrapper.addEventListener("drop", (event) => {
+    doDrop(event);
+  });
 
   wrapper.addEventListener("dragover", (event) => {
     doDragOver(event);
+  });
+  
+  wrapper.addEventListener("dragstart", (event) => {
+    if (dragged) event.preventDefault();
   });
 
   function doDragOver(event) {
@@ -1580,7 +1619,8 @@
       const link = document.createElement("a");
       link.href = line;
       link.textContent = line;
-      event.target.appendChild(link);
+      if (line) addWindow(event, line);
+//       event.target.appendChild(link);
     });
     event.preventDefault();
   }
@@ -1940,15 +1980,15 @@
 
   function handleMutationLockDrag(mutation) {
     // check draggable locks
-    if (mutation.target.className.includes("lock-drag")){
-      //         console.log("lock");
-      var drag = Draggable.get(mutation.target);
-      if (drag) drag.disable();
-    } else if (mutation.target.className.includes("draggable") || mutation.target.className.includes("resize-handle") || mutation.target.className.includes("window-container")){
-      //         Draggable.get(mutation.target.id).enable();
-      var drag = Draggable.get(mutation.target);
-      if (drag) drag.enable();
-    }
+    //     if (mutation.target.className.includes("lock-drag")){
+    //       //         console.log("lock");
+    //       var drag = Draggable.get(mutation.target);
+    //       if (drag) drag.disable();
+    //     } else if (mutation.target.className.includes("draggable") || mutation.target.className.includes("resize-handle") || mutation.target.className.includes("window-container")){
+    //       //         Draggable.get(mutation.target.id).enable();
+    //       var drag = Draggable.get(mutation.target);
+    //       if (drag) drag.enable();
+    //     }
   }
 
   function handleMutationInteractionAwareness(mutation) {
@@ -2028,102 +2068,64 @@
     //     }
   }
 
+  var edited = null; //The note currently edited
+  var dragged = null; //The note currently dragged
+  var offset = {x: 0, y: 0}; //Offset from mouse when dragging
+
+  // Add event listerner for the webstrate being loaded
+  webstrate.on("loaded", function() {
+
+    // If the user double-clicks a note then make it editable and give it focus.
+    // 	document.addEventListener("dblclick", function(e) {
+    // 		var note = e.target.closest(".window-container");
+    // 		if (note) {
+    // 			edited = note;
+    // 			note.setAttribute("contenteditable", true);
+    // 			note.focus();
+    // 		}
+    // 	});
+
+    // If the user clicks anywhere other than on the edited note, disable editing.
+    document.addEventListener("click", function(e) {
+      if (!edited || e.target.closest(".window-container") === edited) return;
+//       edited.setAttribute("contenteditable", false);
+      edited = null;
+    });
+
+    // On a mouse-down event, check if the target is a note, if so store it and its offset from the mouse.
+    document.addEventListener("mousedown", function(e) {
+      var target = e.target.closest(".window-container");
+      if (target===null) return;
+      if (e.target.closest(".search-box") || target.classList.contains("lock-drag")) return;
+      if (edited) return; // If we are editing, we want to disable dragging.
+      dragged = target;
+      var style = getComputedStyle(dragged);
+      offset.x = e.clientX - parseInt(style.getPropertyValue("left"));
+      offset.y = e.clientY - parseInt(style.getPropertyValue("top"));
+    });
+
+    // On a mouse-move event, check if something is dragged, if so position it relative to the stored offset.
+    document.addEventListener("mousemove", function(e) {
+      if (dragged === null) return;
+      if (edited) return;
+      var left = e.clientX - offset.x;
+      var top = e.clientY - offset.y;
+      dragged.style.left= left+"px";
+      dragged.style.top = top+"px";
+    });
+
+    document.addEventListener("mouseup", function(e) {
+      dragged = null;
+    });
+  });
+
   function setupResizeableElement(element) {
-    const dragUnit = 64;
-    const handle = setupDraggableSubElement(element, "resize-handle");
     const deleteBtn = element.querySelector("#closeButton");
     if (deleteBtn) deleteBtn.addEventListener('mousedown', function (e) {
       //       var existingDrag = Draggable.get(element);
       //       if (existingDrag) existingDrag.kill();
       element.remove();
     });
-
-    var rect1 = element.getBoundingClientRect();
-
-    TweenLite.set(handle, { x: rect1.width, y: rect1.height });
-
-    var rect2 = handle.getBoundingClientRect();
-
-    var offset = {
-      x1: rect2.left - rect1.right,
-      y1: rect2.top - rect1.bottom,
-      x2: rect2.right - rect1.right,
-      y2: rect2.bottom - rect1.bottom
-    };
-    var existingDrag = Draggable.get(element);
-    if (existingDrag) existingDrag.kill();
-
-    var elementDrag = Draggable.create(element, {
-      type: "left,top",
-      bounds: container,
-      autoScroll: 1,
-      inertia: true,
-      dragClickables: false,
-      onPress: function(e) {
-        //         e.stopPropagation();
-        //         console.log(e.x);
-      },
-      onDragStart:function () {
-        element.classList.add("p"+webstrate.clientId);
-        const participantCursor = document.getElementById("participantCursor-"+webstrate.clientId);
-        participantCursor.style.visibility = "hidden";
-      },
-      onDragEnd: function () {
-        element.classList.remove("p"+webstrate.clientId);
-        const participantCursor = document.getElementById("participantCursor-"+webstrate.clientId);
-        participantCursor.style.visibility = "visible";
-      },
-      //       liveSnap: (playground.classList.contains("edit")),
-      snap:{
-        x: function(endValue) {
-          return Math.round(endValue / dragUnit) * dragUnit;
-        },
-        y: function(endValue) {
-          return Math.round(endValue / dragUnit) * dragUnit;
-        }
-      }
-    });
-    elementDrag = elementDrag[0];
-    if (element.className.includes("lock-drag")) {
-      elementDrag.disable();
-    }
-
-    existingDrag = Draggable.get(handle);
-    if (existingDrag) existingDrag.kill();
-
-    var handleDrag = Draggable.create(handle, {
-      bounds: container,
-      //       type: "left,top",
-      autoScroll: 1,
-      onPress: function(e) {
-        e.stopPropagation();
-        //         console.log(e.pageX);
-      },
-      onDrag: function() {      
-        TweenLite.set(element, { width: this.x + 0, height: this.y + 0 });      
-      },
-      liveSnap: {
-        x: function(x) {
-          return Math.round(clamp(x, -offset.x1, x + offset.x2)/dragUnit)*dragUnit;
-        },
-        y: function(y) {
-          return Math.round(clamp(y, -offset.y1, y + offset.y2)/dragUnit)*dragUnit;
-        }
-      },
-      //       snap:{
-      //         x: function(endValue) {
-      //           return Math.round(endValue / 100) * 100;
-      //         },
-      //         y: function(endValue) {
-      //           return Math.round(endValue / 100) * 100;
-      //         }
-      //       }
-    });
-    handleDrag = handleDrag[0];
-    if (handle.className.includes("lock-drag")) {
-      handleDrag.disable();
-    }
-
     if (element.className.includes("window-container")) {
       element.addEventListener("mousemove", function(e) {
         element.classList.add("p"+webstrate.clientId);
@@ -2159,6 +2161,9 @@
       } 
 
       if(addressBar) {
+//         addressBar.addEventListener("click", (e) => {
+//           edited = element;
+//         });
         addressBar.addEventListener("keyup", (e) => {
           if (e.key !== "Enter") return;
           //         if (addressBar.value.includes("http")) {
@@ -2186,7 +2191,7 @@
           //         windowContent.data = (addressBar.value);
           windowContent.src = (addressSelect.value);
           //         console.log(windowContent.src);
-//                   setupMediaPlaybackSync(windowContent);
+          //                   setupMediaPlaybackSync(windowContent);
         });
         //         if (windowContent) {
         //         let optionValues = [...selectElement.options].map(o => o.value)
@@ -2207,7 +2212,7 @@
         const lockIcon = lockButton.querySelector('i');
 
         element.classList.toggle('lock-drag');
-        handle.classList.toggle('lock-drag');
+        //         handle.classList.toggle('lock-drag');
         lockButton.classList.toggle('lock-active');
 
         if (lockIcon.classList.contains('fa-lock')) {
@@ -2221,7 +2226,7 @@
 
       const fullscreenButton = element.querySelector('#fullscreenButton');
       if(fullscreenButton) fullscreenButton.addEventListener('mousedown', () => {
-        console.log(windowContent.ownerDocument.referrer);
+        //         console.log(windowContent.ownerDocument.referrer);
 
         if (windowContent.requestFullscreen) {
           windowContent.requestFullscreen();
@@ -2268,65 +2273,65 @@
   }
 
   function setupWindowContent(windowContent) {
-//     console.log('setup window');
-//     const location = "";
+    //     console.log('setup window');
+    //     const location = "";
     setupMediaPlaybackSync(windowContent);
-    try {
-      
-      //       location = windowContent.contentWindow.location.toString();
-      //     }
-      //     catch (error) {
-      //       console.log('location err');
-      //     }
-//       console.log(windowContent.contentWindow);
-      if (windowContent.contentWindow) {
-        const addressBar = windowContent.closest('.window-container').querySelector('.search-box');
-        //           windowContent.contentWindow.addEventListener("scroll", function(e) {
-        //             windowContent.dataset.scrollLeft = windowContent.scrollLeft;
-        //             windowContent.dataset.scrollTop = windowContent.scrollTop;
-        //           });
-        function iframeURLChange(iframe, callback) {
-          var unloadHandler = function () {
-            // Timeout needed because the URL changes immediately after
-            // the `unload` event is dispatched.
+    //     try {
 
-            setTimeout(function () {
-              try{
-                callback(iframe.contentWindow.location.href);
-              } catch (error) {
-                console.log('cross-origin err');
-              }
-            }, 0);
+    //       //       location = windowContent.contentWindow.location.toString();
+    //       //     }
+    //       //     catch (error) {
+    //       //       console.log('location err');
+    //       //     }
+    // //       console.log(windowContent.contentWindow);
+    //       if (windowContent.contentWindow) {
+    //         const addressBar = windowContent.closest('.window-container').querySelector('.search-box');
+    //         //           windowContent.contentWindow.addEventListener("scroll", function(e) {
+    //         //             windowContent.dataset.scrollLeft = windowContent.scrollLeft;
+    //         //             windowContent.dataset.scrollTop = windowContent.scrollTop;
+    //         //           });
+    //         function iframeURLChange(iframe, callback) {
+    //           var unloadHandler = function () {
+    //             // Timeout needed because the URL changes immediately after
+    //             // the `unload` event is dispatched.
 
-          };
+    //             setTimeout(function () {
+    //               try{
+    //                 callback(iframe.contentWindow.location.href);
+    //               } catch (error) {
+    //                 console.log('cross-origin err');
+    //               }
+    //             }, 0);
 
-          function attachUnload() {
-            // Remove the unloadHandler in case it was already attached.
-            // Otherwise, the change will be dispatched twice.
-            try {
-              iframe.contentWindow.removeEventListener("unload", unloadHandler);
-              iframe.contentWindow.addEventListener("unload", unloadHandler);
-            } catch (error) {
-              console.log('cross-origin err');
-            }
+    //           };
 
-          }
+    //           function attachUnload() {
+    //             // Remove the unloadHandler in case it was already attached.
+    //             // Otherwise, the change will be dispatched twice.
+    //             try {
+    //               iframe.contentWindow.removeEventListener("unload", unloadHandler);
+    //               iframe.contentWindow.addEventListener("unload", unloadHandler);
+    //             } catch (error) {
+    //               console.log('cross-origin err');
+    //             }
 
-          iframe.addEventListener("load", attachUnload);
-          attachUnload();
-        }
+    //           }
 
-        iframeURLChange(windowContent, function (newURL) {
-//           console.log(newURL);
-          if (windowContent.src != newURL) {
-            windowContent.src = newURL;
-            console.log("URL changed:", newURL);
-          } 
-        });
-      } 
-    } catch (error) {
-      console.log('cross-origin err');
-    }
+    //           iframe.addEventListener("load", attachUnload);
+    //           attachUnload();
+    //         }
+
+    //         iframeURLChange(windowContent, function (newURL) {
+    // //           console.log(newURL);
+    //           if (windowContent.src != newURL) {
+    //             windowContent.src = newURL;
+    //             console.log("URL changed:", newURL);
+    //           } 
+    //         });
+    //       } 
+    //     } catch (error) {
+    //       console.log('cross-origin err');
+    //     }
     //         windowContent.addEventListener("pointerover", function(e) {
     //           console.log("ahhsdfasd");
     //         });
@@ -2935,7 +2940,7 @@ new MutationObserver((mutations) => {
           <button class="toolbar-button" style="touch-action: none;" id="fullscreenButton"><i class="fa-solid fa-up-right-and-down-left-from-center" style="touch-action: none;" aria-hidden="true"></i></button>
           <button class="toolbar-button" style="touch-action: none;" id="minimizeButton"><i class="fa-solid fa-minus" style="touch-action: none;" aria-hidden="true"></i></button>
         </div></div></div>
-      <div class="resize-handle" style="translate: none; rotate: none; scale: none; transform: translate3d(960px, 960px, 0px); touch-action: none; cursor: grab; user-select: none;"></div></div><div id="participant-menus" class="ui"><div class="main-interface" style="transform: scale(1); left: 0px; top: 0px;">
+      </div><div id="participant-menus" class="ui"><div class="main-interface" style="transform: scale(1); left: 0px; top: 0px;">
     
     <button id="settings-button" class="settings-button">
     <i class="fas fa-cog"></i> Settings
@@ -3204,132 +3209,7 @@ new MutationObserver((mutations) => {
     <div class="black" style="touch-action: none;"></div>
     <div class="white" style="touch-action: none;"></div>
   </div></div>
-  <div id="dice-pit" class="preset"><style id="style-dice-pit" type="text">
-  .ball {
-    width: 125px;
-    height: 125px;
-    border-radius: 50%;
-    box-sizing: border-box;
-    will-change: transform;
-    position: absolute;
-  }
-
-  .ballPit {
-    width: 100%;
-    height: 100%;
-    background-color: rgba(11, 21, 255, .2);
-  }
-  </style>
-<script id="script-dice" type="text">
-//original by Blake Bowen https://codepen.io/osublake/
-  const friction = -0.5;
-
-  const ball = document.querySelector(".ball");
-  const ballProps = gsap.getProperty(ball);
-  const radius = ball.getBoundingClientRect().width / 2;
-  const tracker = InertiaPlugin.track(ball, "left,top")[0];
-  const boundary = document.querySelector("#ballPit0");
-
-  const boundaryStyle = getComputedStyle(boundary);
-
-  let vw = boundary.offsetWidth;
-  let vh = boundary.offsetHeight;
-
-  //   webstrate.on("loaded", function(webstrateID, clientId, user) {
-  //     vw = boundary.width;
-  //     vh = boundary.height;
-  //     console.log(vw + ", " + vh);
-
-
-  //   });
-
-  gsap.defaults({
-    overwrite: true
-  });
-
-  gsap.set(ball, {
-    xPercent: -50,
-    yPercent: -50,
-    //       x: vw / 2,
-    //       y: vh / 2
-  });
-
-  const draggableBall = new Draggable(ball, {
-    bounds: boundary,
-    onPress() {
-      gsap.killTweensOf(ball);
-      this.update();
-    },
-    onDragEnd: animateBounce,
-    onDragEndParams: []
-  });
-
-  //   window.addEventListener("resize", () => {
-  //     vw = window.innerWidth;
-  //     vh = window.innerHeight;
-  //   });
-
-  function animateBounce(x = "+=0", y = "+=0", vx = "auto", vy = "auto") {
-
-    gsap.fromTo(ball, { x, y }, {
-      inertia: {
-        x: vx,
-        y: vy,
-      },
-      onUpdate: checkBounds
-    });  
-  }
-
-  function checkBounds() {
-
-    let r = radius;    
-    let x = ballProps("x");
-    let y = ballProps("y");
-    let vx = tracker.get("x");
-    let vy = tracker.get("y");
-    let xPos = x;
-    let yPos = y;
-//     let ballFace = ballProps("data-face");
-//     console.log(ballFace);
-
-    let hitting = false;
-
-    if (x + r > vw) {
-      xPos = vw - r;
-      vx *= friction;
-      hitting = true;
-    } else if (x - r < 0) {
-      xPos = r;
-      vx *= friction;
-      hitting = true;
-    }
-
-    if (y + r > vh) {
-      yPos = vh - r;
-      vy *= friction;
-      hitting = true;
-
-    } else if (y - r < 0) {
-      yPos = r;
-      vy *= friction;
-      hitting = true;
-    }
-    
-    const faces = ["one", "two", "three", "four", "five", "six"];
-    ball.dataset.face = Math.random()*6|0;
-    ball.src = "dice-six-faces-" + faces[ball.dataset.face] + ".png";
-
-    if (hitting) {
-//       gsap.set(ball, {
-//         count: thisCount+1,
-//       });
-      
-      animateBounce(xPos, yPos, vx, vy);
-    } 
-  }
-</script>
-<div class="ballPit" id="ballPit0" type="text"><img alt="" class="ball" src="dice-six-faces-one.png" style="translate: none; rotate: none; scale: none; z-index: 1001; cursor: grab; touch-action: none; user-select: none; transform: translate(-50%, -50%) translate3d(182px, 241px, 0px);" identifier="IMG0.4655046644195828" uxa="" data-face="0"></div>
-</div></div><div id="roomPresets"><div id="roomPreset0"><div class="window-container" id="window-1753194352351-1" style="translate: none; rotate: none; scale: none; touch-action: none; cursor: grab; user-select: none; z-index: 1020; top: 448px; left: 1472px;" data-window-number="5"><div class="window-title" style="touch-action: none;">Window 5</div>
+  </div><div id="roomPresets"><div id="roomPreset0"><div class="window-container" id="window-1753194352351-1" style="translate: none; rotate: none; scale: none; touch-action: none; cursor: grab; user-select: none; z-index: 1020; top: 448px; left: 1472px;" data-window-number="5"><div class="window-title" style="touch-action: none;">Window 5</div>
 
 
 
