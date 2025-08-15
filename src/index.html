@@ -866,7 +866,7 @@
   .window-toolbar {
     box-sizing: border-box;
     width: 100%;
-    height: 5rem;
+    height: 4rem;
     top:0px;
     left:0px;
     background-color: #03A6A1;
@@ -933,7 +933,7 @@
     margin-top: 4rem;
 /*     margin-bottom: 4rem; */
     padding: 0rem 4rem 8rem 4rem;
-    border: solid;
+/*     border: solid; */
 /*     padding-bottom: 2rem; */
   }
 /*   #wrapper.edit .window-content iframe {
@@ -1544,8 +1544,8 @@
       closeButton.title = 'Close window';
       closeButton.addEventListener('mousedown', function(e) {
         e.stopPropagation();
-//         var drag = Draggable.get(window);
-//         if (drag) drag.kill();
+        //         var drag = Draggable.get(window);
+        //         if (drag) drag.kill();
         window.remove();
         updateLayersList();
       });
@@ -1598,7 +1598,7 @@
   wrapper.addEventListener("dragover", (event) => {
     doDragOver(event);
   });
-  
+
   wrapper.addEventListener("dragstart", (event) => {
     if (dragged) event.preventDefault();
   });
@@ -1610,19 +1610,41 @@
     }
   }
 
-  function doDrop(event) {
+  async function doDrop(event) {
     const lines = event.dataTransfer.getData("text/plain").split("\n");
-    console.log(lines);
+    //     var type = null;
+    //     console.log(lines);
     lines
       .filter((line) => !line.startsWith("#"))
       .forEach((line) => {
-      const link = document.createElement("a");
-      link.href = line;
-      link.textContent = line;
-      if (line) addWindow(event, line);
-//       event.target.appendChild(link);
+      //       const link = document.createElement("a");
+      //       link.href = line;
+      //       link.textContent = line;
+      fetchTypeFromURL(line);
     });
     event.preventDefault();
+  }
+
+  async function fetchTypeFromURL(url){
+    var type = null;
+    try {
+      const reponse = await fetch(url, {
+        method: 'HEAD'
+      });
+      var type = reponse.headers.get('Content-Type');
+    } catch(error) {}
+    addWindow(null, url, type);
+    //     console.log(type);
+    //     return type;
+  }
+
+  function identifyTypeFromURL(url) {
+    var type = null;
+    var urlEnd = url.split('.').at(-1);
+    console.log(urlEnd);
+    if (urlEnd.includes("jpg") || urlEnd.includes("jpeg") || urlEnd.includes("png") || urlEnd.includes("svg") || urlEnd.includes("gif") ||urlEnd.includes("webm")) type = "image";
+    else if (urlEnd.includes("mp4")) type = "video";
+    return type;
   }
 
   function getWindowCounter() {
@@ -1681,8 +1703,8 @@
           opt.innerHTML = a.fileName;
           if (a.mimeType.includes('image')) addressSelect.append(opt);
         })
-//         const savedURLs = document.getElementById('taskbar').querySelector
-        
+        //         const savedURLs = document.getElementById('taskbar').querySelector
+
         windowContent = document.createElement("img");
         addressSelect.style.display='none';
         const defaultURL = 'https://0577e046-6f75-4e1a-99b8-c04c9a8840da.mdnplay.dev/shared-assets/images/examples/surfer.jpg';
@@ -1705,7 +1727,7 @@
         const defaultURL = 'https://1a31e613-d751-44e7-82aa-d2d0081c52f8.mdnplay.dev/shared-assets/videos/flower.webm';
         windowContent.src = (url) ? url : defaultURL;
         windowContent.controls = true;
-        
+
       } else if (preset.includes("audio")) {
         addressSelect.innerHTML = '';
         const opt = document.createElement("option");
@@ -1729,7 +1751,7 @@
         addressBar.style.display = 'none';
       } else {
         windowContent = document.createElement("iframe");
-//         addressSelect.style.display='none';
+        //         addressSelect.style.display='none';
         const defaultURL = 'https://wikipedia.com';
         console.log(url);
         windowContent.src = (url) ? url : defaultURL;
@@ -1937,6 +1959,7 @@
               handleMutationWindowContent(mutation);
               break;
             case "style":
+              //               handleMutationWindowContainerResize(mutation);
               updateLayersList();
               break;
             case "data-scroll-left":
@@ -1952,6 +1975,26 @@
       }
     });
   });
+
+  const resizeObserver = new ResizeObserver(entries => {
+    entries.forEach(entry => {
+      entry.target.classList.add("resizing");
+    });
+  })
+
+  function handleMutationWindowContainerResize(mutation) {
+    if (!mutation.target.classList.contains("window-container")) return;
+    var splitStyle = mutation.oldValue.split(";");
+    console.log(splitStyle);
+    var oldWidth = mutation.oldValue.get;
+    var oldHeight = mutation.oldValue;
+
+    //     console.log("old: " + oldWidth + ", " + oldHeight);
+    //     console.log("new: " + mutation.target.style.width + ", " + mutation.target.style.height);
+    if (mutation.target.style.width != oldWidth || mutation.target.style.height != oldHeight) {
+      console.log("changed");
+    }
+  }
 
   function handleMutationWindowContent(mutation){
     var attributeValue = mutation.target.src;
@@ -2008,7 +2051,7 @@
     subtree: true,
     //     characterDataOldValue: true // pass old data to callback
     attributes: true,
-    //     attributeOldValue: true,
+    attributeOldValue: true,
     attributeFilter: ['class', 'src', 'style', 'data-scroll-left', 'data-scroll-top']
   });
 
@@ -2021,8 +2064,8 @@
       if (mutation.attributeName === 'data-current-time') {
         var attributeValue = mutation.target.dataset.currentTime;
 
-        if (Math.abs(mutation.target.currentTime-attributeValue) >= 0.8) mutation.target.currentTime = attributeValue;
-        if (mutation.target.className.includes("playing")) mutation.target.play();
+        if (Math.abs(mutation.target.currentTime-attributeValue) >= 1) mutation.target.currentTime = attributeValue;
+//         if (mutation.target.className.includes("playing")) mutation.target.play();
       }
       else if (mutation.attributeName === 'class') {
         var attributeValue = $(mutation.target).prop(mutation.attributeName);
@@ -2088,7 +2131,7 @@
     // If the user clicks anywhere other than on the edited note, disable editing.
     document.addEventListener("click", function(e) {
       if (!edited || e.target.closest(".window-container") === edited) return;
-//       edited.setAttribute("contenteditable", false);
+      //       edited.setAttribute("contenteditable", false);
       edited = null;
     });
 
@@ -2096,6 +2139,7 @@
     document.addEventListener("mousedown", function(e) {
       var target = e.target.closest(".window-container");
       if (target===null) return;
+      if (target) target.classList.remove("resizing"); // will reapply from observer
       if (e.target.closest(".search-box") || target.classList.contains("lock-drag")) return;
       if (edited) return; // If we are editing, we want to disable dragging.
       dragged = target;
@@ -2108,6 +2152,7 @@
     document.addEventListener("mousemove", function(e) {
       if (dragged === null) return;
       if (edited) return;
+      if (dragged.classList.contains("resizing")) return;
       var left = e.clientX - offset.x;
       var top = e.clientY - offset.y;
       dragged.style.left= left+"px";
@@ -2115,6 +2160,7 @@
     });
 
     document.addEventListener("mouseup", function(e) {
+      if (dragged) dragged.classList.remove("resizing");
       dragged = null;
     });
   });
@@ -2161,9 +2207,9 @@
       } 
 
       if(addressBar) {
-//         addressBar.addEventListener("click", (e) => {
-//           edited = element;
-//         });
+        //         addressBar.addEventListener("click", (e) => {
+        //           edited = element;
+        //         });
         addressBar.addEventListener("keyup", (e) => {
           if (e.key !== "Enter") return;
           //         if (addressBar.value.includes("http")) {
@@ -2248,6 +2294,8 @@
         //         }
         //         windowContent.requestPictureInPicture()
       }, false);
+      
+      resizeObserver.observe(element);
     }
   }
 
@@ -2389,6 +2437,7 @@
       this.classList.remove("paused");
       this.classList.remove("playing");
       this.classList.add("seeking", webstrate.clientId);
+      this.classList.remove(webstrate.clientId);
     });
 
     media.addEventListener("seeked", function(e) {
@@ -2910,7 +2959,7 @@ new MutationObserver((mutations) => {
 }).observe(document.body, { childList: true, subtree: true });
 </script><div id="templates" style="display: none;">
 
-    <div class="window-container" id="" style="translate: none; rotate: none; scale: none; touch-action: none; cursor: grab; user-select: none;">
+    <div class="window-container" id="" style="cursor: grab; user-select: none;">
 
 
 
