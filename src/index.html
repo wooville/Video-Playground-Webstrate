@@ -5,6 +5,7 @@
   <title>Video Playground</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"><style id="style-main">
   #wrapper {
+/*     box-sizing: border-box; */
     z-index: -1;
     cursor:none;
     /*       vertical-align: top */
@@ -16,6 +17,7 @@
     margin: 0px;
     left:0px;
     top:0px;
+/*     border: solid; */
   }
 
   .edit,
@@ -48,7 +50,11 @@
     z-index: 999999;
     position: absolute;
     border-style: solid;
-    /*     box-shadow: 0px 0px 2px; */
+    
+    -webkit-box-shadow:0px 0px 2rem 0.125rem;
+    -moz-box-shadow: 0px 0px 2rem 0.125rem;
+    box-shadow: 0px 0px 2rem 0.125rem;
+
     pointer-events:none
   }
 
@@ -849,7 +855,11 @@
   #wrapper.edit .window-controls {
     display: flex;
   }
-
+/*   .window-container:hover .window-controls {
+    visibility:visible;
+    display: flex;
+  }
+ */
   .window-dragbar {
     display:none;
     box-sizing: border-box;
@@ -921,6 +931,7 @@
 /*     margin-left: -1rem; */
     margin-top: 0rem;
     margin-bottom: 0rem;
+    overscroll-behavior: contain;
 /*         padding-block: 2rem;
     padding-inline: 2rem; */
     /*     padding:1rem;
@@ -1029,6 +1040,11 @@
 
   .window-container.playground-active {
     outline:solid;
+    
+    -webkit-box-shadow:0px 0px 0.25rem 0.25rem;
+    -moz-box-shadow: 0px 0px 0.25rem 0.25rem;
+    box-shadow: 0px 0px 0.25rem 0.25rem;
+
   }
 
   .window-title {
@@ -1042,10 +1058,15 @@
   .window-container:hover .window-title {
     visibility: visible;
   }
+  
+  .window-container .address-select {
+    height: 2rem;
+    width: 8rem;
+  }
 
 </style></head>
   <body style="
-          background-image: url('https://images.unsplash.com/photo-1746121813274-50f7f8d4bad4?q=80&amp;w=2103&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.1.0&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+          background-image: url('');
           background-size: cover;
           background-position: center;
           background-repeat: no-repeat;
@@ -1321,6 +1342,7 @@
   });
 
   window.addEventListener("focusout", function(e) {
+    dragged = null;
     const participantCursor = document.getElementById("participantCursor-"+webstrate.clientId);
     const participantView = document.getElementById("participantView-"+webstrate.clientId);
     if (!participantCursor || !participantView){
@@ -2295,6 +2317,30 @@
         //         windowContent.requestPictureInPicture()
       }, false);
       
+      element.addEventListener('dblclick', () => {
+        //         console.log(windowContent.ownerDocument.referrer);
+
+        if (windowContent.requestFullscreen) {
+          windowContent.requestFullscreen();
+        } else if (windowContent.mozRequestFullScreen) { // Firefox
+          windowContent.mozRequestFullScreen();
+        } else if (windowContent.webkitRequestFullscreen) { // Chrome, Safari and Opera
+          windowContent.webkitRequestFullscreen();
+        } else if (windowContent.msRequestFullscreen) { // IE/Edge
+          windowContent.msRequestFullscreen();
+        }
+
+        //         var newFullscreenView = templates.querySelector("#fullscreenView").cloneNode(true);
+        //         newFullscreenView(windowContent);
+        //         playground.append(newFullscreenView);
+        //         if ("documentPictureInPicture" in window) {
+        //           togglePictureInPicture(windowContent);
+        //         } else {
+        //           console.log("pip not supported by browser");
+        //         }
+        //         windowContent.requestPictureInPicture()
+      }, false);
+      
       resizeObserver.observe(element);
     }
   }
@@ -2730,6 +2776,7 @@
     // Add Image from URL
     const saveButton = taskbar.querySelector('.add-button-url');
     const addButton = taskbar.querySelector('.add-button');
+    const deleteButton = taskbar.querySelector('.delete-button');
     const urlInput = taskbar.querySelector('.url-input');
 
     const backgroundButton = taskbar.querySelector('.background-button');
@@ -2743,7 +2790,7 @@
       if (url) {
         const imgElement = document.createElement('div');
         imgElement.className = 'image-item';
-        imgElement.innerHTML = `<img src="${url}" type="${(response) ? 'image' : response.headers.get('Content-Type')}" alt="Uploaded image" onerror="this.parentElement.remove()">`;
+        imgElement.innerHTML = `<img id="saved-${generateID(6)}" src="${url}" type="${(response) ? 'image' : response.headers.get('Content-Type')}" alt="Uploaded image" onerror="this.parentElement.remove()">`;
         imgElement.addEventListener('mousedown', function() {
           imgElement.classList.toggle('selected');
         });
@@ -2783,6 +2830,15 @@
       selectedElements.forEach(element => {
         element.classList.remove('selected');
         (element.childNodes[0].classList.contains("preset")) ? addWindowFromPresetId(element.childNodes[0].dataset.presetId) : addWindow(null, element.childNodes[0].src, element.childNodes[0].getAttribute("type"))
+      });
+    });
+
+    deleteButton.addEventListener('mousedown', function() {
+      let selectedElements = imageGrid.querySelectorAll(".selected");
+      selectedElements.forEach(element => {
+        element.classList.remove('selected');
+        templates.querySelector("#"+element.childNodes[0].id).parentNode.remove();
+        element.remove();
       });
     });
 
@@ -2973,12 +3029,29 @@ new MutationObserver((mutations) => {
         <div class="asset-select" style="touch-action: none;">
           
           
-        <select class="address-select">
-              <option value="https://wikipedia.com">Wikipedia</option><option value="https://www.google.com/search?igu=1">Google</option><option value="https://playingcards.io/357gwm">Chess</option>
-              <option value="https://opentogethertube.com/">OpenTogetherTube</option><option value="https://sync-tube.de/room/KVD8QK3d">SyncTube</option><option value="https://www.watchparty.me/watch/null-run-perceive">Watch Party</option>
-              <option value="https://jukebox.today/videoplayground">Jukebox</option><option value="https://demo.webstrates.net/curvy-owl-14/">Tank Trouble</option>
-              
-            </select></div>
+        
+
+<select class="address-select">
+  <option value="">Select a website!</option>
+  <hr>
+  <optgroup label="Music">
+    <option value="https://jukebox.today/videoplayground">Jukebox</option>
+  </optgroup>
+  <hr>
+  <optgroup label="Videos">
+    <option value="https://opentogethertube.com/room/459ed9d9-d31a-412c-8e05-35284992836a">OpenTogetherTube</option>
+  </optgroup>
+  <hr>
+  <optgroup label="Games">
+    <option value="https://demo.webstrates.net/curvy-owl-14/">Tank Trouble</option><option value="https://playingcards.io/357gwm">Chess</option>
+    <option value="https://draw-76z7.onrender.com/">Draw and Guess</option><option value="https://jigsawpuzzles.io/g/4e55b247-062d-409c-b13e-90c1e01f223b">Jigsaw Puzzle</option><option value="https://rollforyour.party/room/LuckilyChampionFinch">Dice Roller</option>
+  </optgroup>
+  <hr>
+  <optgroup label="Other">
+    <option value="https://wikipedia.com">Wikipedia</option>
+    <option value="https://www.google.com/search?igu=1">Google</option>
+  </optgroup>
+</select></div>
         
         <div class="search-bar" style="touch-action: none;">
           <i class="fa-solid fa-magnifying-glass fa-lg" style="margin-right: 0.5rem; touch-action: none;" aria-hidden="true"></i>
@@ -3098,14 +3171,14 @@ new MutationObserver((mutations) => {
           <div class="image-grid-container">
             <div class="image-grid">
               <!-- Images will be added here dynamically -->
-              <div class="image-item"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Rijpe_vruchten_van_Hertshooi_%28Hypericum%29._17-08-2024_%28d.j.b.%29.jpg/500px-Rijpe_vruchten_van_Hertshooi_%28Hypericum%29._17-08-2024_%28d.j.b.%29.jpg" type="image" alt="Uploaded image" onerror="this.parentElement.remove()"></div><div class="image-item"><img src="https://images.unsplash.com/photo-1746121813274-50f7f8d4bad4?q=80&amp;w=2103&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.1.0&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" type="image" alt="Uploaded image" onerror="this.parentElement.remove()"></div><div class="image-item"><img src="https://0577e046-6f75-4e1a-99b8-c04c9a8840da.mdnplay.dev/shared-assets/images/examples/surfer.jpg" type="image" alt="Uploaded image" onerror="this.parentElement.remove()"></div></div>
+              </div>
           </div>
           <div class="upload-section-url">
             <i class="fas fa-cloud-upload-alt upload-icon"></i>
             <input type="text" placeholder="insert URL here" class="url-input">
             <button class="add-button-url">Save</button>
           </div><div class="upload-section" style="display: none;">
-  <button class="add-button">Add to Playground</button><button class="background-button">Set as Background</button><form action="" enctype="multipart/form-data" method="post" style="display: none;">
+  <button class="add-button">Add to Playground</button><button class="delete-button">Delete Saved Object</button><button class="background-button">Set as Background</button><form action="" enctype="multipart/form-data" method="post" style="display: none;">
     <input name="file" type="file" autocomplete="off" multiple="">
     <input type="submit" value="Upload" autocomplete="off">
   </form>
@@ -3170,94 +3243,7 @@ new MutationObserver((mutations) => {
 			outline: none;
 			box-shadow: 15px 15px 20px gray;
 		}
-	</style><div class="note" contenteditable="true"></div></div><div id="chessboard" class="preset">
-
-<style id="style-chess" type="text">
-  .chess-board {
-/*     border: 5px solid black;
-    width: 800px; */
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  }
-
-  .chess-board .white {
-/*     height: 20%;
-    width: 20%; */
-    background-color: black;
-  }
-
-  .chess-board .black {
-/*     height: 20%;
-    width: 20%; */
-    background-color: white;
-  }
-</style><div style="touch-action: none;" class="chess-board window-content">
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-    <div class="black" style="touch-action: none;"></div>
-    <div class="white" style="touch-action: none;"></div>
-  </div></div>
+	</style><div class="note" contenteditable="true"></div></div>
   </div><div id="roomPresets"><div id="roomPreset0"><div class="window-container" id="window-1753194352351-1" style="translate: none; rotate: none; scale: none; touch-action: none; cursor: grab; user-select: none; z-index: 1020; top: 448px; left: 1472px;" data-window-number="5"><div class="window-title" style="touch-action: none;">Window 5</div>
 
 
