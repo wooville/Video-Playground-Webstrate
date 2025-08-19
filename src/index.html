@@ -4,6 +4,9 @@
   <script crossorigin="anonymous" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <title>Video Playground</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"><style id="style-main">
+  html, body {
+    overscroll-behavior: contain;
+  }
   #wrapper {
 /*     box-sizing: border-box; */
     z-index: -1;
@@ -1075,7 +1078,7 @@
     
 
     
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script><div id="wrapper" class=""></div>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script><div id="wrapper" class="edit"></div>
     
     
     
@@ -1943,6 +1946,11 @@
   }
 
   document.addEventListener('keydown', function (e) {
+    // space and arrow keys
+    if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+        e.preventDefault();
+    }
+//     console.log(document.activeElement);
     var speed = window.innerHeight/4;
     console.log(e.keyCode);
     if (document.activeElement != document.body) return;
@@ -3039,12 +3047,12 @@ new MutationObserver((mutations) => {
   </optgroup>
   <hr>
   <optgroup label="Videos">
-    <option value="https://opentogethertube.com/room/459ed9d9-d31a-412c-8e05-35284992836a">OpenTogetherTube</option>
+    <option value="https://opentogethertube.com/room/VideoPlaygroundTheater">OpenTogetherTube</option>
   </optgroup>
   <hr>
   <optgroup label="Games">
     <option value="https://demo.webstrates.net/curvy-owl-14/">Tank Trouble</option><option value="https://playingcards.io/357gwm">Chess</option>
-    <option value="https://draw-76z7.onrender.com/">Draw and Guess</option><option value="https://jigsawpuzzles.io/g/4e55b247-062d-409c-b13e-90c1e01f223b">Jigsaw Puzzle</option><option value="https://rollforyour.party/room/LuckilyChampionFinch">Dice Roller</option>
+    <option value="https://draw-76z7.onrender.com/">Draw and Guess</option><option value="https://jigsawpuzzles.io/g/4e55b247-062d-409c-b13e-90c1e01f223b">Jigsaw Puzzle</option><option value="https://www.airconsole.com/">Air Console</option><option value="https://rollforyour.party/room/LuckilyChampionFinch">Dice Roller</option>
   </optgroup>
   <hr>
   <optgroup label="Other">
