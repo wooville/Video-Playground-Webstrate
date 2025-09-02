@@ -1074,7 +1074,7 @@
           background-position: center;
           background-repeat: no-repeat;
           background-attachment: fixed;
-        ">
+        " id="playground-body">
     
 
     
@@ -1625,7 +1625,7 @@
   });
 
   wrapper.addEventListener("dragstart", (event) => {
-    if (dragged) event.preventDefault();
+    event.preventDefault();
   });
 
   function doDragOver(event) {
@@ -1781,6 +1781,7 @@
         console.log(url);
         windowContent.src = (url) ? url : defaultURL;
       }
+      windowContent.allowFullscreen = true;
       windowContent.classList.add("window-content");
       newWindow.append(windowContent);
     }
@@ -1948,9 +1949,9 @@
   document.addEventListener('keydown', function (e) {
     // space and arrow keys
     if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
-        e.preventDefault();
+      e.preventDefault();
     }
-//     console.log(document.activeElement);
+    //     console.log(document.activeElement);
     var speed = window.innerHeight/4;
     console.log(e.keyCode);
     if (document.activeElement != document.body) return;
@@ -1967,6 +1968,16 @@
       window.scrollBy(speed, 0);
       console.log(e.keyCode);
     }
+  });
+
+  wrapper.addEventListener("paste", (event) => {
+    console.log(document.activeElement);
+    if (document.activeElement.id != "playground-body") return;
+    event.preventDefault();
+
+    let paste = (event.clipboardData || window.clipboardData).getData("text");
+    fetchTypeFromURL(paste);
+    
   });
 </script><script id="script-playground">
   const playground = document.getElementById("wrapper");
@@ -2326,6 +2337,7 @@
       }, false);
       
       element.addEventListener('dblclick', () => {
+        if (document.activeElement.classList.contains("search-box")) return;
         //         console.log(windowContent.ownerDocument.referrer);
 
         if (windowContent.requestFullscreen) {
@@ -3041,23 +3053,23 @@ new MutationObserver((mutations) => {
 
 <select class="address-select">
   <option value="">Select a website!</option>
-  <hr>
+  
   <optgroup label="Music">
     <option value="https://jukebox.today/videoplayground">Jukebox</option>
   </optgroup>
-  <hr>
+  
   <optgroup label="Videos">
-    <option value="https://opentogethertube.com/room/VideoPlaygroundTheater">OpenTogetherTube</option>
+    <option value="https://opentogethertube.com/room/VideoPlaygroundTheater">Theater 1</option><option value="https://opentogethertube.com/room/VideoPlaygroundTheater2">Theater 2</option><option value="https://opentogethertube.com/room/VideoPlaygroundTheater3">Theater 3</option>
   </optgroup>
-  <hr>
+  
   <optgroup label="Games">
     <option value="https://demo.webstrates.net/curvy-owl-14/">Tank Trouble</option><option value="https://playingcards.io/357gwm">Chess</option>
-    <option value="https://draw-76z7.onrender.com/">Draw and Guess</option><option value="https://jigsawpuzzles.io/g/4e55b247-062d-409c-b13e-90c1e01f223b">Jigsaw Puzzle</option><option value="https://www.airconsole.com/">Air Console</option><option value="https://rollforyour.party/room/LuckilyChampionFinch">Dice Roller</option>
+    <option value="https://draw-76z7.onrender.com/">Draw and Guess</option><option value="https://jigsawpuzzles.io/g/4e55b247-062d-409c-b13e-90c1e01f223b">Jigsaw Puzzle</option><option value="https://seraphweb.vercel.app/games/">Seraph Games</option><option value="https://seraphweb.vercel.app/games/pacman/index.html">PAC-MAN</option><option value="https://seraphweb.vercel.app/games/flappy/index.html">Flappy Bird</option>
   </optgroup>
-  <hr>
+  
   <optgroup label="Other">
     <option value="https://wikipedia.com">Wikipedia</option>
-    <option value="https://www.google.com/search?igu=1">Google</option>
+    <option value="https://www.google.com/search?igu=1">Google</option><option value="https://videoplayground.xyz/dangerous-bat-77/">Calculator</option><option value="https://seraphweb.vercel.app/apps/weavesilk/index.html">Weavesilk</option><option value="https://excalidraw.com/">Excalidraw</option>
   </optgroup>
 </select></div>
         
@@ -3076,7 +3088,7 @@ new MutationObserver((mutations) => {
     <i class="fas fa-cog"></i> Settings
     </button><button id="openLayersButton" class="open-layers-button settings-button">☰ Layers</button><button id="toggleEditButton" class="settings-button">Toggle Edit Mode</button><button id="addWindowButton" class="settings-button">
     Add Window</button>
-    <!-- Your main content would go here --><select class="add-select settings-button">
+    <!-- Your main content would go here --><select class="add-select settings-button" style="display:none;">
               <option value="webpage">Webpage</option><option value="note">Text</option><option value="image">Image</option><option value="video">Video</option><option value="audio">Audio</option>
               
               
@@ -3483,4 +3495,4 @@ new MutationObserver((mutations) => {
       <div class="resize-handle" style="translate: none; rotate: none; scale: none; transform: translate3d(960px, 640px, 0px); touch-action: none; cursor: grab; user-select: none; z-index: 1030;"></div><video class="window-content" style="touch-action: none;" name="pCIK4CleEOf5" src="https://1a31e613-d751-44e7-82aa-d2d0081c52f8.mdnplay.dev/shared-assets/videos/flower.webm" id="pCIK4CleEOf5" controls=""></video></div></div></div></div>
 	
 	
-<div></div></body></html>
+</body></html>
