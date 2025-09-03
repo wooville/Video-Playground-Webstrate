@@ -1376,6 +1376,9 @@
 
     const addWindowButton = taskbar.querySelector("#addWindowButton");
     addWindowButton.addEventListener("mousedown", addWindow);
+    
+    const addNoteButton = taskbar.querySelector("#addNoteButton");
+    addNoteButton.addEventListener("mousedown", addNote);
 
     const toggleEditButton = taskbar.querySelector("#toggleEditButton");
     toggleEditButton.addEventListener("mousedown", toggleEdit);
@@ -1681,6 +1684,10 @@
     });
     return max;
   }
+  
+  function addNote() {
+    addWindow(null, null, "note");
+  }
 
   function addWindow(e=null, url=null, type=null) {
     const template = templates.querySelector(".window-container");
@@ -1777,7 +1784,7 @@
       } else {
         windowContent = document.createElement("iframe");
         //         addressSelect.style.display='none';
-        const defaultURL = 'https://wikipedia.com';
+        const defaultURL = 'https://videoplayground.xyz/afraid-rattlesnake-6/';
         console.log(url);
         windowContent.src = (url) ? url : defaultURL;
       }
@@ -3052,24 +3059,19 @@ new MutationObserver((mutations) => {
         
 
 <select class="address-select">
-  <option value="">Select a website!</option>
+  <option value="">Select a website!</option><hr>
   
-  <optgroup label="Music">
-    <option value="https://jukebox.today/videoplayground">Jukebox</option>
-  </optgroup>
   
-  <optgroup label="Videos">
-    <option value="https://opentogethertube.com/room/VideoPlaygroundTheater">Theater 1</option><option value="https://opentogethertube.com/room/VideoPlaygroundTheater2">Theater 2</option><option value="https://opentogethertube.com/room/VideoPlaygroundTheater3">Theater 3</option>
-  </optgroup>
   
-  <optgroup label="Games">
-    <option value="https://demo.webstrates.net/curvy-owl-14/">Tank Trouble</option><option value="https://playingcards.io/357gwm">Chess</option>
-    <option value="https://draw-76z7.onrender.com/">Draw and Guess</option><option value="https://jigsawpuzzles.io/g/4e55b247-062d-409c-b13e-90c1e01f223b">Jigsaw Puzzle</option><option value="https://seraphweb.vercel.app/games/">Seraph Games</option><option value="https://seraphweb.vercel.app/games/pacman/index.html">PAC-MAN</option><option value="https://seraphweb.vercel.app/games/flappy/index.html">Flappy Bird</option>
-  </optgroup>
   
-  <optgroup label="Other">
+  
+  <optgroup label="Synchronized">
+    <option value="https://jukebox.today/videoplayground">Music Jukebox</option><hr>
+  <option value="https://opentogethertube.com/room/VideoPlaygroundTheater">Video Theater 1</option><option value="https://opentogethertube.com/room/VideoPlaygroundTheater2">Video Theater 2</option><option value="https://opentogethertube.com/room/VideoPlaygroundTheater3">Video Theater 3</option><hr><option value="https://flockmod.com/r/videoplayground">Drawing Canvas</option><option value="https://videoplayground.xyz/dangerous-bat-77/">Calculator</option><option value="https://videoplayground.xyz/afraid-rattlesnake-6/">Chatroom</option><hr><option value="https://demo.webstrates.net/curvy-owl-14/">Tank Trouble</option><option value="https://playingcards.io/357gwm">Chess</option><option value="https://draw-76z7.onrender.com/">Draw and Guess</option><option value="https://jigsawpuzzles.io/g/4e55b247-062d-409c-b13e-90c1e01f223b">Jigsaw Puzzle</option></optgroup>
+  
+  <hr><optgroup label="NOT Synchronized">
     <option value="https://wikipedia.com">Wikipedia</option>
-    <option value="https://www.google.com/search?igu=1">Google</option><option value="https://videoplayground.xyz/dangerous-bat-77/">Calculator</option><option value="https://seraphweb.vercel.app/apps/weavesilk/index.html">Weavesilk</option><option value="https://excalidraw.com/">Excalidraw</option>
+    <option value="https://www.google.com/search?igu=1">Google</option><option value="https://seraphweb.vercel.app/games/">Seraph Games</option><option value="https://seraphweb.vercel.app/games/pacman/index.html">PAC-MAN</option><option value="https://seraphweb.vercel.app/games/flappy/index.html">Flappy Bird</option><option value="https://seraphweb.vercel.app/apps/weavesilk/index.html">Weavesilk</option>
   </optgroup>
 </select></div>
         
@@ -3087,7 +3089,8 @@ new MutationObserver((mutations) => {
     <button id="settings-button" class="settings-button">
     <i class="fas fa-cog"></i> Settings
     </button><button id="openLayersButton" class="open-layers-button settings-button">☰ Layers</button><button id="toggleEditButton" class="settings-button">Toggle Edit Mode</button><button id="addWindowButton" class="settings-button">
-    Add Window</button>
+    Add Window</button><button id="addNoteButton" class="settings-button">
+    Add Note</button>
     <!-- Your main content would go here --><select class="add-select settings-button" style="display:none;">
               <option value="webpage">Webpage</option><option value="note">Text</option><option value="image">Image</option><option value="video">Video</option><option value="audio">Audio</option>
               
